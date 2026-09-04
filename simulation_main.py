@@ -48,7 +48,8 @@ def main():
 
     out_p1 = sim_fold / "p1"
     out_p2 = sim_fold / "p2"
-    
+
+    out_p1.mkdir(parents=True, exist_ok=True)
     out_p2.mkdir(parents=True, exist_ok=True)
 
     coord_pattern = {
@@ -161,92 +162,165 @@ def main():
     length_b1 = 220.61278 #distal arm
 
 
-    global_files(folder)
-    p1_files(folder)
-    p2_files(folder)
+
+
+    #global_files should be delted
+    #p1_files and p2_files is done in polygon_construction now
+    #global_files(folder)
+    #p1_files(folder)
+    #p2_files(folder)
+
+    #codes[1] : {'x.gcode': ['status', (X, Y)]}
+    #general form codes[i] = ['A', ((coord_list[i]['MINX'] + coord_list[i]['MAXX'])/2, (coord_list[i]['MINY'] + coord_list[i]['MAXY'])/2)]
+
+
+
+
+    def read_gcode_points(codes, file_path, prox_join, length_a, length_b):
+
+        points = []
+        check = True
+        with open(file_path, "r") as r:
+
+
+            for line_number, line in enumerate(r, start=1):
+
+                x_match = coord_pattern['X'].search(line)
+                y_match = coord_pattern['Y'].search(line)
+
+                if x_match is not None and y_match is not None:
+
+                    x = float(x_match.group(1))
+                    y = float(y_match.group(1))
+                    #the files that contains the co-ordinates of the points should also include the min/max co-ordinates just in case
+                    if np.linalg.norm(np.array([x - prox_join[0], y - prox_join[1]])) < length_a + length_b:
+                        points.append((x, y))
+                    else:
+                        check = False
+                        break
+        if check:
+            codes[file_path.stem + '.gcode'] = ['A', points]
+
+        return points
+
+
+    path = Path(r'C:\Users\nural\python2\group-of-code2') / 'p1'
+
+    for i in os.listdir(path):
+        read_gcode_points(codes1, path / f'{i}', prox_join11, length_a1, length_b1)
+
+    path = Path(r'C:\Users\nural\python2\group-of-code2') / 'p2'
+
+    for i in os.listdir(path):
+        read_gcode_points(codes2, path / f'{i}', prox_join2, length_a2, length_b2)
+    
+    print(codes1.keys())
+    print(codes2.keys())
+
+
+
+    ############ printer 2 codes ################
+
+
+
+
+    # coord_list = dict()
 
 
 
 
 
-    coord_list = dict()
-
-
-    '''the stuff below is for filling the codes dictionaries for each printer, codesp2 then codesp1'''
-
-
-    fold = folder / 'p2'
-    for i in os.listdir(fold):
-        with open(fold / i, 'r') as r:
-
-            lines = r.readlines()[4:9]
-
-            coords = {}
-
-            for line in lines:
-                line = line.strip()              # remove \n
-                key, value = line[1:].split(":") # remove ; and split MINX:272.8
-
-                if key in ["MINX", "MINY", "MAXX", "MAXY"]:
-                    coords[key] = float(value)
-            coord_list[i] = coords
+    # '''the stuff below is for filling the codes dictionaries for each printer, codesp2 then codesp1'''
 
 
 
+    
 
-    co_ords = dict()
+    # fold = folder / 'p2'
+    # for i in os.listdir(fold):
+    #     with open(fold / i, 'r') as r:
+
+    #         lines = r.readlines()[4:9]
+
+    #         coords = {}
+
+    #         for line in lines:
+    #             line = line.strip()              # remove \n
+    #             key, value = line[1:].split(":") # remove ; and split MINX:272.8
+
+    #             if key in ["MINX", "MINY", "MAXX", "MAXY"]:
+    #                 coords[key] = float(value)
+    #         coord_list[i] = coords
 
 
 
 
-
-    for i in coord_list:
-
-        first = (coord_list[i]['MINX'], coord_list[i]['MINY'])
-        last = (coord_list[i]['MAXX'], coord_list[i]['MAXY'])
-        middle = ((coord_list[i]['MINX'] + coord_list[i]['MAXX'])/2, (coord_list[i]['MINY'] + coord_list[i]['MAXY'])/2)
-        #co_ords[i+'1'] = first
-        co_ords[i] = last #max
-        #co_ords[i+'3'] = middle
+    # co_ords = dict()
 
 
 
-    reachable_filter(co_ords, codes2, coord_list, prox_join2[0], prox_join2[1], length_a2, length_b2, 2)
-
-    coord_list = dict()
-
-
-    fold = folder / 'p1'
-    for i in os.listdir(fold):
-        with open(fold / i, 'r') as r:
-
-            lines = r.readlines()[4:9]
-
-            coords = {}
-
-            for line in lines:
-                line = line.strip()              
-                key, value = line[1:].split(":") 
-
-                if key in ["MINX", "MINY", "MAXX", "MAXY"]:
-                    coords[key] = float(value)
-            coord_list[i] = coords
-
-    co_ords = dict()
 
 
 
-    for i in coord_list:
-        first = (coord_list[i]['MINX'], coord_list[i]['MINY'])
-        last = (coord_list[i]['MAXX'], coord_list[i]['MAXY'])
-        middle = ((coord_list[i]['MINX'] + coord_list[i]['MAXX'])/2, (coord_list[i]['MINY'] + coord_list[i]['MAXY'])/2)
-        #co_ords[i + '1'] = first
-        co_ords[i] = last #max 
-        #co_ords[i + '3'] = middle
+
+
+    # for i in coord_list:
+
+    #     first = (coord_list[i]['MINX'], coord_list[i]['MINY'])
+    #     last = (coord_list[i]['MAXX'], coord_list[i]['MAXY'])
+    #     middle = ((coord_list[i]['MINX'] + coord_list[i]['MAXX'])/2, (coord_list[i]['MINY'] + coord_list[i]['MAXY'])/2)
+    #     #co_ords[i+'1'] = first
+    #     co_ords[i] = last #max
+    #     #co_ords[i+'3'] = middle
 
 
 
-    reachable_filter(co_ords, codes1, coord_list, prox_join11[0], prox_join11[1], length_a1, length_b1, 1)
+    # reachable_filter(co_ords, codes2, coord_list, prox_join2[0], prox_join2[1], length_a2, length_b2, 2)
+
+    #for now we replace reachable_filter with this
+
+
+
+
+
+
+    ##############printer 1 codes###############
+
+
+    # coord_list = dict()
+
+
+    # fold = folder / 'p1'
+    # for i in os.listdir(fold):
+    #     with open(fold / i, 'r') as r:
+
+    #         lines = r.readlines()[4:9]
+
+    #         coords = {}
+
+    #         for line in lines:
+    #             line = line.strip()              
+    #             key, value = line[1:].split(":") 
+
+    #             if key in ["MINX", "MINY", "MAXX", "MAXY"]:
+    #                 coords[key] = float(value)
+    #         coord_list[i] = coords
+
+    # co_ords = dict()
+
+
+
+    # for i in coord_list:
+    #     first = (coord_list[i]['MINX'], coord_list[i]['MINY'])
+    #     last = (coord_list[i]['MAXX'], coord_list[i]['MAXY'])
+    #     middle = ((coord_list[i]['MINX'] + coord_list[i]['MAXX'])/2, (coord_list[i]['MINY'] + coord_list[i]['MAXY'])/2)
+    #     #co_ords[i + '1'] = first
+    #     co_ords[i] = last #max 
+    #     #co_ords[i + '3'] = middle
+
+
+    #need to fix this
+    #reachable_filter(co_ords, codes1, coord_list, prox_join11[0], prox_join11[1], length_a1, length_b1, 1)
 
 
 

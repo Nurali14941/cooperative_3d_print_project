@@ -181,24 +181,26 @@ def animation_script(codes1, codes2, position_queue1, execution_finished, stop_r
     ax.plot([0, 300], [-300, -300], color = 'black')
 
     for i in codes1:
-        x,y = codes1[i][1]
-        x,y = machine1_to_plot(x,y)
-        ax.annotate(
-            f'{i}',
-            xy = (y,x),
-            color = 'blue',
-            fontsize = 5
-        )
+        for j in codes1[i][1]:
+            x,y = j
+            x,y = machine1_to_plot(x,y)
+            ax.annotate(
+                f'{i}',
+                xy = (y,x),
+                color = 'blue',
+                fontsize = 5
+            )
 
     for i in codes2:
-        x,y = codes2[i][1]
-        x,y = machine2_to_plot(x,y)
-        ax.annotate(
-            f'{i}',
-            xy = (y,x),
-            color = 'blue',
-            fontsize = 5
-        )
+        for j in codes2[i][1]:
+            x,y = j
+            x,y = machine2_to_plot(x,y)
+            ax.annotate(
+                f'{i}',
+                xy = (y,x),
+                color = 'red',
+                fontsize = 5,
+            )
 
 
     ax.set_xlim(-100, 400)
@@ -479,11 +481,11 @@ def animation_script(codes1, codes2, position_queue1, execution_finished, stop_r
 
 
         if p == 1:
-            if check1 and perimeter_lines1:
-                lines = perimeter_lines1.pop(0)
-                for i in lines:
-                    i.remove()
-                check1 = False
+            # if check1 and perimeter_lines1:
+            #     lines = perimeter_lines1.pop(0)
+            #     for i in lines:
+            #         i.remove()
+            #     check1 = False
             
 
 
@@ -737,18 +739,23 @@ def animation_script(codes1, codes2, position_queue1, execution_finished, stop_r
             ) 
             temporary_lines.extend([t1, t2, t3])
             perimeter_lines1.append([distal1_l1, distal1_l2, distal1_l3, distal1_l4, proximal1_l1, proximal1_l2, proximal1_l3, proximal1_l4])
-   
+            if cur_x1_raw == 300.0 and cur_y1_raw == 0.0:
+
+                lines = perimeter_lines1.pop(0)
+                for i in lines:
+                    i.remove()
+
 
             
 
 
 
         elif p == 2:
-            if check2 and perimeter_lines2:
-                lines = perimeter_lines2.pop(0)
-                for i in lines:
-                    i.remove()
-                check2 = False
+            # if check2 and perimeter_lines2:
+            #     lines = perimeter_lines2.pop(0)
+            #     for i in lines:
+            #         i.remove()
+            #     check2 = False
 
             _, elbow_x2, elbow_y2 = inverse_kinematic(cur_x2_raw, cur_y2_raw, prox_join2, length_a2, length_b2)
 
@@ -1013,7 +1020,11 @@ def animation_script(codes1, codes2, position_queue1, execution_finished, stop_r
 
 
 
+            if cur_x2_raw == 300.0 and cur_y2_raw == 0.0:
 
+                lines = perimeter_lines2.pop(0)
+                for i in lines:
+                    i.remove()
 
             
 

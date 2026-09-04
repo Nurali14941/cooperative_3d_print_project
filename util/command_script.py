@@ -175,6 +175,7 @@ def execute(codes, current_x1_raw, current_y1_raw, current_x2_raw, current_y2_ra
         post_switch.clear()            
 
         with open(command, 'r') as r:
+            #this constant simulation thing is only for simulation purposes, remove them when implementing
             if ip == 1:
                 sim_p1(codes, current_x2_raw, current_y2_raw, config)
             else:
@@ -212,7 +213,7 @@ def execute(codes, current_x1_raw, current_y1_raw, current_x2_raw, current_y2_ra
 
                 try:
 
-                    time.sleep(0.1)
+                    time.sleep(0.5)
                     position_queue1.put_nowait([pos1, pos2, p])
 
                     position_queue2.put_nowait([pos1, pos2, p])
@@ -262,7 +263,7 @@ def pick_command_p1(codes1, codes2, path):
     #     statuses_ind = np.flatnonzero(np.array([i[0] for i in codes1.values()]) == 'A')
 
 
-    order = [4,5,6,7,8,9,10,11]
+    order = [15, 14, 13, 12, 10, 11, 8, 9, 7]
     for o in order:
         if codes1[f'{o}.gcode'][0] == 'A':
             with open(path / 'order.txt', 'a') as r:
@@ -336,6 +337,60 @@ def command_script(codes1, codes2, position_queue1: mp.Queue, position_queue2, e
 
 
     try:
+
+
+        #basically, for each select 1 executed, we need to check through all other gcodes and their points whether they are inside any of the segments covered by select 1 execution
+            #but where is the time saving? so for every frame of select 1, we are sifting through all positions at other gcodes?
+            #so just to save time from executing x gcode cells that are definitely colliding, we are asking to check all X reachable gcodes n amount of times (where n is the frame)
+            #whilst previously we would first form all 'a' rectangles by printer 1, then per each 'x' gcode, printer 2 would form 'b' rectangles, and then we would check a*b rectangles for that 'x' gcode, and if there are 'z' gcodes for ptiner two, we would check z*a*b rectangeles  per each gcode at whic printer 1 was located
+            #now, the new suggestion asks that for each rectangle formed by printer 2, we check through b*x points to check whether any of those points are in the rectangle. and so since printer 1 has a rectangles to check all the points against, we would need to check a*x*b points to check whether nay of the gcodes are boundaring the current printer 1 and can use that to reduce which printer 2 gcodes can visit, such that x_new < x. 
+            # but by that time, you have already done a*x*b executions (not checking rectangle rectangle intersection, but whether the point is inside the rectangle)
+            # will ther really be any savings, given the current algorithm? 
+
+                ################IMPORTANT ######################
+            #with regards to discretizatoin, lets say you have a gcode generated from slicer of a square
+            #and you use the plotting stuff to draw it
+            #then you need to generate the polygon from that
+                #################IMPORTANT ###################
+
+            #gpt has suggested other methods to determine whether two gcode files share a boundary, for now, we will use the ronnie way (second) without considering whether it really does provide speed up
+            #wait what if i use polygon in polygon algorithm
+            # from shapely.geometry import Polygon
+
+            # # Define the first polygon (a square)
+            # polygon1 = Polygon([(0, 0), (2, 0), (2, 2), (0, 2)])
+
+            # # Define the second polygon (an overlapping square)
+            # polygon2 = Polygon([(1, 1), (3, 1), (3, 3), (1, 3)])
+
+            # # Check if they intersect (returns True if they overlap or touch)
+            # do_intersect = polygon1.intersects(polygon2)
+
+            # print("Do polygons intersect?", do_intersect)
+
+            #so for each select, we can iterate through all polygons (gcodes) and check with n operations if it intersects polygons
+            #so the total number of operations for check boundaries would be n * k (where k si teh number of eligible gcodes for pitner 1)
+
+
+
+
+
+# Output: Do polygons intersect? True
+
+            #use this to check if every point in all gcode boundary points are inside the rectangle
+            # from matplotlib.path import Path
+
+            # # Define polygon and the path object
+            # vertices = [point1, point2, point4, point3, point1] # Close the loop
+            # polygon_path = Path(vertices)
+
+            # # Single point check (Returns True/False)
+            # is_inside = polygon_path.contains_point((x, y))
+
+            # # Vectorized batch check (Returns array of True/False)
+            # grid_mask = polygon_path.contains_points([(x1, y1), (x2, y2), (x3, y3)])
+
+
         cur_x1_raw = 300
         cur_y1_raw = 0
         cur_x2_raw = 300
@@ -343,6 +398,10 @@ def command_script(codes1, codes2, position_queue1: mp.Queue, position_queue2, e
 
         path = Path(r'C:\Users\nural\python2')
         open(path / 'order.txt', 'w')
+
+        sim_p1(codes1, cur_x2_raw, cur_y2_raw, config)
+        sim_p2(codes2, cur_x1_raw, cur_y1_raw, config)
+
 
         select1 = pick_command_p1(codes1, codes2, path) #the function comes from 
 

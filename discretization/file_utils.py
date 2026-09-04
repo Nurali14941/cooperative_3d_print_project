@@ -208,6 +208,10 @@ def global_files(fold):
     print('global sorted')
     return 
 
+
+
+#p1_files, p2_files transofrm the co-ordinate for each indivudal p1, p2
+
 def p1_files(fold):
     output_fold = fold / "p1"
     output_fold.mkdir(exist_ok=True)

@@ -26,24 +26,25 @@ def xy_points_after_m107(config, file_path: Path, start_x=None, start_y=None):
     """
     cur_x = start_x
     cur_y = start_y
-    reached_m107 = False
+    #reached_m107 = False
+
 
     with open(file_path, "r") as r:
         for raw_line in r:
             line = raw_line.strip()   
 
-            if not reached_m107:
-                if line == "M107":
-                    reached_m107 = True
-                continue
+            # if not reached_m107:
+            #     if line == "M107":
+            #         reached_m107 = True
+            #     continue
 
             if not line or line.startswith(";"):
                 continue
 
-            command = line.split(maxsplit=1)[0]
+            #command = line.split(maxsplit=1)[0]
 
-            if command not in {"G0", "G00", "G1", "G01"}:
-                continue
+            # if command not in {"G0", "G00", "G1", "G01"}:
+            #     continue
 
             new_x, new_y = extract_xy(config, line)
 
@@ -105,11 +106,12 @@ def sim_p1(codes, cur_x2_raw, cur_y2_raw, config):
         with open(targ, 'r') as r:
             line = r.readline().strip()
 
-            while line != 'M107':
-                line = r.readline().strip()
+
+            # while line != 'M107':
+            #    line = r.readline().strip()
 
 
-            line = r.readline().strip()
+            #line = r.readline().strip()
             print(line)
             cur_x1_sim, cur_y1_sim = extract_xy(config, line)
             print(cur_x1_sim, cur_y1_sim)
@@ -153,11 +155,11 @@ def sim_p2(codes, cur_x1_raw, cur_y1_raw, config):
         with open(targ, 'r') as r:
             line = r.readline().strip()
 
-            while line != 'M107':
-                line = r.readline().strip()
+            # while line != 'M107':
+            #     line = r.readline().strip()
 
 
-            line = r.readline().strip()
+            # line = r.readline().strip()
             print(line)
             cur_x2_sim, cur_y2_sim = extract_xy(config, line)
             print(cur_x2_sim, cur_y2_sim)
