@@ -9,7 +9,8 @@ import random
 import queue
 import multiprocessing as mp
 import traceback
-
+from shapely import Polygon
+from shapely.ops import unary_union
 
 # run_netsh("disconnect", f'interface=Wi-Fi') --> this will disrupt the connection on purpose
 
@@ -263,7 +264,7 @@ def pick_command_p1(codes1, codes2, path):
     #     statuses_ind = np.flatnonzero(np.array([i[0] for i in codes1.values()]) == 'A')
 
 
-    order = [15, 14, 13, 12, 10, 11, 8, 9, 7]
+    order = [15, 14, 13, 12, 10, 11, 8, 9, 7][::-1]
     for o in order:
         if codes1[f'{o}.gcode'][0] == 'A':
             with open(path / 'order.txt', 'a') as r:
@@ -278,6 +279,13 @@ def pick_command_p2(codes1, codes2, path):
 
 
     while not all(statuses):
+        # if codes2['1.gcode'][0] == 'A':
+        #     with open(path / 'order.txt', 'a') as r:
+        #         r.write(f'printer 2 --> 1.gcode \n')
+        #     codes2['1.gcode'][0] = 'N'
+        #     return '1.gcode'
+
+
         #input: codes[x] = [a, [x,y]]
 
         #pick the key
@@ -417,83 +425,139 @@ def command_script(codes1, codes2, position_queue1: mp.Queue, position_queue2, e
 
             command = Path(fr'C:\Users\nural\python2\sim_fold\p1\{select1}')
             cur_x1_raw, cur_y1_raw, cur_x2_raw, cur_y2_raw = execute(codes1, cur_x1_raw, cur_y1_raw, cur_x2_raw, cur_y2_raw, command, 1, position_queue1, position_queue2, error_queue, True, coords_list, collision_pre_pause, collision_post_pause, track_switch, pre_switch, post_switch, config)
+            #be careful with execute, it may send the positions faster than the animation is able to render and record all perim_areas, 
+            #in real execution, that would not be a problem as execute would keep running until printer stopped 'print' status
+            #in here tho, we shall just use time.sleep
+            #maybe, teh tracker tracks the perim_area or the animation idk, we'll see
+            time.sleep(5)
             p1_coords = [] 
             for i in perim_area:
                 if i[0] == 'p1':
                     p1_coords.append(i[1:])
             
+            poly1_list = []
+            for aa in p1_coords:
+                point1, point2, point3, point4 = aa[1], aa[2], aa[3], aa[4]
+                rect1_poly1 = Polygon([
+                (point1[0], point1[1]),
+                (point2[0], point2[1]),
+                (point4[0], point4[1]),
+                (point3[0], point3[1])
+                ])
+                poly1_list.append(rect1_poly1)
+
+            occupied_area_1 = unary_union(poly1_list)
+
+
+
+                
+
 
             while not all([codes2[i][0] == 'N' for i in codes2]):
                 select2 = pick_command_p2(codes1, codes2, path)
                 if select2 is not None:
                     command = Path(fr'C:\Users\nural\python2\sim_fold\p2\{select2}')
                     cur_x1_raw, cur_y1_raw, cur_x2_raw, cur_y2_raw = execute(codes2, cur_x1_raw, cur_y1_raw, cur_x2_raw, cur_y2_raw, command, 2, position_queue1, position_queue2, error_queue, True, coords_list, collision_pre_pause, collision_post_pause, track_switch, pre_switch, post_switch, config)
+                    #be careful with execute, it may send the positions faster than the animation is able to render and record all perim_areas, 
+                    #in real execution, that would not be a problem as execute would keep running until printer stopped 'print' status
+                    #the collision checking would probbaly be put into 'track' submodule or left in 'animation'
+                    #in here tho, we shall just use time.sleep
+                    time.sleep(5)
                     p2_coords = []
                     for i in perim_area:
                         if i[0] == 'p2':
                             p2_coords.append(i[1:])
                     
-                    #here, you check for collisions
-                    for aa in p1_coords:
-                        for bb in p2_coords:
+            ##############here, you check for collisions###########
 
-                            point1_1, point2_1, point3_1, point4_1 = aa[1], aa[2], aa[3], aa[4]
-                            point1, point2, point3, point4 = bb[1], bb[2], bb[3], bb[4]
 
-                            cur_x1_sample, cur_y1_sample = aa[0]
-                            cur_x2_sample, cur_y2_sample = bb[0]
+                    
+                    poly2_list = []
+                    for bb in p2_coords:
+                        point1_2, point2_2, point3_2, point4_2 = bb[1], bb[2], bb[3], bb[4]
+                        rect2_poly1 = Polygon([
+                        (point1_2[0], point1_2[1]),
+                        (point2_2[0], point2_2[1]),
+                        (point4_2[0], point4_2[1]),
+                        (point3_2[0], point3_2[1])
+                        ])
+                        poly2_list.append(rect2_poly1)
 
-                            prox_join2 = np.array([151.16978, -53.04552])
-                            length_a2 = 225.39945
-                            length_b2 = 227.54048
-                            _, elbow_x2, elbow_y2 = inverse_kinematic(cur_x2_sample, cur_y2_sample, prox_join2, length_a2, length_b2)
-                            elbow_plot_x, elbow_plot_y = machine2_to_plot(elbow_x2, elbow_y2)
+                    occupied_area_2 = unary_union(poly2_list)
+
+
+                    collision = occupied_area_1.intersection(occupied_area_2)
+                    overlap = collision.area
+
+
+
+                    with open(path / 'order.txt', 'a') as w:
+
+                        w.write(f'p1:{select1} + p2:{select2} --> {collision}, with {overlap} area \n')
+
+
+
+
+                    # for aa in p1_coords:
+                    #     for bb in p2_coords:
+
+                    #         point1_1, point2_1, point3_1, point4_1 = aa[1], aa[2], aa[3], aa[4]
+                    #         point1, point2, point3, point4 = bb[1], bb[2], bb[3], bb[4]
+
+                    #         cur_x1_sample, cur_y1_sample = aa[0]
+                    #         cur_x2_sample, cur_y2_sample = bb[0]
+
+                    #         prox_join2 = np.array([151.16978, -53.04552])
+                    #         length_a2 = 225.39945
+                    #         length_b2 = 227.54048
+                    #         _, elbow_x2, elbow_y2 = inverse_kinematic(cur_x2_sample, cur_y2_sample, prox_join2, length_a2, length_b2)
+                    #         elbow_plot_x, elbow_plot_y = machine2_to_plot(elbow_x2, elbow_y2)
 
 
                             
-                            prox_join11 = np.array([150.236, -50.09536])
-                            length_a1 = 221.0968 #promximal arm
-                            length_b1 = 220.61278 #distal arm
-                            _, elbow_x1, elbow_y1 = inverse_kinematic(cur_x1_sample, cur_y1_sample, prox_join11, length_a1, length_b1)
-                            elbow_x, elbow_y = machine1_to_plot(elbow_x1, elbow_y1)
+                    #         prox_join11 = np.array([150.236, -50.09536])
+                    #         length_a1 = 221.0968 #promximal arm
+                    #         length_b1 = 220.61278 #distal arm
+                    #         _, elbow_x1, elbow_y1 = inverse_kinematic(cur_x1_sample, cur_y1_sample, prox_join11, length_a1, length_b1)
+                    #         elbow_x, elbow_y = machine1_to_plot(elbow_x1, elbow_y1)
 
-                            rect2 = [
-                                point1,
-                                point2,
-                                point4,
-                                point3
-                            ]
-                            rect1 = [
-                                point1_1,
-                                point2_1,
-                                point4_1,
-                                point3_1
-                            ]
+                    #         rect2 = [
+                    #             point1,
+                    #             point2,
+                    #             point4,
+                    #             point3
+                    #         ]
+                    #         rect1 = [
+                    #             point1_1,
+                    #             point2_1,
+                    #             point4_1,
+                    #             point3_1
+                    #         ]
                             
-                            collision1 = rectangles_intersect(rect1, rect2)
-                            collision2 = collision1
-                            collision3 = collision1
+                    #         collision1 = rectangles_intersect(rect1, rect2)
+                    #         collision2 = collision1
+                    #         collision3 = collision1
 
 
-                            # 4. does circle and line edges corss
-                            for i in range(4):
-                                a = rect1[i]
-                                b = rect1[(i + 1) % 4]
-                                if segment_intersects_circle(a, b, elbow_plot_x, elbow_plot_y, float(75/2)):
-                                    collision2 = True
+                    #         # 4. does circle and line edges corss
+                    #         for i in range(4):
+                    #             a = rect1[i]
+                    #             b = rect1[(i + 1) % 4]
+                    #             if segment_intersects_circle(a, b, elbow_plot_x, elbow_plot_y, float(75/2)):
+                    #                 collision2 = True
 
-                            # 4. does circle and line edges corss
-                            for i in range(4):
-                                a = rect2[i]
-                                b = rect2[(i + 1) % 4]
-                                if segment_intersects_circle(a, b, elbow_x, elbow_y, float(75/2)):
-                                    collision3 = True
+                    #         # 4. does circle and line edges corss
+                    #         for i in range(4):
+                    #             a = rect2[i]
+                    #             b = rect2[(i + 1) % 4]
+                    #             if segment_intersects_circle(a, b, elbow_x, elbow_y, float(75/2)):
+                    #                 collision3 = True
 
 
 
-                            with open(path / 'order.txt', 'a') as w:
-                                if collision1 == True or collision2 == True or collision3 == True:
-                                    w.write(f'p1:{select1} + p2:{select2} --> {collision1}, {collision2}, {collision3} \n')
+                    #         with open(path / 'order.txt', 'a') as w:
+                    #             if collision1 == True or collision2 == True or collision3 == True:
+                    #                 w.write(f'p1:{select1} + p2:{select2} --> {collision1}, {collision2}, {collision3} \n')
                     
 
                     perim_area_copy = [i for i in perim_area if i[0] == 'p1']
