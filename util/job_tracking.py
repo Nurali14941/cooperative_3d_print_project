@@ -13,7 +13,10 @@ def instrument_job(path):
     A token is unique to this printer, file variant, and preparation run.
     """
     path = Path(path)
-    token = uuid.uuid4().hex
+    
+    #token = uuid.uuid4().hex #generates unique token every time
+    token = path.name
+    
     header = (
         f"if !exists(global.{START_VARIABLE})\n"
         f'  global {START_VARIABLE} = ""\n'

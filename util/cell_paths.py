@@ -7,7 +7,7 @@ from pathlib import Path
 from shapely.geometry import MultiPoint
 
 from project_paths import CELL_PRINT_CONFIG
-
+from util.gcode_input import layer_of
 
 @dataclass(frozen=True)
 class CellPrintSettings:
@@ -54,27 +54,73 @@ def load_cell_settings(config_path=None):
 
 
 def read_cell_points(file_path):
-    """Read exactly two finite numbers per row; blanks and #/; comments are allowed."""
+    """Read a LAYER header followed by X Y layer extrude rows."""
     file_path = Path(file_path)
+    expected_layer = layer_of(file_path.name)
+
     points = []
-    for number, raw in enumerate(file_path.read_text(encoding="utf-8-sig").splitlines(), 1):
+    header_seen = False
+
+    for number, raw in enumerate(
+        file_path.read_text(encoding="utf-8-sig").splitlines(), 1
+    ):
         line = raw.split("#", 1)[0].split(";", 1)[0].strip()
         if not line:
             continue
+
+        values = line.split()
+
+        if not header_seen:
+            if values != ["LAYER", str(expected_layer)]:
+                raise ValueError(
+                    f"{file_path}:{number}: expected LAYER {expected_layer}"
+                )
+            header_seen = True
+            continue
+
         try:
-            values = line.split()
-            if len(values) != 2:
+            if len(values) != 4:
                 raise ValueError
-            point = tuple(float(value) for value in values)
-            if not all(math.isfinite(value) for value in point):
+
+            x, y = float(values[0]), float(values[1])
+            row_layer = int(values[2])
+            extrude = int(values[3])
+
+            if (
+                not all(math.isfinite(value) for value in (x, y))
+                or extrude not in (0, 1)
+            ):
                 raise ValueError
         except ValueError:
-            raise ValueError(f"{file_path}:{number}: expected two finite numbers: X Y") from None
-        points.append(point)
-    if len(set(points)) < 3:
-        raise ValueError(f"{file_path}: at least three distinct XY points are required")
-    if MultiPoint(points).convex_hull.area <= 0:
-        raise ValueError(f"{file_path}: XY points must span a nonzero area")
+            raise ValueError(
+                f"{file_path}:{number}: expected finite X Y, integer layer, "
+                "and an extrusion flag of 0 or 1"
+            ) from None
+
+        if row_layer != expected_layer:
+            raise ValueError(
+                f"{file_path}:{number}: row layer {row_layer} "
+                f"does not match filename layer {expected_layer}"
+            )
+
+        points.append((x, y, extrude))
+
+    if not header_seen:
+        raise ValueError(f"{file_path}: missing LAYER header")
+
+    # The flag is metadata; geometry validation must use only XY.
+    xy_points = [(x, y) for x, y, _ in points]
+
+    if len(set(xy_points)) < 3:
+        raise ValueError(
+            f"{file_path}: at least three distinct XY points are required"
+        )
+
+    if MultiPoint(xy_points).convex_hull.area <= 0:
+        raise ValueError(
+            f"{file_path}: XY points must span a nonzero area"
+        )
+
     return points
 
 
@@ -84,6 +130,9 @@ def cell_gcode(points, settings, *, source_name):
     Extrusion uses a rectangular bead: length * width * height * flow / filament area.
     Setup is inside LAYER:0 so every b/m/e variant resets its own extrusion state.
     """
+    layer = layer_of(source_name)
+    print_z = layer*settings.layer_height
+
     area = math.pi * (settings.filament_diameter / 2) ** 2
     extrusion_per_mm = settings.line_width * settings.layer_height * settings.flow_multiplier / area
     print_feed = settings.print_speed * 60
@@ -99,19 +148,45 @@ def cell_gcode(points, settings, *, source_name):
         "M107",
         f"G0 Z{settings.travel_height:g} F{travel_feed:g}",
         f"G0 X{points[0][0]:.5f} Y{points[0][1]:.5f} F{travel_feed:g}",
-        f"G0 Z{settings.layer_height:g} F{print_feed:g}",
+        f"G0 Z{print_z:g} F{print_feed:g}",
         ";TYPE:FILL",
     ]
     extrusion, elapsed = 0.0, 0.0
+
     for previous, point in zip(points, points[1:]):
-        distance = math.dist(previous, point)
-        extrusion += distance * extrusion_per_mm
-        elapsed += distance / settings.print_speed
+        # Measure XY distance only; the third tuple value is the flag.
+        distance = math.dist(previous[:2], point[:2])
+        extrude = point[2]
+
+        if extrude == 1:
+            extrusion += distance * extrusion_per_mm
+            elapsed += distance / settings.print_speed
+        else:
+            elapsed += distance / settings.travel_speed
+
         if not math.isfinite(extrusion) or not math.isfinite(elapsed):
-            raise ValueError(f"{source_name}: path or extrusion exceeds the supported numeric range")
-        lines.append(f"G1 X{point[0]:.5f} Y{point[1]:.5f} E{extrusion:.8f} F{print_feed:g}")
+            raise ValueError(
+                f"{source_name}: path or extrusion exceeds "
+                "the supported numeric range"
+            )
+
+        if extrude == 1:
+            lines.append(
+                f"G1 X{point[0]:.5f} Y{point[1]:.5f} "
+                f"E{extrusion:.8f} F{print_feed:g}"
+            )
+        else:
+            lines.append(
+                f"G0 X{point[0]:.5f} Y{point[1]:.5f} F{travel_feed:g}"
+            )
+    
+    
+    
+    
+    
+    
     lines.extend([
-        f";TIME_ELAPSED:{elapsed:.3f}",  # Path-only estimate; excludes heating/travel.
+        f";TIME_ELAPSED:{elapsed:.3f}",  
         f"G1 Z{settings.travel_height:g} F{print_feed:g}",
         "M400", "M104 S0", ";End of converted cell path",
     ])

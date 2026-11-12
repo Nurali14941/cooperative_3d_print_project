@@ -47,6 +47,13 @@ from kinematics.animation_simulation import animation_simulation
 
 
 
+from util.gcode_input import (
+    cell_input_files,
+    read_print_points,
+    TOTAL_LAYERS,
+    layer_of,
+)
+
 
 
 
@@ -426,6 +433,15 @@ def main(argv=None):
         if missing:
             parser.error(f"Requested cells not found: {', '.join(sorted(missing))}")
         source_files = [source for source in source_files if source.stem in selected]
+        
+    present_layers = {layer_of(source.name) for source in source_files}
+
+    if present_layers != set(range(1, TOTAL_LAYERS + 1)):
+        raise ValueError(
+            f"Expected layers 1..{TOTAL_LAYERS}; "
+            f"found {sorted(present_layers)}"
+        )
+    
     initial_assignments = {}
     if args.initial_cells:
         if len(set(args.initial_cells)) != 2:
@@ -437,6 +453,9 @@ def main(argv=None):
                 parser.error(f"Initial cell {stem} is not in the selected input files")
             initial_assignments[p] = sources_by_stem[stem]
     # Validate every selected source and render text paths before writing output.
+    
+    
+    
     text_sources = [source for source in source_files if source.suffix.lower() == ".txt"]
     converted = {}
     if text_sources:
@@ -455,6 +474,14 @@ def main(argv=None):
         if source not in converted:
             read_print_points(source)
     converted_dir = output_dir / "converted"
+
+
+
+
+
+
+
+
     for source in text_sources:
         destination = converted_dir / (source.stem + ".gcode")
         if destination.resolve() in {item.resolve() for item in source_files}:
@@ -467,6 +494,14 @@ def main(argv=None):
         source_files = [converted_dir / (source.stem + ".gcode") if source in converted else source
                         for source in source_files]
         print(f"Converted {len(converted)} text cell paths into {converted_dir}")
+    
+    
+    
+    
+    
+    
+    
+    
     transformed_dir = output_dir / "transformed"
     prox_join2 = np.array([151.16978, -53.04552])
     length_a2 = 225.39945
@@ -786,7 +821,30 @@ def main(argv=None):
                 px.length_b
             )
 
+    #how printer looks like
+    #{1: Printer(px_ref=array([300., 300.]), theta=1.5707963267948966, prox_join=array([150.236  , -50.09536]), length_a=221.0968, length_b=220.61278, 
+    # codes={'1.gcode': ['A', [(115.601, 151.173), ...
 
+
+    #now each printer will have a code dictionary containing all layers including 1_layer_1.gcode, 1_layer_2.gcode, and so on
+
+
+
+    #print(printer)
+
+
+    required = {source.name for source in source_files}
+    reachable = {
+        name
+        for px in printer.values()
+        for name in px.codes
+    }
+
+    if required - reachable:
+        raise ValueError(f"Unreachable jobs: {sorted(required - reachable)}")
+
+    if any(layer_of(name) != 1 for name in initial_assignments.values()):
+        raise ValueError("--initial-cells must refer to layer 1")
 
     validate_initial_assignments(printer, initial_assignments)
     print(f"Prepared {len(source_files)} input files in {output_dir}")
@@ -803,6 +861,15 @@ def main(argv=None):
     if any(status != "I" for status in statuses):
         raise RuntimeError("Both robots must be idle before uploading or homing")
     print("Connected. Uploading prepared G-code, then homing and starting live execution.")
+
+    print(printer)
+
+
+    #the names of the files in processed now will be '1_layer_x_b' and the names of the files in transformed, boundaries_store, and sim_fold will be '1_layer_x'
+
+
+
+    ######################!########################
     for i in target_fold.keys():
         for j in (f"{source.stem}_{stage}.gcode" for source in source_files for stage in ("b", "m", "e")):
             ch = j[:-8] + '.gcode'

@@ -310,7 +310,11 @@ def execution_worker(ip, execution_request_queue, execution_result_queue,
                     statuses, _ = get_status(connection=connection)
 
                 if statuses[p - 1] != "I":
-                    raise RuntimeError(f"p{p} is no longer idle")
+                    raise RuntimeError(
+                        f"p{p} is no longer idle: "
+                        f"status={statuses[p - 1]!r}, "
+                        f"all_statuses={statuses}, file={filename!r}"
+                    )
                 if (p not in ip or not filename.endswith(".gcode")
                         or any(c in filename for c in '/\\\r\n"')):
                     raise ValueError(f"Invalid execution request: {(filename, p)}")

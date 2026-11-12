@@ -1,6 +1,8 @@
 import numpy as np
 import random
 from pathlib import Path
+from util.gcode_input import layer_of
+
 
 
 
@@ -76,10 +78,12 @@ def write_sim_file(out_path: Path, frames):
 
 
 
-def sim_px(p, codes, store_coords, config):
+def sim_px(p, codes, store_coords, config, layer):
 
         
-    for i in codes:
+    for i, (availability, _) in codes.items():
+        if availability != "A" or layer_of(i) != layer: #sanity check
+            continue
         targ = config.px_fold[p] / i
         with open(targ, 'r') as r:
             line = r.readline().strip()

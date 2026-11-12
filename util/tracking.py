@@ -65,15 +65,35 @@ def track(ip, store_coords, tracker_event_queue, tracker_control_queue,
             for p in ip:
                 if stop_requested.is_set():
                     return
-                if state[p] in {"watch", "printing"}:
+                if state[p] in {"watch", "printing"}: #why need that when 'printing'?
                     job = jobs[p]
                     # Read persistent completion first, then fresh machine status.
                     # Do not use flags=f for globals: they are not live-only fields.
                     globals_ = model(p, key="global", flags="d99n")
+
                     if not isinstance(globals_, dict):
                         raise ValueError(f"p{p}: firmware did not expose global job markers")
+
+
+                    print(
+                        f"JOB_MARKERS p={p} "
+                        f"expected={job['token']!r} "
+                        f"start_key={START_VARIABLE!r} "
+                        f"actual_start={globals_.get(START_VARIABLE)!r} "
+                        f"done_key={DONE_VARIABLE!r} "
+                        f"actual_done={globals_.get(DONE_VARIABLE)!r} "
+                        f"globals={globals_!r}",
+                        flush=True,
+                    )
+                    
                     job["started"] |= globals_.get(START_VARIABLE) == job["token"]
                     job["done"] |= globals_.get(DONE_VARIABLE) == job["token"]
+
+
+
+
+
+
                     sample = model(p, flags="d99fn")
                     now = time.monotonic()
                     status = sample["state"]["status"]
@@ -121,7 +141,8 @@ def track(ip, store_coords, tracker_event_queue, tracker_control_queue,
                             extruding = rate is not None and rate > 0
                             moving = extruding and previous is not None and max(
                                 abs(a - b) for a, b in zip(position, previous)) > WATCH_XY_EPSILON
-                            job["previous_xy"] = position if extruding else None
+                            #job["previous_xy"] = position if extruding else None
+                            job["previous_xy"] = position
                             if moving:
                                 publish(p, position, "extrusion")
                                 state[p] = "printing"

@@ -31,6 +31,9 @@ from pathlib import Path
 
 from collections import deque
 
+from util.gcode_input import TOTAL_LAYERS, layer_of
+
+
 
 
 
@@ -148,7 +151,7 @@ PHYSICAL_BOUNDS = {
 #     return random.choice(available)
 
 
-def pick_command_px(p, printer, store_coords, b, excluded=None):
+def pick_command_px(p, printer, store_coords, layer, b, excluded=None):
     """
     Propose the nearest available command that is not excluded.
     Does not modify availability, coordinates, or exclusions.
@@ -162,7 +165,7 @@ def pick_command_px(p, printer, store_coords, b, excluded=None):
     nearest_distance_squared = float("inf")
 
     for code, (availability, points) in printer[p].codes.items():
-        if availability != "A" or code in excluded:
+        if availability != "A" or code in excluded or layer_of(code) != layer: #sanity check
             continue
 
         if len(points) == 0:
@@ -391,7 +394,19 @@ def command_script(printer, config, store_coords, tracker_event_queue,
         3: 1
     }
 
+    layer = 1 # integration of layers, so the printers must finish all their cells at some layer, then they must go back to homing positions, then increment the layer and repeat the process, until 
+    #all 5 layers have been completed
+
+
+    def has_work(q):
+        return any(
+            value[0] == "A" and layer_of(name) == layer
+            for name, value in printer[q].codes.items()
+        )
+
+
     try:
+
         printer_ids = set(printer)
         initial_pending = validate_initial_assignments(printer, initial_assignments)
         initial_phase = bool(initial_pending)
@@ -417,14 +432,18 @@ def command_script(printer, config, store_coords, tracker_event_queue,
 
             #any time 'continue' is used it means restart the loop
 
+            #edit this so that it shows printers_with_work only for the current layers being processeed
             printers_with_work = {
                 q for q in printer_ids
-                if any(value[0] == "A" for value in printer[q].codes.values())
-            }
+                if any(value[0] == "A" and layer_of(name) == layer for name, value in printer[q].codes.items())
+            } #now printers_with_work is checked based on whether there are any gcodes left that are available and in current layer being treated
+            
             print(f'printers with work {printers_with_work}')
 
+            #edit this so that once there are no more cells to print per layer and parking has been achieved, we increment the layer by one and start again
+            #once all layers have been printed (5 layers), this section needs to terminate the entire thing
             if not printers_with_work and not in_flight:
-                print("FINAL_RETURN_START all jobs complete; requesting RECOVERY_PLAN", flush=True)
+                print(F"LAYER RETURN START, LAYER = {layer}", flush=True)
                 with open(path / "order.txt", "a") as out:
                     out.write("all jobs complete: requesting final return via RECOVERY_PLAN\n")
                 execution_request_queue.put(("__park__", None))
@@ -446,12 +465,24 @@ def command_script(printer, config, store_coords, tracker_event_queue,
                     }
                     store_coords.update(positions)
                     store_polygons.update(footprints)
-                    print(f"FINAL_RETURN_DONE observed={positions}", flush=True)
+                    print(f"{layer} done, observed = {positions}", flush=True)
                     with open(path / "order.txt", "a") as out:
                         out.write(f"final return complete: observed positions={positions}\n")
                     break
                 if stop_requested.is_set():
                     return
+                if layer < TOTAL_LAYERS:
+                    layer += 1
+                    loop_check.clear()
+                    recovery_since_progress = False
+
+                    for q in sorted(blocked):
+                        if has_work(q):
+                            tracker_control_queue.put(("retry", q))
+                            blocked.remove(q)
+
+                    continue
+
                 stop_requested.set()
                 break
             ####this if branch is supposed to deal with loop check
@@ -508,12 +539,13 @@ def command_script(printer, config, store_coords, tracker_event_queue,
                     # No normal event is released until BOTH dictionaries are updated.
                     loop_check.clear()
                     for q in sorted(blocked):
-                        if any(v[0] == "A" for v in printer[q].codes.values()):
+                        if any(v[0] == "A" and layer_of(name) == layer for name, v in printer[q].codes.items()):
                             tracker_control_queue.put(("retry", q))
                             blocked.remove(q)
                     with open(path / "order.txt", "a") as out:
                         out.write(f"recovered: observed positions={positions}\n")
                     break
+
                 if stop_requested.is_set():
                     return
                 continue
@@ -541,7 +573,7 @@ def command_script(printer, config, store_coords, tracker_event_queue,
                     with open(path / "order.txt", "a") as out:
                         out.write("initial assignments complete; normal scheduling begins\n")
                 for q in sorted(blocked):
-                    if any(v[0] == "A" for v in printer[q].codes.values()):
+                    if any(v[0] == "A" and layer_of(name) == layer for name, v in printer[q].codes.items()):
                         tracker_control_queue.put(("retry", q))
                         blocked.remove(q)
 
@@ -605,7 +637,9 @@ def command_script(printer, config, store_coords, tracker_event_queue,
                 f"candidate_printer={p} coordinates={coordinates}", flush=True,
             )
 
-            sim_px(p, printer[p].codes, coordinates, config)
+
+            #edit sim_px and all of its helper functions, so that it only runs simulations of cell printing on a certain layer
+            sim_px(p, printer[p].codes, coordinates, config, layer)
 
 
 
@@ -614,9 +648,11 @@ def command_script(printer, config, store_coords, tracker_event_queue,
 
 
             rejected = set()
+            #edit eligible_count so that it only counts the eligible cells per current assigned lyaer
             eligible_count = sum(
-            value[0] == "A" for value in printer[p].codes.values()
-                )
+                value[0] == "A" and layer_of(name) == layer
+                for name, value in printer[p].codes.items()
+            )
 
 
 
@@ -634,9 +670,11 @@ def command_script(printer, config, store_coords, tracker_event_queue,
                 if initial_phase:
                     candidate = initial_pending[p]
                 elif count[p] == 1:
-                    candidate = pick_command_px(p, printer, coordinates, b = True, excluded=rejected)
+                    #edit pick_command_px function so that it picks the correct command for the given layer, the candidate will already contain information on the layer of the gcode
+                    candidate = pick_command_px(p, printer, coordinates, layer, b = True, excluded=rejected)
                 else:
-                    candidate = pick_command_px(p, printer, coordinates, b = False, excluded=rejected)
+                    #edit pick_command_px function so that it picks the correct command for the given layer, the candidate will already contain information on the layer of the gcode
+                    candidate = pick_command_px(p, printer, coordinates, layer, b = False, excluded=rejected)
 
 
 
@@ -645,6 +683,7 @@ def command_script(printer, config, store_coords, tracker_event_queue,
 
                 if candidate is None:
                     break
+                #edit required? Since the candidate variable will already containt the layer information in it
                 candidate_polygon, candidate_final_coords = simulate_candidate(
                     p=p, candidate=candidate, printer=printer,
                     store_coords=coordinates, config=config,

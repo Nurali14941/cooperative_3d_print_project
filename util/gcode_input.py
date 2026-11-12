@@ -2,6 +2,20 @@
 import re
 from pathlib import Path
 
+
+TOTAL_LAYERS = 5
+
+def layer_of(filename):
+    match = re.fullmatch(
+        r".+_layer_([1-9][0-9]*)",
+        Path(filename).stem,
+    )
+    if match is None or not 1 <= int(match[1]) <= TOTAL_LAYERS:
+        raise ValueError(
+            f"Expected <cell>_layer_<1..{TOTAL_LAYERS}>.gcode: {filename}"
+        )
+    return int(match[1])
+
 COORDINATE = {axis: re.compile(rf"\b{axis}\s*(-?(?:\d+(?:\.\d*)?|\.\d+))")
               for axis in ("X", "Y")}
 
