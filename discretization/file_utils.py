@@ -110,7 +110,7 @@ def parse_end(targ_file, folder, dest_folder=None, suffix="_e"):
 
     # Search from the bottom upward
     for i in range(len(lines)):
-        if lines[i].startswith(";LAYER:0"):
+        if lines[i].startswith(";LAYER:"):
             cut_index = i
             break
 
