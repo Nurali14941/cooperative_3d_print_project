@@ -1,0 +1,1013 @@
+{
+  "mode": "offline",
+  "accepted": [
+    {
+      "printer": 1,
+      "gcode": "10.gcode"
+    },
+    {
+      "printer": 2,
+      "gcode": "11.gcode"
+    },
+    {
+      "printer": 1,
+      "gcode": "7.gcode"
+    },
+    {
+      "printer": 1,
+      "gcode": "2.gcode"
+    },
+    {
+      "printer": 1,
+      "gcode": "6.gcode"
+    },
+    {
+      "printer": 2,
+      "gcode": "13.gcode"
+    },
+    {
+      "printer": 1,
+      "gcode": "12.gcode"
+    },
+    {
+      "printer": 2,
+      "gcode": "9.gcode"
+    }
+  ],
+  "rejected_attempts": 46,
+  "remaining_reachable_regions": [
+    "1.gcode",
+    "3.gcode",
+    "4.gcode",
+    "5.gcode",
+    "8.gcode"
+  ],
+  "final_positions": {
+    "1": [
+      199.62,
+      166.501
+    ],
+    "2": [
+      166.198,
+      133.385
+    ]
+  },
+  "attempts": [
+    {
+      "printer": 1,
+      "gcode": "10.gcode",
+      "positions": {
+        "1": [
+          300.0,
+          0.0
+        ],
+        "2": [
+          300.0,
+          0.0
+        ]
+      },
+      "accepted": true,
+      "collisions": {}
+    },
+    {
+      "printer": 2,
+      "gcode": "11.gcode",
+      "positions": {
+        "1": [
+          132.12,
+          99.00099999999999
+        ],
+        "2": [
+          300.0,
+          0.0
+        ]
+      },
+      "accepted": true,
+      "collisions": {}
+    },
+    {
+      "printer": 1,
+      "gcode": "7.gcode",
+      "positions": {
+        "1": [
+          132.12,
+          99.00099999999999
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": true,
+      "collisions": {}
+    },
+    {
+      "printer": 2,
+      "gcode": "4.gcode",
+      "positions": {
+        "1": [
+          98.37,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 331.73251101397875
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "3.gcode",
+      "positions": {
+        "1": [
+          98.37,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 813.3068136470307
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "5.gcode",
+      "positions": {
+        "1": [
+          98.37,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 4732.557844712422
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "1.gcode",
+      "positions": {
+        "1": [
+          98.37,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 4529.6003748393
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "9.gcode",
+      "positions": {
+        "1": [
+          98.37,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 1240.450536919059
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "12.gcode",
+      "positions": {
+        "1": [
+          98.37,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 5364.126626332572
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "8.gcode",
+      "positions": {
+        "1": [
+          98.37,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 4103.110960378057
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "6.gcode",
+      "positions": {
+        "1": [
+          98.37,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 7888.8938358929045
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "2.gcode",
+      "positions": {
+        "1": [
+          98.37,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 6502.544587210988
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "13.gcode",
+      "positions": {
+        "1": [
+          98.37,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 2766.532740691414
+      }
+    },
+    {
+      "printer": 1,
+      "gcode": "13.gcode",
+      "positions": {
+        "1": [
+          98.37,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "2": 65.84674604104092
+      }
+    },
+    {
+      "printer": 1,
+      "gcode": "8.gcode",
+      "positions": {
+        "1": [
+          98.37,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "2": 661.69146757436
+      }
+    },
+    {
+      "printer": 1,
+      "gcode": "2.gcode",
+      "positions": {
+        "1": [
+          98.37,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": true,
+      "collisions": {}
+    },
+    {
+      "printer": 2,
+      "gcode": "4.gcode",
+      "positions": {
+        "1": [
+          132.12,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 489.4669766037242
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "3.gcode",
+      "positions": {
+        "1": [
+          132.12,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 1044.0727139185904
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "5.gcode",
+      "positions": {
+        "1": [
+          132.12,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 4049.2637274205954
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "1.gcode",
+      "positions": {
+        "1": [
+          132.12,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 3867.951570581662
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "9.gcode",
+      "positions": {
+        "1": [
+          132.12,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 997.103798587171
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "12.gcode",
+      "positions": {
+        "1": [
+          132.12,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 4088.220317290817
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "8.gcode",
+      "positions": {
+        "1": [
+          132.12,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 2705.4316256290285
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "6.gcode",
+      "positions": {
+        "1": [
+          132.12,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 6579.460852169836
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "13.gcode",
+      "positions": {
+        "1": [
+          132.12,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 1105.8646199270675
+      }
+    },
+    {
+      "printer": 1,
+      "gcode": "8.gcode",
+      "positions": {
+        "1": [
+          132.12,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "2": 661.6914675743601
+      }
+    },
+    {
+      "printer": 1,
+      "gcode": "1.gcode",
+      "positions": {
+        "1": [
+          132.12,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "2": 1197.5854249024703
+      }
+    },
+    {
+      "printer": 1,
+      "gcode": "13.gcode",
+      "positions": {
+        "1": [
+          132.12,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "2": 65.84674604104092
+      }
+    },
+    {
+      "printer": 1,
+      "gcode": "6.gcode",
+      "positions": {
+        "1": [
+          132.12,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": true,
+      "collisions": {}
+    },
+    {
+      "printer": 2,
+      "gcode": "4.gcode",
+      "positions": {
+        "1": [
+          165.87,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 823.9978750211034
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "3.gcode",
+      "positions": {
+        "1": [
+          165.87,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 970.3004171918374
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "5.gcode",
+      "positions": {
+        "1": [
+          165.87,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 3633.588396780884
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "1.gcode",
+      "positions": {
+        "1": [
+          165.87,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 2677.451951300888
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "9.gcode",
+      "positions": {
+        "1": [
+          165.87,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 233.94564712753362
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "12.gcode",
+      "positions": {
+        "1": [
+          165.87,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 3573.682408121308
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "8.gcode",
+      "positions": {
+        "1": [
+          165.87,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 1056.0117266321865
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "13.gcode",
+      "positions": {
+        "1": [
+          165.87,
+          132.751
+        ],
+        "2": [
+          132.448,
+          99.63500000000002
+        ]
+      },
+      "accepted": true,
+      "collisions": {}
+    },
+    {
+      "printer": 1,
+      "gcode": "1.gcode",
+      "positions": {
+        "1": [
+          165.87,
+          132.751
+        ],
+        "2": [
+          199.948,
+          167.135
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "2": 981.1814646400171
+      }
+    },
+    {
+      "printer": 1,
+      "gcode": "5.gcode",
+      "positions": {
+        "1": [
+          165.87,
+          132.751
+        ],
+        "2": [
+          199.948,
+          167.135
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "2": 5.199193134015542
+      }
+    },
+    {
+      "printer": 1,
+      "gcode": "8.gcode",
+      "positions": {
+        "1": [
+          165.87,
+          132.751
+        ],
+        "2": [
+          199.948,
+          167.135
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "2": 3096.152474126804
+      }
+    },
+    {
+      "printer": 1,
+      "gcode": "12.gcode",
+      "positions": {
+        "1": [
+          165.87,
+          132.751
+        ],
+        "2": [
+          199.948,
+          167.135
+        ]
+      },
+      "accepted": true,
+      "collisions": {}
+    },
+    {
+      "printer": 2,
+      "gcode": "8.gcode",
+      "positions": {
+        "1": [
+          199.62,
+          166.501
+        ],
+        "2": [
+          199.948,
+          167.135
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 8.990699748063456
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "1.gcode",
+      "positions": {
+        "1": [
+          199.62,
+          166.501
+        ],
+        "2": [
+          199.948,
+          167.135
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 1014.8162264236779
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "9.gcode",
+      "positions": {
+        "1": [
+          199.62,
+          166.501
+        ],
+        "2": [
+          199.948,
+          167.135
+        ]
+      },
+      "accepted": true,
+      "collisions": {}
+    },
+    {
+      "printer": 1,
+      "gcode": "4.gcode",
+      "positions": {
+        "1": [
+          199.62,
+          166.501
+        ],
+        "2": [
+          166.198,
+          133.385
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "2": 924.9611186918598
+      }
+    },
+    {
+      "printer": 1,
+      "gcode": "5.gcode",
+      "positions": {
+        "1": [
+          199.62,
+          166.501
+        ],
+        "2": [
+          166.198,
+          133.385
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "2": 1036.6020991121848
+      }
+    },
+    {
+      "printer": 1,
+      "gcode": "3.gcode",
+      "positions": {
+        "1": [
+          199.62,
+          166.501
+        ],
+        "2": [
+          166.198,
+          133.385
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "2": 3014.029865861692
+      }
+    },
+    {
+      "printer": 1,
+      "gcode": "1.gcode",
+      "positions": {
+        "1": [
+          199.62,
+          166.501
+        ],
+        "2": [
+          166.198,
+          133.385
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "2": 2599.833164329086
+      }
+    },
+    {
+      "printer": 1,
+      "gcode": "8.gcode",
+      "positions": {
+        "1": [
+          199.62,
+          166.501
+        ],
+        "2": [
+          166.198,
+          133.385
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "2": 3689.9599320118805
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "1.gcode",
+      "positions": {
+        "1": [
+          199.62,
+          166.501
+        ],
+        "2": [
+          166.198,
+          133.385
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 1014.8162264236779
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "8.gcode",
+      "positions": {
+        "1": [
+          199.62,
+          166.501
+        ],
+        "2": [
+          166.198,
+          133.385
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 8.990699748063456
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "3.gcode",
+      "positions": {
+        "1": [
+          199.62,
+          166.501
+        ],
+        "2": [
+          166.198,
+          133.385
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 934.2043821893952
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "5.gcode",
+      "positions": {
+        "1": [
+          199.62,
+          166.501
+        ],
+        "2": [
+          166.198,
+          133.385
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 3196.5560192422568
+      }
+    },
+    {
+      "printer": 2,
+      "gcode": "4.gcode",
+      "positions": {
+        "1": [
+          199.62,
+          166.501
+        ],
+        "2": [
+          166.198,
+          133.385
+        ]
+      },
+      "accepted": false,
+      "collisions": {
+        "1": 2624.310562566913
+      }
+    }
+  ]
+}

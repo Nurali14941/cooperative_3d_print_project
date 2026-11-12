@@ -1,0 +1,7 @@
+Begin experiment
+candidate p1:10.gcode; positions={1: (300.0, 0.0), 2: (275.0, 50.0)}; accepted=True; collisions={}
+execute p1:10_b.gcode
+job acknowledgement p1:10_b.gcode; result=Is printing
+candidate p2:11.gcode; positions={1: (132.008, 83.998), 2: (275.0, 50.0)}; accepted=True; collisions={}
+execute p2:11_b.gcode
+job acknowledgement p2:11_b.gcode; result=Is printing

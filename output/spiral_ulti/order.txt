@@ -1,0 +1,72 @@
+candidate p1:11.gcode; positions={1: (300.0, 0.0), 2: (300.0, 0.0)}; accepted=True; collisions={}
+simulate p1:11.gcode
+candidate p2:16.gcode; positions={1: (125.42500000000001, 107.39999999999999), 2: (300.0, 0.0)}; accepted=True; collisions={}
+simulate p2:16.gcode
+candidate p1:12.gcode; positions={1: (125.42500000000001, 107.39999999999999), 2: (147.551, 109.32000000000001)}; accepted=True; collisions={}
+simulate p1:12.gcode
+candidate p2:17.gcode; positions={1: (112.315, 119.00599999999999), 2: (147.551, 109.32000000000001)}; accepted=True; collisions={}
+simulate p2:17.gcode
+candidate p1:13.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 167.65650963732222}
+reject p1:13.gcode; collision={2: 167.65650963732222}
+candidate p1:8.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 1.127306430259772}
+reject p1:8.gcode; collision={2: 1.127306430259772}
+candidate p1:9.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 1073.7387901810428}
+reject p1:9.gcode; collision={2: 1073.7387901810428}
+candidate p1:10.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 0.004265668558694783}
+reject p1:10.gcode; collision={2: 0.004265668558694783}
+candidate p1:14.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 2428.8369057015025}
+reject p1:14.gcode; collision={2: 2428.8369057015025}
+candidate p1:1.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 2490.4362032634135}
+reject p1:1.gcode; collision={2: 2490.4362032634135}
+candidate p1:7.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 2912.3044934295062}
+reject p1:7.gcode; collision={2: 2912.3044934295062}
+candidate p1:15.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 4237.618446801796}
+reject p1:15.gcode; collision={2: 4237.618446801796}
+candidate p1:2.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 144.62430518296108}
+reject p1:2.gcode; collision={2: 144.62430518296108}
+candidate p1:3.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 124.59139264996517}
+reject p1:3.gcode; collision={2: 124.59139264996517}
+candidate p1:6.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 2688.850407705526}
+reject p1:6.gcode; collision={2: 2688.850407705526}
+candidate p1:4.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 851.0287696350923}
+reject p1:4.gcode; collision={2: 851.0287696350923}
+candidate p1:5.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 1866.6108813813012}
+reject p1:5.gcode; collision={2: 1866.6108813813012}
+candidate p1:20.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 554.1056140505517}
+reject p1:20.gcode; collision={2: 554.1056140505517}
+candidate p1:19.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 1421.158202744884}
+reject p1:19.gcode; collision={2: 1421.158202744884}
+candidate p1:18.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 2451.071080820411}
+reject p1:18.gcode; collision={2: 2451.071080820411}
+candidate p2:18.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 2.378497582250967}
+reject p2:18.gcode; collision={1: 2.378497582250967}
+candidate p2:6.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 51.80511966952792}
+reject p2:6.gcode; collision={1: 51.80511966952792}
+candidate p2:5.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 487.1489089286845}
+reject p2:5.gcode; collision={1: 487.1489089286845}
+candidate p2:19.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 1052.6064702676344}
+reject p2:19.gcode; collision={1: 1052.6064702676344}
+candidate p2:7.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 446.2636397298867}
+reject p2:7.gcode; collision={1: 446.2636397298867}
+candidate p2:4.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 2441.139618680654}
+reject p2:4.gcode; collision={1: 2441.139618680654}
+candidate p2:20.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 3098.2959281183903}
+reject p2:20.gcode; collision={1: 3098.2959281183903}
+candidate p2:15.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 138.0960769895982}
+reject p2:15.gcode; collision={1: 138.0960769895982}
+candidate p2:1.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 909.0534226491875}
+reject p2:1.gcode; collision={1: 909.0534226491875}
+candidate p2:9.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 1966.7377609755972}
+reject p2:9.gcode; collision={1: 1966.7377609755972}
+candidate p2:2.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 3959.5625170839203}
+reject p2:2.gcode; collision={1: 3959.5625170839203}
+candidate p2:3.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 4658.170747289851}
+reject p2:3.gcode; collision={1: 4658.170747289851}
+candidate p2:8.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 3123.610366103837}
+reject p2:8.gcode; collision={1: 3123.610366103837}
+candidate p2:10.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 3745.3517498498954}
+reject p2:10.gcode; collision={1: 3745.3517498498954}
+candidate p2:14.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 1048.63499960219}
+reject p2:14.gcode; collision={1: 1048.63499960219}
+candidate p2:13.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 2230.1465789312383}
+reject p2:13.gcode; collision={1: 2230.1465789312383}
