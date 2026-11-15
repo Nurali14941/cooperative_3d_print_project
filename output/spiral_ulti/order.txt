@@ -1,72 +1,406 @@
-candidate p1:11.gcode; positions={1: (300.0, 0.0), 2: (300.0, 0.0)}; accepted=True; collisions={}
-simulate p1:11.gcode
-candidate p2:16.gcode; positions={1: (125.42500000000001, 107.39999999999999), 2: (300.0, 0.0)}; accepted=True; collisions={}
-simulate p2:16.gcode
-candidate p1:12.gcode; positions={1: (125.42500000000001, 107.39999999999999), 2: (147.551, 109.32000000000001)}; accepted=True; collisions={}
-simulate p1:12.gcode
-candidate p2:17.gcode; positions={1: (112.315, 119.00599999999999), 2: (147.551, 109.32000000000001)}; accepted=True; collisions={}
-simulate p2:17.gcode
-candidate p1:13.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 167.65650963732222}
-reject p1:13.gcode; collision={2: 167.65650963732222}
-candidate p1:8.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 1.127306430259772}
-reject p1:8.gcode; collision={2: 1.127306430259772}
-candidate p1:9.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 1073.7387901810428}
-reject p1:9.gcode; collision={2: 1073.7387901810428}
-candidate p1:10.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 0.004265668558694783}
-reject p1:10.gcode; collision={2: 0.004265668558694783}
-candidate p1:14.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 2428.8369057015025}
-reject p1:14.gcode; collision={2: 2428.8369057015025}
-candidate p1:1.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 2490.4362032634135}
-reject p1:1.gcode; collision={2: 2490.4362032634135}
-candidate p1:7.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 2912.3044934295062}
-reject p1:7.gcode; collision={2: 2912.3044934295062}
-candidate p1:15.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 4237.618446801796}
-reject p1:15.gcode; collision={2: 4237.618446801796}
-candidate p1:2.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 144.62430518296108}
-reject p1:2.gcode; collision={2: 144.62430518296108}
-candidate p1:3.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 124.59139264996517}
-reject p1:3.gcode; collision={2: 124.59139264996517}
-candidate p1:6.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 2688.850407705526}
-reject p1:6.gcode; collision={2: 2688.850407705526}
-candidate p1:4.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 851.0287696350923}
-reject p1:4.gcode; collision={2: 851.0287696350923}
-candidate p1:5.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 1866.6108813813012}
-reject p1:5.gcode; collision={2: 1866.6108813813012}
-candidate p1:20.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 554.1056140505517}
-reject p1:20.gcode; collision={2: 554.1056140505517}
-candidate p1:19.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 1421.158202744884}
-reject p1:19.gcode; collision={2: 1421.158202744884}
-candidate p1:18.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={2: 2451.071080820411}
-reject p1:18.gcode; collision={2: 2451.071080820411}
-candidate p2:18.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 2.378497582250967}
-reject p2:18.gcode; collision={1: 2.378497582250967}
-candidate p2:6.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 51.80511966952792}
-reject p2:6.gcode; collision={1: 51.80511966952792}
-candidate p2:5.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 487.1489089286845}
-reject p2:5.gcode; collision={1: 487.1489089286845}
-candidate p2:19.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 1052.6064702676344}
-reject p2:19.gcode; collision={1: 1052.6064702676344}
-candidate p2:7.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 446.2636397298867}
-reject p2:7.gcode; collision={1: 446.2636397298867}
-candidate p2:4.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 2441.139618680654}
-reject p2:4.gcode; collision={1: 2441.139618680654}
-candidate p2:20.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 3098.2959281183903}
-reject p2:20.gcode; collision={1: 3098.2959281183903}
-candidate p2:15.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 138.0960769895982}
-reject p2:15.gcode; collision={1: 138.0960769895982}
-candidate p2:1.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 909.0534226491875}
-reject p2:1.gcode; collision={1: 909.0534226491875}
-candidate p2:9.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 1966.7377609755972}
-reject p2:9.gcode; collision={1: 1966.7377609755972}
-candidate p2:2.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 3959.5625170839203}
-reject p2:2.gcode; collision={1: 3959.5625170839203}
-candidate p2:3.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 4658.170747289851}
-reject p2:3.gcode; collision={1: 4658.170747289851}
-candidate p2:8.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 3123.610366103837}
-reject p2:8.gcode; collision={1: 3123.610366103837}
-candidate p2:10.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 3745.3517498498954}
-reject p2:10.gcode; collision={1: 3745.3517498498954}
-candidate p2:14.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 1048.63499960219}
-reject p2:14.gcode; collision={1: 1048.63499960219}
-candidate p2:13.gcode; positions={1: (112.315, 119.00599999999999), 2: (126.298, 117.58900000000001)}; accepted=False; collisions={1: 2230.1465789312383}
-reject p2:13.gcode; collision={1: 2230.1465789312383}
+Begin experiment
+candidate p1:9_layer_1.gcode; positions={1: (300.0, 0.0), 2: (275.0, 50.0)}; accepted=True; collisions={}
+execute p1:9_layer_1_b.gcode
+job acknowledgement p1:9_layer_1_b.gcode; result=Is printing
+candidate p2:14_layer_1.gcode; positions={1: (141.863, 109.489), 2: (275.0, 50.0)}; accepted=True; collisions={}
+execute p2:14_layer_1_b.gcode
+job acknowledgement p2:14_layer_1_b.gcode; result=Is printing
+candidate p1:8_layer_1.gcode; positions={1: (132.957, 114.972), 2: (146.724, 111.307)}; accepted=True; collisions={}
+execute p1:8_layer_1_m.gcode
+job acknowledgement p1:8_layer_1_m.gcode; result=Is printing
+candidate p2:5_layer_1.gcode; positions={1: (151.911, 124.718), 2: (157.407, 114.934)}; accepted=False; collisions={1: 326.2767043501408}
+reject p2:5_layer_1.gcode; collision={1: 326.2767043501408}
+candidate p2:13_layer_1.gcode; positions={1: (151.911, 124.718), 2: (157.407, 114.934)}; accepted=False; collisions={1: 71.12909569313197}
+reject p2:13_layer_1.gcode; collision={1: 71.12909569313197}
+candidate p2:15_layer_1.gcode; positions={1: (151.911, 124.718), 2: (157.407, 114.934)}; accepted=True; collisions={}
+execute p2:15_layer_1_m.gcode
+job acknowledgement p2:15_layer_1_m.gcode; result=Is printing
+candidate p1:7_layer_1.gcode; positions={1: (145.248, 122.191), 2: (123.631, 117.261)}; accepted=True; collisions={}
+execute p1:7_layer_1_m.gcode
+job acknowledgement p1:7_layer_1_m.gcode; result=Is printing
+candidate p2:5_layer_1.gcode; positions={1: (150.48, 135.008), 2: (136.336, 118.332)}; accepted=False; collisions={1: 802.5188062299598}
+reject p2:5_layer_1.gcode; collision={1: 802.5188062299598}
+candidate p2:16_layer_1.gcode; positions={1: (150.48, 135.008), 2: (136.336, 118.332)}; accepted=False; collisions={1: 346.4175293122139}
+reject p2:16_layer_1.gcode; collision={1: 346.4175293122139}
+candidate p2:4_layer_1.gcode; positions={1: (150.48, 135.008), 2: (136.336, 118.332)}; accepted=False; collisions={1: 1665.995240241254}
+reject p2:4_layer_1.gcode; collision={1: 1665.995240241254}
+candidate p2:13_layer_1.gcode; positions={1: (150.48, 135.008), 2: (136.336, 118.332)}; accepted=False; collisions={1: 304.7815160991934}
+reject p2:13_layer_1.gcode; collision={1: 304.7815160991934}
+candidate p2:17_layer_1.gcode; positions={1: (150.48, 135.008), 2: (136.336, 118.332)}; accepted=False; collisions={1: 1591.9652622097128}
+reject p2:17_layer_1.gcode; collision={1: 1591.9652622097128}
+candidate p2:1_layer_1.gcode; positions={1: (150.48, 135.008), 2: (136.336, 118.332)}; accepted=False; collisions={1: 775.5355173558194}
+reject p2:1_layer_1.gcode; collision={1: 775.5355173558194}
+candidate p2:6_layer_1.gcode; positions={1: (150.48, 135.008), 2: (136.336, 118.332)}; accepted=False; collisions={1: 1194.2979305462989}
+reject p2:6_layer_1.gcode; collision={1: 1194.2979305462989}
+candidate p2:2_layer_1.gcode; positions={1: (150.48, 135.008), 2: (136.336, 118.332)}; accepted=False; collisions={1: 3219.533571396659}
+reject p2:2_layer_1.gcode; collision={1: 3219.533571396659}
+candidate p2:18_layer_1.gcode; positions={1: (150.48, 135.008), 2: (136.336, 118.332)}; accepted=False; collisions={1: 3357.6834940299395}
+reject p2:18_layer_1.gcode; collision={1: 3357.6834940299395}
+candidate p2:12_layer_1.gcode; positions={1: (150.48, 135.008), 2: (136.336, 118.332)}; accepted=False; collisions={1: 420.83529860459333}
+reject p2:12_layer_1.gcode; collision={1: 420.83529860459333}
+candidate p2:19_layer_1.gcode; positions={1: (150.48, 135.008), 2: (136.336, 118.332)}; accepted=False; collisions={1: 3628.938255332385}
+reject p2:19_layer_1.gcode; collision={1: 3628.938255332385}
+candidate p2:11_layer_1.gcode; positions={1: (150.48, 135.008), 2: (136.336, 118.332)}; accepted=False; collisions={1: 790.6666978903063}
+reject p2:11_layer_1.gcode; collision={1: 790.6666978903063}
+candidate p2:10_layer_1.gcode; positions={1: (150.48, 135.008), 2: (136.336, 118.332)}; accepted=False; collisions={1: 875.8020124917346}
+reject p2:10_layer_1.gcode; collision={1: 875.8020124917346}
+candidate p1:10_layer_1.gcode; positions={1: (133.063, 130.775), 2: (136.336, 118.332)}; accepted=True; collisions={}
+execute p1:10_layer_1_m.gcode
+job acknowledgement p1:10_layer_1_m.gcode; result=Is printing
+candidate p2:5_layer_1.gcode; positions={1: (117.818, 112.993), 2: (136.336, 118.332)}; accepted=True; collisions={}
+execute p2:5_layer_1_m.gcode
+job acknowledgement p2:5_layer_1_m.gcode; result=Is printing
+candidate p2:1_layer_1.gcode; positions={1: (117.818, 112.993), 2: (159.529, 129.52)}; accepted=False; collisions={1: 125.73243996604427}
+reject p2:1_layer_1.gcode; collision={1: 125.73243996604427}
+candidate p2:13_layer_1.gcode; positions={1: (117.818, 112.993), 2: (159.529, 129.52)}; accepted=True; collisions={}
+execute p2:13_layer_1_m.gcode
+job acknowledgement p2:13_layer_1_m.gcode; result=Is printing
+candidate p1:11_layer_1.gcode; positions={1: (120.626, 126.443), 2: (170.144, 110.952)}; accepted=False; collisions={2: 29.365856753899514}
+reject p1:11_layer_1.gcode; collision={2: 29.365856753899514}
+candidate p1:6_layer_1.gcode; positions={1: (120.626, 126.443), 2: (170.144, 110.952)}; accepted=False; collisions={2: 649.6442030664385}
+reject p1:6_layer_1.gcode; collision={2: 649.6442030664385}
+candidate p1:1_layer_1.gcode; positions={1: (120.626, 126.443), 2: (170.144, 110.952)}; accepted=False; collisions={2: 1294.2344933078634}
+reject p1:1_layer_1.gcode; collision={2: 1294.2344933078634}
+candidate p1:12_layer_1.gcode; positions={1: (120.626, 126.443), 2: (170.144, 110.952)}; accepted=False; collisions={2: 1113.9786268586054}
+reject p1:12_layer_1.gcode; collision={2: 1113.9786268586054}
+candidate p1:2_layer_1.gcode; positions={1: (120.626, 126.443), 2: (170.144, 110.952)}; accepted=True; collisions={}
+execute p1:2_layer_1_m.gcode
+job acknowledgement p1:2_layer_1_m.gcode; result=Is printing
+candidate p1:4_layer_1.gcode; positions={1: (174.311, 136.799), 2: (170.144, 110.952)}; accepted=False; collisions={2: 409.27947309433694}
+reject p1:4_layer_1.gcode; collision={2: 409.27947309433694}
+candidate p1:18_layer_1.gcode; positions={1: (174.311, 136.799), 2: (170.144, 110.952)}; accepted=True; collisions={}
+execute p1:18_layer_1_m.gcode
+job acknowledgement p1:18_layer_1_m.gcode; result=Is printing
+candidate p2:1_layer_1.gcode; positions={1: (197.482, 134.555), 2: (174.594, 119.811)}; accepted=True; collisions={}
+execute p2:1_layer_1_m.gcode
+job acknowledgement p2:1_layer_1_m.gcode; result=Is printing
+candidate p1:19_layer_1.gcode; positions={1: (191.327, 133.904), 2: (169.337, 139.281)}; accepted=True; collisions={}
+execute p1:19_layer_1_m.gcode
+job acknowledgement p1:19_layer_1_m.gcode; result=Is printing
+candidate p2:12_layer_1.gcode; positions={1: (187.383, 119.06), 2: (179.802, 133.334)}; accepted=True; collisions={}
+execute p2:12_layer_1_m.gcode
+job acknowledgement p2:12_layer_1_m.gcode; result=Is printing
+candidate p1:4_layer_1.gcode; positions={1: (181.163, 121.965), 2: (188.941, 125.518)}; accepted=False; collisions={2: 65.12098105007217}
+reject p1:4_layer_1.gcode; collision={2: 65.12098105007217}
+candidate p1:17_layer_1.gcode; positions={1: (181.163, 121.965), 2: (188.941, 125.518)}; accepted=True; collisions={}
+execute p1:17_layer_1_m.gcode
+job acknowledgement p1:17_layer_1_m.gcode; result=Is printing
+candidate p2:11_layer_1.gcode; positions={1: (199.164, 141.761), 2: (191.624, 141.369)}; accepted=True; collisions={}
+execute p2:11_layer_1_m.gcode
+job acknowledgement p2:11_layer_1_m.gcode; result=Is printing
+candidate p1:4_layer_1.gcode; positions={1: (190.796, 151.376), 2: (195.183, 166.801)}; accepted=True; collisions={}
+execute p1:4_layer_1_m.gcode
+job acknowledgement p1:4_layer_1_m.gcode; result=Is printing
+candidate p2:6_layer_1.gcode; positions={1: (173.895, 145.572), 2: (190.317, 157.473)}; accepted=False; collisions={1: 443.29780448478243}
+reject p2:6_layer_1.gcode; collision={1: 443.29780448478243}
+candidate p2:16_layer_1.gcode; positions={1: (173.895, 145.572), 2: (190.317, 157.473)}; accepted=False; collisions={1: 1264.0375041216105}
+reject p2:16_layer_1.gcode; collision={1: 1264.0375041216105}
+candidate p1:16_layer_1.gcode; positions={1: (166.972, 165.062), 2: (190.317, 157.473)}; accepted=True; collisions={}
+execute p1:16_layer_1_m.gcode
+job acknowledgement p1:16_layer_1_m.gcode; result=Is printing
+candidate p2:6_layer_1.gcode; positions={1: (193.182, 167.133), 2: (190.317, 157.473)}; accepted=False; collisions={1: 12.252513551001758}
+reject p2:6_layer_1.gcode; collision={1: 12.252513551001758}
+candidate p1:6_layer_1.gcode; positions={1: (180.105, 170.779), 2: (190.317, 157.473)}; accepted=False; collisions={2: 1767.4084403175639}
+reject p1:6_layer_1.gcode; collision={2: 1767.4084403175639}
+candidate p2:6_layer_1.gcode; positions={1: (180.105, 170.779), 2: (190.317, 157.473)}; accepted=False; collisions={1: 142.24929053462026}
+reject p2:6_layer_1.gcode; collision={1: 142.24929053462026}
+deadlock: requesting recovery for both printers
+recovered: observed positions={1: (275.0, 25.0), 2: (275.0, 25.0)}
+candidate p1:6_layer_1.gcode; positions={1: (275.0, 25.0), 2: (275.0, 25.0)}; accepted=True; collisions={}
+execute p1:6_layer_1_m.gcode
+job acknowledgement p1:6_layer_1_m.gcode; result=Is printing
+all jobs complete: requesting final return via RECOVERY_PLAN
+final return complete: observed positions={1: (275.0, 25.0), 2: (275.0, 25.0)}
+candidate p1:18_layer_2.gcode; positions={1: (275.0, 25.0), 2: (275.0, 25.0)}; accepted=True; collisions={}
+execute p1:18_layer_2_m.gcode
+job acknowledgement p1:18_layer_2_m.gcode; result=Is printing
+candidate p2:12_layer_2.gcode; positions={1: (192.753, 124.118), 2: (275.0, 25.0)}; accepted=True; collisions={}
+execute p2:12_layer_2_m.gcode
+job acknowledgement p2:12_layer_2_m.gcode; result=Is printing
+candidate p1:2_layer_2.gcode; positions={1: (186.746, 123.199), 2: (180.095, 113.848)}; accepted=True; collisions={}
+execute p1:2_layer_2_m.gcode
+job acknowledgement p1:2_layer_2_m.gcode; result=Is printing
+candidate p2:1_layer_2.gcode; positions={1: (171.274, 123.483), 2: (181.774, 124.102)}; accepted=True; collisions={}
+execute p2:1_layer_2_m.gcode
+job acknowledgement p2:1_layer_2_m.gcode; result=Is printing
+candidate p1:3_layer_2.gcode; positions={1: (179.016, 130.76), 2: (177.366, 154.884)}; accepted=False; collisions={2: 213.31024953373816}
+reject p1:3_layer_2.gcode; collision={2: 213.31024953373816}
+candidate p1:17_layer_2.gcode; positions={1: (179.016, 130.76), 2: (177.366, 154.884)}; accepted=False; collisions={2: 8.327343247693067}
+reject p1:17_layer_2.gcode; collision={2: 8.327343247693067}
+candidate p1:16_layer_2.gcode; positions={1: (179.016, 130.76), 2: (177.366, 154.884)}; accepted=True; collisions={}
+execute p1:16_layer_2_m.gcode
+job acknowledgement p1:16_layer_2_m.gcode; result=Is printing
+candidate p2:11_layer_2.gcode; positions={1: (197.386, 150.359), 2: (182.392, 137.377)}; accepted=True; collisions={}
+execute p2:11_layer_2_m.gcode
+job acknowledgement p2:11_layer_2_m.gcode; result=Is printing
+candidate p1:3_layer_2.gcode; positions={1: (188.53, 159.709), 2: (190.893, 133.313)}; accepted=True; collisions={}
+execute p1:3_layer_2_m.gcode
+job acknowledgement p1:3_layer_2_m.gcode; result=Is printing
+candidate p2:10_layer_2.gcode; positions={1: (173.882, 143.038), 2: (192.303, 147.967)}; accepted=False; collisions={1: 66.6005937341828}
+reject p2:10_layer_2.gcode; collision={1: 66.6005937341828}
+candidate p2:6_layer_2.gcode; positions={1: (173.882, 143.038), 2: (192.303, 147.967)}; accepted=False; collisions={1: 494.3908359456554}
+reject p2:6_layer_2.gcode; collision={1: 494.3908359456554}
+candidate p2:5_layer_2.gcode; positions={1: (173.882, 143.038), 2: (192.303, 147.967)}; accepted=False; collisions={1: 504.54101546934567}
+reject p2:5_layer_2.gcode; collision={1: 504.54101546934567}
+candidate p2:9_layer_2.gcode; positions={1: (173.882, 143.038), 2: (192.303, 147.967)}; accepted=True; collisions={}
+execute p2:9_layer_2_m.gcode
+job acknowledgement p2:9_layer_2_m.gcode; result=Is printing
+candidate p1:4_layer_2.gcode; positions={1: (174.035, 157.736), 2: (176.127, 191.585)}; accepted=True; collisions={}
+execute p1:4_layer_2_m.gcode
+job acknowledgement p1:4_layer_2_m.gcode; result=Is printing
+candidate p2:6_layer_2.gcode; positions={1: (160.836, 163.843), 2: (177.098, 179.284)}; accepted=False; collisions={1: 327.7036670645349}
+reject p2:6_layer_2.gcode; collision={1: 327.7036670645349}
+candidate p2:8_layer_2.gcode; positions={1: (160.836, 163.843), 2: (177.098, 179.284)}; accepted=True; collisions={}
+execute p2:8_layer_2_m.gcode
+job acknowledgement p2:8_layer_2_m.gcode; result=Is printing
+candidate p1:14_layer_2.gcode; positions={1: (161.003, 170.275), 2: (151.371, 185.681)}; accepted=True; collisions={}
+execute p1:14_layer_2_m.gcode
+job acknowledgement p1:14_layer_2_m.gcode; result=Is printing
+candidate p2:7_layer_2.gcode; positions={1: (168.765, 187.621), 2: (162.375, 185.227)}; accepted=True; collisions={}
+execute p2:7_layer_2_m.gcode
+job acknowledgement p2:7_layer_2_m.gcode; result=Is printing
+candidate p1:13_layer_2.gcode; positions={1: (156.043, 184.402), 2: (148.01, 174.488)}; accepted=False; collisions={2: 715.9383388714292}
+reject p1:13_layer_2.gcode; collision={2: 715.9383388714292}
+candidate p1:15_layer_2.gcode; positions={1: (156.043, 184.402), 2: (148.01, 174.488)}; accepted=True; collisions={}
+execute p1:15_layer_2_m.gcode
+job acknowledgement p1:15_layer_2_m.gcode; result=Is printing
+candidate p2:6_layer_2.gcode; positions={1: (188.453, 172.742), 2: (151.75, 175.338)}; accepted=True; collisions={}
+execute p2:6_layer_2_m.gcode
+job acknowledgement p2:6_layer_2_m.gcode; result=Is printing
+candidate p1:17_layer_2.gcode; positions={1: (175.129, 174.967), 2: (157.192, 164.533)}; accepted=False; collisions={2: 390.6144122400004}
+reject p1:17_layer_2.gcode; collision={2: 390.6144122400004}
+candidate p1:13_layer_2.gcode; positions={1: (175.129, 174.967), 2: (157.192, 164.533)}; accepted=False; collisions={2: 1075.7640575423661}
+reject p1:13_layer_2.gcode; collision={2: 1075.7640575423661}
+candidate p1:5_layer_2.gcode; positions={1: (175.129, 174.967), 2: (157.192, 164.533)}; accepted=False; collisions={2: 2663.734280125736}
+reject p1:5_layer_2.gcode; collision={2: 2663.734280125736}
+candidate p1:10_layer_2.gcode; positions={1: (175.129, 174.967), 2: (157.192, 164.533)}; accepted=False; collisions={2: 3082.233424661246}
+reject p1:10_layer_2.gcode; collision={2: 3082.233424661246}
+candidate p2:10_layer_2.gcode; positions={1: (175.129, 174.967), 2: (173.839, 165.725)}; accepted=True; collisions={}
+execute p2:10_layer_2_m.gcode
+job acknowledgement p2:10_layer_2_m.gcode; result=Is printing
+candidate p1:17_layer_2.gcode; positions={1: (175.129, 174.967), 2: (191.532, 173.891)}; accepted=True; collisions={}
+execute p1:17_layer_2_m.gcode
+job acknowledgement p1:17_layer_2_m.gcode; result=Is printing
+candidate p2:5_layer_2.gcode; positions={1: (199.304, 142.67), 2: (187.595, 164.149)}; accepted=True; collisions={}
+execute p2:5_layer_2_m.gcode
+job acknowledgement p2:5_layer_2_m.gcode; result=Is printing
+candidate p1:13_layer_2.gcode; positions={1: (191.129, 140.475), 2: (161.071, 135.754)}; accepted=False; collisions={2: 2589.447768902647}
+reject p1:13_layer_2.gcode; collision={2: 2589.447768902647}
+candidate p2:13_layer_2.gcode; positions={1: (191.129, 140.475), 2: (165.686, 132.875)}; accepted=True; collisions={}
+execute p2:13_layer_2_m.gcode
+job acknowledgement p2:13_layer_2_m.gcode; result=Is printing
+all jobs complete: requesting final return via RECOVERY_PLAN
+final return complete: observed positions={1: (275.0, 25.0), 2: (275.0, 25.0)}
+candidate p1:18_layer_3.gcode; positions={1: (275.0, 25.0), 2: (275.0, 25.0)}; accepted=True; collisions={}
+execute p1:18_layer_3_m.gcode
+job acknowledgement p1:18_layer_3_m.gcode; result=Is printing
+candidate p2:13_layer_3.gcode; positions={1: (196.382, 131.305), 2: (275.0, 25.0)}; accepted=True; collisions={}
+execute p2:13_layer_3_m.gcode
+job acknowledgement p2:13_layer_3_m.gcode; result=Is printing
+candidate p1:2_layer_3.gcode; positions={1: (192.55, 131.449), 2: (163.66, 107.893)}; accepted=True; collisions={}
+execute p1:2_layer_3_m.gcode
+job acknowledgement p1:2_layer_3_m.gcode; result=Is printing
+candidate p2:5_layer_3.gcode; positions={1: (177.684, 114.645), 2: (171.289, 119.103)}; accepted=False; collisions={1: 8.748414042309257}
+reject p2:5_layer_3.gcode; collision={1: 8.748414042309257}
+candidate p2:12_layer_3.gcode; positions={1: (177.684, 114.645), 2: (171.289, 119.103)}; accepted=True; collisions={}
+execute p2:12_layer_3_m.gcode
+job acknowledgement p2:12_layer_3_m.gcode; result=Is printing
+candidate p1:3_layer_3.gcode; positions={1: (177.208, 121.992), 2: (183.126, 120.521)}; accepted=True; collisions={}
+execute p1:3_layer_3_m.gcode
+job acknowledgement p1:3_layer_3_m.gcode; result=Is printing
+candidate p1:17_layer_3.gcode; positions={1: (176.98, 146.777), 2: (183.126, 120.521)}; accepted=True; collisions={}
+execute p1:17_layer_3_m.gcode
+job acknowledgement p1:17_layer_3_m.gcode; result=Is printing
+candidate p2:11_layer_3.gcode; positions={1: (198.821, 139.929), 2: (184.267, 133.089)}; accepted=True; collisions={}
+execute p2:11_layer_3_m.gcode
+job acknowledgement p2:11_layer_3_m.gcode; result=Is printing
+candidate p1:16_layer_3.gcode; positions={1: (190.914, 148.221), 2: (197.554, 160.961)}; accepted=True; collisions={}
+execute p1:16_layer_3_m.gcode
+job acknowledgement p1:16_layer_3_m.gcode; result=Is printing
+candidate p2:1_layer_3.gcode; positions={1: (196.246, 158.244), 2: (192.168, 148.309)}; accepted=True; collisions={}
+execute p2:1_layer_3_m.gcode
+job acknowledgement p2:1_layer_3_m.gcode; result=Is printing
+candidate p2:6_layer_3.gcode; positions={1: (196.246, 158.244), 2: (183.264, 155.902)}; accepted=True; collisions={}
+execute p2:6_layer_3_m.gcode
+job acknowledgement p2:6_layer_3_m.gcode; result=Is printing
+candidate p1:4_layer_3.gcode; positions={1: (184.995, 165.11), 2: (167.605, 166.619)}; accepted=False; collisions={2: 69.36768281841279}
+reject p1:4_layer_3.gcode; collision={2: 69.36768281841279}
+candidate p1:15_layer_3.gcode; positions={1: (184.995, 165.11), 2: (167.605, 166.619)}; accepted=True; collisions={}
+execute p1:15_layer_3_m.gcode
+job acknowledgement p1:15_layer_3_m.gcode; result=Is printing
+candidate p2:5_layer_3.gcode; positions={1: (182.129, 178.582), 2: (176.599, 146.935)}; accepted=False; collisions={1: 527.6439159297981}
+reject p2:5_layer_3.gcode; collision={1: 527.6439159297981}
+candidate p2:7_layer_3.gcode; positions={1: (182.129, 178.582), 2: (176.599, 146.935)}; accepted=True; collisions={}
+execute p2:7_layer_3_m.gcode
+job acknowledgement p2:7_layer_3_m.gcode; result=Is printing
+candidate p1:4_layer_3.gcode; positions={1: (166.049, 180.132), 2: (147.89, 172.0)}; accepted=False; collisions={2: 492.2003411320418}
+reject p1:4_layer_3.gcode; collision={2: 492.2003411320418}
+candidate p1:14_layer_3.gcode; positions={1: (166.049, 180.132), 2: (147.89, 172.0)}; accepted=False; collisions={2: 94.88220324842639}
+reject p1:14_layer_3.gcode; collision={2: 94.88220324842639}
+candidate p1:5_layer_3.gcode; positions={1: (166.049, 180.132), 2: (147.89, 172.0)}; accepted=False; collisions={2: 2249.790010613853}
+reject p1:5_layer_3.gcode; collision={2: 2249.790010613853}
+candidate p1:8_layer_3.gcode; positions={1: (166.049, 180.132), 2: (147.89, 172.0)}; accepted=False; collisions={2: 2131.72021691316}
+reject p1:8_layer_3.gcode; collision={2: 2131.72021691316}
+candidate p1:9_layer_3.gcode; positions={1: (166.049, 180.132), 2: (147.89, 172.0)}; accepted=False; collisions={2: 2258.633069146669}
+reject p1:9_layer_3.gcode; collision={2: 2258.633069146669}
+candidate p1:10_layer_3.gcode; positions={1: (166.049, 180.132), 2: (147.89, 172.0)}; accepted=False; collisions={2: 2884.347935805109}
+reject p1:10_layer_3.gcode; collision={2: 2884.347935805109}
+candidate p2:8_layer_3.gcode; positions={1: (166.049, 180.132), 2: (161.694, 170.712)}; accepted=True; collisions={}
+execute p2:8_layer_3_m.gcode
+job acknowledgement p2:8_layer_3_m.gcode; result=Is printing
+candidate p1:4_layer_3.gcode; positions={1: (166.049, 180.132), 2: (148.477, 177.827)}; accepted=False; collisions={2: 141.51023497448296}
+reject p1:4_layer_3.gcode; collision={2: 141.51023497448296}
+candidate p1:14_layer_3.gcode; positions={1: (166.049, 180.132), 2: (148.477, 177.827)}; accepted=True; collisions={}
+execute p1:14_layer_3_m.gcode
+job acknowledgement p1:14_layer_3_m.gcode; result=Is printing
+candidate p2:9_layer_3.gcode; positions={1: (161.11, 189.609), 2: (157.291, 183.179)}; accepted=True; collisions={}
+execute p2:9_layer_3_m.gcode
+job acknowledgement p2:9_layer_3_m.gcode; result=Is printing
+candidate p1:5_layer_3.gcode; positions={1: (149.794, 183.541), 2: (167.005, 192.751)}; accepted=False; collisions={2: 222.7534401167998}
+reject p1:5_layer_3.gcode; collision={2: 222.7534401167998}
+candidate p1:4_layer_3.gcode; positions={1: (149.794, 183.541), 2: (167.005, 192.751)}; accepted=True; collisions={}
+execute p1:4_layer_3_m.gcode
+job acknowledgement p1:4_layer_3_m.gcode; result=Is printing
+candidate p2:10_layer_3.gcode; positions={1: (170.722, 154.715), 2: (172.742, 182.541)}; accepted=True; collisions={}
+execute p2:10_layer_3_m.gcode
+job acknowledgement p2:10_layer_3_m.gcode; result=Is printing
+candidate p1:5_layer_3.gcode; positions={1: (160.475, 169.164), 2: (188.144, 179.343)}; accepted=False; collisions={2: 191.17405207996052}
+reject p1:5_layer_3.gcode; collision={2: 191.17405207996052}
+candidate p2:5_layer_3.gcode; positions={1: (160.475, 169.164), 2: (184.618, 175.216)}; accepted=False; collisions={1: 1606.8499930579826}
+reject p2:5_layer_3.gcode; collision={1: 1606.8499930579826}
+candidate p1:5_layer_3.gcode; positions={1: (160.475, 169.164), 2: (184.618, 175.216)}; accepted=False; collisions={2: 415.91462817347895}
+reject p1:5_layer_3.gcode; collision={2: 415.91462817347895}
+deadlock: requesting recovery for both printers
+recovered: observed positions={1: (275.0, 25.0), 2: (275.0, 25.0)}
+candidate p1:5_layer_3.gcode; positions={1: (275.0, 25.0), 2: (275.0, 25.0)}; accepted=True; collisions={}
+execute p1:5_layer_3_m.gcode
+job acknowledgement p1:5_layer_3_m.gcode; result=Is printing
+all jobs complete: requesting final return via RECOVERY_PLAN
+final return complete: observed positions={1: (275.0, 25.0), 2: (275.0, 25.0)}
+candidate p1:18_layer_4.gcode; positions={1: (275.0, 25.0), 2: (275.0, 25.0)}; accepted=True; collisions={}
+execute p1:18_layer_4_m.gcode
+job acknowledgement p1:18_layer_4_m.gcode; result=Is printing
+candidate p2:13_layer_4.gcode; positions={1: (199.07, 141.25), 2: (275.0, 25.0)}; accepted=True; collisions={}
+execute p2:13_layer_4_m.gcode
+job acknowledgement p2:13_layer_4_m.gcode; result=Is printing
+candidate p1:17_layer_4.gcode; positions={1: (191.269, 136.374), 2: (169.829, 112.921)}; accepted=True; collisions={}
+execute p1:17_layer_4_m.gcode
+job acknowledgement p1:17_layer_4_m.gcode; result=Is printing
+candidate p2:14_layer_4.gcode; positions={1: (199.104, 144.129), 2: (175.582, 124.055)}; accepted=True; collisions={}
+execute p2:14_layer_4_m.gcode
+job acknowledgement p2:14_layer_4_m.gcode; result=Is printing
+candidate p1:3_layer_4.gcode; positions={1: (189.616, 152.83), 2: (146.926, 108.301)}; accepted=False; collisions={2: 844.969628119786}
+reject p1:3_layer_4.gcode; collision={2: 844.969628119786}
+candidate p1:16_layer_4.gcode; positions={1: (189.616, 152.83), 2: (146.926, 108.301)}; accepted=False; collisions={2: 1031.403349350344}
+reject p1:16_layer_4.gcode; collision={2: 1031.403349350344}
+candidate p1:2_layer_4.gcode; positions={1: (189.616, 152.83), 2: (146.926, 108.301)}; accepted=False; collisions={2: 59.88155796408805}
+reject p1:2_layer_4.gcode; collision={2: 59.88155796408805}
+candidate p1:1_layer_4.gcode; positions={1: (189.616, 152.83), 2: (146.926, 108.301)}; accepted=False; collisions={2: 12.573334041419706}
+reject p1:1_layer_4.gcode; collision={2: 12.573334041419706}
+candidate p1:15_layer_4.gcode; positions={1: (189.616, 152.83), 2: (146.926, 108.301)}; accepted=False; collisions={2: 1925.8188623882293}
+reject p1:15_layer_4.gcode; collision={2: 1925.8188623882293}
+candidate p1:4_layer_4.gcode; positions={1: (189.616, 152.83), 2: (146.926, 108.301)}; accepted=False; collisions={2: 1460.1409308608631}
+reject p1:4_layer_4.gcode; collision={2: 1460.1409308608631}
+candidate p1:8_layer_4.gcode; positions={1: (189.616, 152.83), 2: (146.926, 108.301)}; accepted=False; collisions={2: 12.573334041419706}
+reject p1:8_layer_4.gcode; collision={2: 12.573334041419706}
+candidate p1:6_layer_4.gcode; positions={1: (189.616, 152.83), 2: (146.926, 108.301)}; accepted=False; collisions={2: 12.573334041419706}
+reject p1:6_layer_4.gcode; collision={2: 12.573334041419706}
+candidate p1:5_layer_4.gcode; positions={1: (189.616, 152.83), 2: (146.926, 108.301)}; accepted=False; collisions={2: 445.582537022815}
+reject p1:5_layer_4.gcode; collision={2: 445.582537022815}
+candidate p1:9_layer_4.gcode; positions={1: (189.616, 152.83), 2: (146.926, 108.301)}; accepted=False; collisions={2: 12.573334041419706}
+reject p1:9_layer_4.gcode; collision={2: 12.573334041419706}
+candidate p1:10_layer_4.gcode; positions={1: (189.616, 152.83), 2: (146.926, 108.301)}; accepted=False; collisions={2: 12.573334041419706}
+reject p1:10_layer_4.gcode; collision={2: 12.573334041419706}
+candidate p1:12_layer_4.gcode; positions={1: (189.616, 152.83), 2: (146.926, 108.301)}; accepted=False; collisions={2: 676.1404004274401}
+reject p1:12_layer_4.gcode; collision={2: 676.1404004274401}
+candidate p1:11_layer_4.gcode; positions={1: (189.616, 152.83), 2: (146.926, 108.301)}; accepted=False; collisions={2: 12.573334041419688}
+reject p1:11_layer_4.gcode; collision={2: 12.573334041419688}
+candidate p2:4_layer_4.gcode; positions={1: (189.616, 152.83), 2: (157.358, 115.313)}; accepted=False; collisions={1: 721.4712515161879}
+reject p2:4_layer_4.gcode; collision={1: 721.4712515161879}
+candidate p2:15_layer_4.gcode; positions={1: (189.616, 152.83), 2: (157.358, 115.313)}; accepted=False; collisions={1: 934.5882898045959}
+reject p2:15_layer_4.gcode; collision={1: 934.5882898045959}
+candidate p2:5_layer_4.gcode; positions={1: (189.616, 152.83), 2: (157.358, 115.313)}; accepted=False; collisions={1: 23.13790221090335}
+reject p2:5_layer_4.gcode; collision={1: 23.13790221090335}
+candidate p2:3_layer_4.gcode; positions={1: (189.616, 152.83), 2: (157.358, 115.313)}; accepted=False; collisions={1: 1743.122737396255}
+reject p2:3_layer_4.gcode; collision={1: 1743.122737396255}
+candidate p2:12_layer_4.gcode; positions={1: (189.616, 152.83), 2: (157.358, 115.313)}; accepted=True; collisions={}
+execute p2:12_layer_4_m.gcode
+job acknowledgement p2:12_layer_4_m.gcode; result=Is printing
+candidate p1:3_layer_4.gcode; positions={1: (189.616, 152.83), 2: (191.678, 126.692)}; accepted=False; collisions={2: 51.531462652872435}
+reject p1:3_layer_4.gcode; collision={2: 51.531462652872435}
+candidate p1:16_layer_4.gcode; positions={1: (189.616, 152.83), 2: (191.678, 126.692)}; accepted=False; collisions={2: 1.7171962885471121}
+reject p1:16_layer_4.gcode; collision={2: 1.7171962885471121}
+candidate p1:2_layer_4.gcode; positions={1: (189.616, 152.83), 2: (191.678, 126.692)}; accepted=True; collisions={}
+execute p1:2_layer_4_m.gcode
+job acknowledgement p1:2_layer_4_m.gcode; result=Is printing
+candidate p1:1_layer_4.gcode; positions={1: (174.499, 136.78), 2: (191.678, 126.692)}; accepted=True; collisions={}
+execute p1:1_layer_4_m.gcode
+job acknowledgement p1:1_layer_4_m.gcode; result=Is printing
+candidate p2:5_layer_4.gcode; positions={1: (186.826, 118.682), 2: (189.429, 137.482)}; accepted=True; collisions={}
+execute p2:5_layer_4_m.gcode
+job acknowledgement p2:5_layer_4_m.gcode; result=Is printing
+candidate p1:3_layer_4.gcode; positions={1: (181.272, 122.872), 2: (167.982, 140.93)}; accepted=False; collisions={2: 740.344975852925}
+reject p1:3_layer_4.gcode; collision={2: 740.344975852925}
+candidate p1:8_layer_4.gcode; positions={1: (181.272, 122.872), 2: (167.982, 140.93)}; accepted=False; collisions={2: 736.7714069676524}
+reject p1:8_layer_4.gcode; collision={2: 736.7714069676524}
+candidate p1:6_layer_4.gcode; positions={1: (181.272, 122.872), 2: (167.982, 140.93)}; accepted=False; collisions={2: 1060.843244847564}
+reject p1:6_layer_4.gcode; collision={2: 1060.843244847564}
+candidate p1:9_layer_4.gcode; positions={1: (181.272, 122.872), 2: (167.982, 140.93)}; accepted=False; collisions={2: 302.403562885705}
+reject p1:9_layer_4.gcode; collision={2: 302.403562885705}
+candidate p1:16_layer_4.gcode; positions={1: (181.272, 122.872), 2: (167.982, 140.93)}; accepted=False; collisions={2: 241.66931666029987}
+reject p1:16_layer_4.gcode; collision={2: 241.66931666029987}
+candidate p1:4_layer_4.gcode; positions={1: (181.272, 122.872), 2: (167.982, 140.93)}; accepted=False; collisions={2: 1981.7343241884896}
+reject p1:4_layer_4.gcode; collision={2: 1981.7343241884896}
+candidate p1:15_layer_4.gcode; positions={1: (181.272, 122.872), 2: (167.982, 140.93)}; accepted=False; collisions={2: 622.6087132532288}
+reject p1:15_layer_4.gcode; collision={2: 622.6087132532288}
+candidate p1:10_layer_4.gcode; positions={1: (181.272, 122.872), 2: (167.982, 140.93)}; accepted=False; collisions={2: 546.9491354966148}
+reject p1:10_layer_4.gcode; collision={2: 546.9491354966148}
+candidate p1:11_layer_4.gcode; positions={1: (181.272, 122.872), 2: (167.982, 140.93)}; accepted=False; collisions={2: 1760.814176592213}
+reject p1:11_layer_4.gcode; collision={2: 1760.814176592213}
+candidate p2:11_layer_4.gcode; positions={1: (181.272, 122.872), 2: (178.919, 148.293)}; accepted=True; collisions={}
+execute p2:11_layer_4_m.gcode
+job acknowledgement p2:11_layer_4_m.gcode; result=Is printing
+candidate p1:3_layer_4.gcode; positions={1: (181.272, 122.872), 2: (195.738, 165.558)}; accepted=True; collisions={}
+execute p1:3_layer_4_m.gcode
+job acknowledgement p1:3_layer_4_m.gcode; result=Is printing
+candidate p1:16_layer_4.gcode; positions={1: (173.356, 159.897), 2: (195.738, 165.558)}; accepted=True; collisions={}
+execute p1:16_layer_4_m.gcode
+job acknowledgement p1:16_layer_4_m.gcode; result=Is printing
+candidate p2:10_layer_4.gcode; positions={1: (193.923, 166.092), 2: (191.061, 156.321)}; accepted=True; collisions={}
+execute p2:10_layer_4_m.gcode
+job acknowledgement p2:10_layer_4_m.gcode; result=Is printing
+candidate p1:15_layer_4.gcode; positions={1: (180.214, 171.202), 2: (179.275, 189.737)}; accepted=True; collisions={}
+execute p1:15_layer_4_m.gcode
+job acknowledgement p1:15_layer_4_m.gcode; result=Is printing
+candidate p2:6_layer_4.gcode; positions={1: (175.729, 183.187), 2: (180.295, 174.474)}; accepted=True; collisions={}
+execute p2:6_layer_4_m.gcode
+job acknowledgement p2:6_layer_4_m.gcode; result=Is printing
+candidate p2:8_layer_4.gcode; positions={1: (175.729, 183.187), 2: (166.675, 168.906)}; accepted=True; collisions={}
+execute p2:8_layer_4_m.gcode
+job acknowledgement p2:8_layer_4_m.gcode; result=Is printing
+candidate p1:4_layer_4.gcode; positions={1: (162.967, 180.599), 2: (148.47, 177.794)}; accepted=False; collisions={2: 1077.626764871442}
+reject p1:4_layer_4.gcode; collision={2: 1077.626764871442}
+candidate p1:9_layer_4.gcode; positions={1: (162.967, 180.599), 2: (148.47, 177.794)}; accepted=False; collisions={2: 2485.268949451092}
+reject p1:9_layer_4.gcode; collision={2: 2485.268949451092}
+candidate p2:9_layer_4.gcode; positions={1: (162.967, 180.599), 2: (149.327, 175.467)}; accepted=True; collisions={}
+execute p2:9_layer_4_m.gcode
+job acknowledgement p2:9_layer_4_m.gcode; result=Is printing
+candidate p1:4_layer_4.gcode; positions={1: (162.967, 180.599), 2: (156.604, 189.816)}; accepted=False; collisions={2: 105.06430600241266}
+reject p1:4_layer_4.gcode; collision={2: 105.06430600241266}
+candidate p2:4_layer_4.gcode; positions={1: (162.967, 180.599), 2: (168.089, 185.993)}; accepted=False; collisions={1: 1720.1722450271614}
+reject p2:4_layer_4.gcode; collision={1: 1720.1722450271614}
+candidate p1:4_layer_4.gcode; positions={1: (162.967, 180.599), 2: (168.089, 185.993)}; accepted=False; collisions={2: 48.23920218516188}
+reject p1:4_layer_4.gcode; collision={2: 48.23920218516188}
+deadlock: requesting recovery for both printers
+recovered: observed positions={1: (275.0, 25.0), 2: (275.0, 25.0)}
+candidate p1:4_layer_4.gcode; positions={1: (275.0, 25.0), 2: (275.0, 25.0)}; accepted=True; collisions={}
+execute p1:4_layer_4_m.gcode
+job acknowledgement p1:4_layer_4_m.gcode; result=Is printing
+all jobs complete: requesting final return via RECOVERY_PLAN
+final return complete: observed positions={1: (275.0, 25.0), 2: (275.0, 25.0)}
+candidate p1:2_layer_5.gcode; positions={1: (275.0, 25.0), 2: (275.0, 25.0)}; accepted=True; collisions={}
+execute p1:2_layer_5_m.gcode
+job acknowledgement p1:2_layer_5_m.gcode; result=Is printing
+candidate p2:13_layer_5.gcode; positions={1: (192.13, 123.304), 2: (275.0, 25.0)}; accepted=True; collisions={}
+execute p2:13_layer_5_m.gcode
+job acknowledgement p2:13_layer_5_m.gcode; result=Is printing

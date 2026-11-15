@@ -3,7 +3,8 @@ import re
 from pathlib import Path
 
 
-TOTAL_LAYERS = 5
+TOTAL_LAYERS = 4
+
 
 def layer_of(filename):
     match = re.fullmatch(
@@ -15,6 +16,7 @@ def layer_of(filename):
             f"Expected <cell>_layer_<1..{TOTAL_LAYERS}>.gcode: {filename}"
         )
     return int(match[1])
+
 
 COORDINATE = {axis: re.compile(rf"\b{axis}\s*(-?(?:\d+(?:\.\d*)?|\.\d+))")
               for axis in ("X", "Y")}
@@ -42,7 +44,8 @@ def cell_input_files(folder):
     for source in files:
         key = source.stem.casefold()
         if key in names:
-            raise ValueError(f"Duplicate cell stem: {names[key].name} and {source.name}")
+            raise ValueError(
+                f"Duplicate cell stem: {names[key].name} and {source.name}")
         names[key] = source
     return files
 
@@ -54,6 +57,9 @@ def read_print_points(file_path):
     points = []
     with open(file_path, encoding="utf-8-sig") as source:
         for raw in source:
+            if started and raw.lstrip().startswith(";TIME_ELAPSED:"):
+                break
+
             line = raw.split(";", 1)[0].strip()
             if not line:
                 continue
@@ -72,7 +78,9 @@ def read_print_points(file_path):
             if changed and all(value is not None for value in current.values()):
                 points.append((current["X"], current["Y"]))
     if not started:
-        raise ValueError(f"{file_path}: missing M107 marker; expected Cura G-code")
+        raise ValueError(
+            f"{file_path}: missing M107 marker; expected Cura G-code")
     if len(set(points)) < 3:
-        raise ValueError(f"{file_path}: at least three distinct XY points are required")
+        raise ValueError(
+            f"{file_path}: at least three distinct XY points are required")
     return points

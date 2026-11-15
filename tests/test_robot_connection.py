@@ -83,11 +83,25 @@ class RobotConnectionTests(unittest.TestCase):
     def test_failed_upload_prevents_homing(self):
         with tempfile.TemporaryDirectory() as temp, \
              patch('simulation_main.check_robot_connection', return_value=(['I', 'I'], [[300, 0], [300, 0]])), \
-             patch('requests.get') as get, patch('requests.post', return_value=response({'err': 1})), \
+             patch('requests.get') as get, \
+             patch('requests.post', side_effect=[
+                 response({'err': 0}), response({'err': 0}), response({'err': 1})
+             ]) as post, \
              contextlib.redirect_stdout(io.StringIO()):
+            output = Path(temp) / 'output'
             with self.assertRaisesRegex(RuntimeError, 'Upload failed'):
-                main(['--mode', 'printers', '--output-dir', str(Path(temp) / 'output')])
-        get.assert_not_called()
+                main(['--mode', 'printers', '--output-dir', str(output)])
+            get.assert_not_called()
+            self.assertIn(b'M109 S210', post.call_args_list[0].kwargs['data'])
+            uploaded_name = Path(
+                post.call_args_list[2].kwargs['params']['name']).name
+            uploaded_payload = post.call_args_list[2].kwargs['data']
+            processed_file = output / 'processed' / 'p1' / uploaded_name
+            processed_gcode = processed_file.read_bytes()
+            self.assertIn(b'M104 S0', processed_gcode)
+            self.assertIn(b'M140 S0', processed_gcode)
+            self.assertNotIn(b'M104 S0', uploaded_payload)
+            self.assertNotIn(b'M140 S0', uploaded_payload)
 
     def test_worker_receives_serializable_connection_settings(self):
         connection = pickle.loads(pickle.dumps(RobotConnection('robot-a', 'robot-b', 'test-secret')))

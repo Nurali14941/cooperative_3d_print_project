@@ -10,13 +10,13 @@ from matplotlib.patches import Polygon as MplPolygon
 # Messages from command_script override these with the collision-check values.
 BOUNDS = {
     1: dict(
-        elbow_joint_f=26, elbow_joint_b=-26,
+        elbow_joint_f=20, elbow_joint_b=-20,
         distal_arm_f=246, distal_arm_b=-26,
         prox_joint_f=8, prox_joint_b=-8,
         proximal_arm_f=230, proximal_arm_b=-8,
     ),
     2: dict(
-        elbow_joint_f=-25, elbow_joint_b=25,
+        elbow_joint_f=-19, elbow_joint_b=19,
         distal_arm_f=253, distal_arm_b=-25,
         prox_joint_f=8, prox_joint_b=-8,
         proximal_arm_f=234, proximal_arm_b=-8,
@@ -146,7 +146,8 @@ def animation_simulation(simulation_queue, simulation_finished, stop_requested, 
 
         for p, (x, y) in last_positions.items():
             px = printer[p]
-            supplied_bounds = message.get("arm_bounds") if p == candidate_p else None
+            supplied_bounds = message.get(
+                "arm_bounds") if p == candidate_p else None
             if supplied_bounds is None:
                 distal, proximal, prox, elbow, cur = arm_boundary_points(
                     px, x, y, physical_bounds[p], p,

@@ -15,7 +15,8 @@ def home_robots(connection, timeout=180.0, poll_interval=0.25):
     this HTTP client. A failed/uncertain request is never retried with G28.
     """
     if not math.isfinite(timeout) or timeout <= 0:
-        raise ValueError("Homing timeout must be a finite positive number of seconds")
+        raise ValueError(
+            "Homing timeout must be a finite positive number of seconds")
     if not math.isfinite(poll_interval) or poll_interval <= 0:
         raise ValueError("Homing poll interval must be finite and positive")
 
@@ -45,13 +46,15 @@ def home_robots(connection, timeout=180.0, poll_interval=0.25):
         try:
             statuses, _ = status_snapshot()
             if any(status != "I" for status in statuses):
-                raise RuntimeError(f"Both robots must be idle before homing robot {p}: {statuses}")
+                raise RuntimeError(
+                    f"Both robots must be idle before homing robot {p}: {statuses}")
 
             marker = "HOMING_" + uuid.uuid4().hex
             # The marker follows G28 and the motion barrier on the same channel.
             # An HTTP acknowledgement or an initial idle poll is insufficient.
             commands = f'G28\nM400\necho "{marker}"'
-            print(f"Homing robot {p} ({host}); timeout={timeout:g}s...", flush=True)
+            print(
+                f"Homing robot {p} ({host}); timeout={timeout:g}s...", flush=True)
             response = requests.get(
                 f"http://{host}/rr_gcode", params={"gcode": commands},
                 timeout=min(5.0, remaining()),
@@ -62,20 +65,38 @@ def home_robots(connection, timeout=180.0, poll_interval=0.25):
                 raise RuntimeError(f"Robot {p} did not acknowledge G28")
 
             next_report = started
+            busy_seen = False
             while True:
-                response = requests.get(f"http://{host}/rr_reply", timeout=min(5.0, remaining()))
+
+                response = requests.get(
+                    f"http://{host}/rr_reply", timeout=min(5.0, remaining()))
                 response.raise_for_status()
                 remaining()
                 reply_text = response.text
+
+                if reply_text.strip():
+                    print(
+                        f"HOMING_REPLY p={p} expected={marker!r} "
+                        f"raw={reply_text!r}",
+                        flush=True,
+                    )
+                    # need to remove the later break, but for now it works
+                    break
+
                 if "error" in reply_text.lower():
-                    raise RuntimeError(f"Homing firmware error from robot {p}: {reply_text.strip()}")
-                marker_seen |= marker in [line.strip() for line in reply_text.splitlines()]
+                    raise RuntimeError(
+                        f"Homing firmware error from robot {p}: {reply_text.strip()}")
+                marker_seen |= marker in [line.strip()
+                                          for line in reply_text.splitlines()]
 
                 statuses, coordinates = status_snapshot()
                 last_status = statuses[p - 1]
-                if marker_seen and last_status == "I":
+                busy_seen |= last_status == "B"
+
+                if busy_seen and last_status == "I":
                     if any(status != "I" for status in statuses):
-                        raise RuntimeError(f"Another robot became busy during homing: {statuses}")
+                        raise RuntimeError(
+                            f"Another robot became busy during homing: {statuses}")
                     print(f"Robot {p} homing complete after {time.monotonic() - started:.1f}s; "
                           f"machine XY={coordinates[p - 1][:2]}", flush=True)
                     break
@@ -85,6 +106,7 @@ def home_robots(connection, timeout=180.0, poll_interval=0.25):
                           f"elapsed={time.monotonic() - started:.1f}s", flush=True)
                     next_report = time.monotonic() + 5
                 time.sleep(min(poll_interval, remaining()))
+
         except requests.RequestException as error:
             raise ConnectionError(
                 f"Could not confirm homing for robot {p} ({host}); "

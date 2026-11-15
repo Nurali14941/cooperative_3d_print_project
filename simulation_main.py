@@ -45,8 +45,6 @@ import numpy as np
 from kinematics.animation_simulation import animation_simulation
 
 
-
-
 from util.gcode_input import (
     cell_input_files,
     read_print_points,
@@ -55,7 +53,46 @@ from util.gcode_input import (
 )
 
 
+_GCODE_TEMP_COMMAND = re.compile(rb"^\s*M(104|109|140)\b", re.IGNORECASE)
+_GCODE_S_PARAMETER = re.compile(
+    rb"(?<![A-Z])([Ss]\s*)([+-]?(?:\d+(?:\.\d*)?|\.\d+))(?![\w.])",
+    re.IGNORECASE,
+)
+_GCODE_ZERO_TEMPERATURE = re.compile(rb"[+-]?(?:0+(?:\.0*)?|\.0+)")
 
+
+def _prepare_upload_gcode(gcode: bytes, printer_id: int) -> bytes:
+    temperatures = {1: b"210", 2: b"230"}
+    try:
+        temperature = temperatures[printer_id]
+    except KeyError as exc:
+        raise ValueError(
+            f"Unsupported printer ID for G-code upload: {printer_id}") from exc
+
+    prepared_lines = []
+    for line in gcode.splitlines(keepends=True):
+        command = line.split(b";", 1)[0]
+        command_match = _GCODE_TEMP_COMMAND.match(command)
+        if command_match is None:
+            prepared_lines.append(line)
+            continue
+
+        s_match = _GCODE_S_PARAMETER.search(command, command_match.end())
+        if s_match is None:
+            prepared_lines.append(line)
+            continue
+
+        command_code = command_match.group(1)
+        is_zero = _GCODE_ZERO_TEMPERATURE.fullmatch(
+            s_match.group(2)) is not None
+        if is_zero and command_code in (b"104", b"140"):
+            continue
+        if not is_zero and command_code in (b"104", b"109"):
+            start, end = s_match.span(2)
+            line = line[:start] + temperature + line[end:]
+        prepared_lines.append(line)
+
+    return b"".join(prepared_lines)
 
 
 @dataclass(frozen=True)
@@ -67,12 +104,11 @@ class SimConfig:
     log_dir: Path = OUTPUT_DIR
 
 
-
 @dataclass
 class Printer:
     px_ref: np.ndarray
     theta: float
-    prox_join: np.ndarray #raw
+    prox_join: np.ndarray  # raw
     length_a: float
     length_b: float
     codes: dict = field(default_factory=dict)
@@ -84,11 +120,6 @@ class Printer:
         default_factory=lambda: np.array([300.0, 0.0])
     )
 
-
-
-    
-
-
     def px_to_p1(self, point_px):
 
         R = np.array([
@@ -97,8 +128,6 @@ class Printer:
         ])
 
         return R @ (point_px - self.p1_ref) + self.px_ref
-
-    
 
     def elbow_pos_raw(self, cur_x_raw, cur_y_raw):
         _, elbow_x1, elbow_y1 = inverse_kinematic(
@@ -113,7 +142,7 @@ class Printer:
 
     def coords_to_plot(self, cur_x_raw, cur_y_raw):
         return self.px_to_p1(self.prox_join), self.px_to_p1(self.elbow_pos_raw(cur_x_raw, cur_y_raw)), self.px_to_p1(np.array([cur_x_raw, cur_y_raw]))
-    
+
     def plot(self, ax, cur_x_raw, cur_y_raw, proximal_width, distal_width):
 
         prox_plot = self.px_to_p1(self.prox_join)
@@ -124,12 +153,12 @@ class Printer:
             prox_plot[1],
             prox_plot[0],
             'o',
-            color = 'cyan'
+            color='cyan'
         )
 
         # ax.annotate(f'{self.prox_join[0]}, {self.prox_join[1]}',
         #     xy = (prox_plot[1], prox_plot[0])
-        # )   
+        # )
 
         ax.plot(
             elbow_plot[1],
@@ -143,7 +172,6 @@ class Printer:
 
         # )
 
-
         ax.plot(
             cur_plot[1],
             cur_plot[0],
@@ -155,7 +183,6 @@ class Printer:
         #             xy = (cur_plot[1], cur_plot[0])
 
         # )
-
 
         line1, = ax.plot(
             [prox_plot[1], elbow_plot[1]],
@@ -232,7 +259,6 @@ class Printer:
             + distal_arm_f * v_norm
         )
 
-
         # -----------------------
         # proximal arm
         # -----------------------
@@ -271,7 +297,6 @@ class Printer:
             + proximal_arm_b * v_norm2
         )
 
-
         return {
             "distal": [
                 point1,
@@ -287,7 +312,6 @@ class Printer:
                 point33
             ]
         }
-
 
     def plot_bounds(
         self,
@@ -343,7 +367,6 @@ class Printer:
         #     color='black'
         # )
 
-
         point11, point22, point44, point33 = bounds["proximal"]
 
         # proximal1_l1, = ax.plot(
@@ -381,12 +404,13 @@ class Printer:
         #     proximal1_l4
         # ]
 
-        #return bounds, lines
+        # return bounds, lines
         return bounds
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="Prepare G-code and preview cooperative printing locally.")
+    parser = argparse.ArgumentParser(
+        description="Prepare G-code and preview cooperative printing locally.")
     parser.add_argument("--mode", choices=("simulate", "prepare", "connect", "printers"), default="simulate",
                         help="simulate: offline preview; connect: check robot connections; printers: upload, home, and run robots.")
     parser.add_argument("--input-dir", type=Path, default=INPUT_DIR)
@@ -395,10 +419,14 @@ def main(argv=None):
     parser.add_argument("--initial-cells", nargs=2, metavar=("P1_CELL", "P2_CELL"),
                         help="Reserve the first cell for each printer, then wait for both before scheduling more")
     parser.add_argument("--output-dir", type=Path, default=OUTPUT_DIR)
-    parser.add_argument("--headless", action="store_true", help="Run local simulation without a plot window")
-    parser.add_argument("--printer-1", default="192.168.0.15", help="First robot address")
-    parser.add_argument("--printer-2", default="192.168.0.16", help="Second robot address")
-    parser.add_argument("--wifi-profile", help="Saved Windows Wi-Fi profile to use if robots are unreachable")
+    parser.add_argument("--headless", action="store_true",
+                        help="Run local simulation without a plot window")
+    parser.add_argument("--printer-1", default="192.168.0.15",
+                        help="First robot address")
+    parser.add_argument("--printer-2", default="192.168.0.16",
+                        help="Second robot address")
+    parser.add_argument(
+        "--wifi-profile", help="Saved Windows Wi-Fi profile to use if robots are unreachable")
     parser.add_argument("--wifi-interface", default="Wi-Fi")
     parser.add_argument("--homing-timeout", type=float, default=180.0,
                         help="Maximum homing wait per robot in seconds (default: 180)")
@@ -415,7 +443,8 @@ def main(argv=None):
     if not math.isfinite(args.homing_timeout) or args.homing_timeout <= 0:
         parser.error("--homing-timeout must be a finite positive number")
     connection = RobotConnection(args.printer_1, args.printer_2,
-                                 password=os.environ.get("AMBOTS_PASSWORD", "reprap"),
+                                 password=os.environ.get(
+                                     "AMBOTS_PASSWORD", "reprap"),
                                  wifi_profile=args.wifi_profile,
                                  wifi_interface=args.wifi_interface)
     if args.mode == "connect":
@@ -423,7 +452,8 @@ def main(argv=None):
         print("Both robots connected. No files uploaded or movement commanded.")
         return
     if args.headless and args.mode == "printers":
-        parser.error("--headless is supported only for local simulation or preparation")
+        parser.error(
+            "--headless is supported only for local simulation or preparation")
     folder = args.input_dir.resolve()
     output_dir = args.output_dir.resolve()
     source_files = cell_input_files(folder)
@@ -431,9 +461,11 @@ def main(argv=None):
         selected = set(args.cells)
         missing = selected - {source.stem for source in source_files}
         if missing:
-            parser.error(f"Requested cells not found: {', '.join(sorted(missing))}")
-        source_files = [source for source in source_files if source.stem in selected]
-        
+            parser.error(
+                f"Requested cells not found: {', '.join(sorted(missing))}")
+        source_files = [
+            source for source in source_files if source.stem in selected]
+
     present_layers = {layer_of(source.name) for source in source_files}
 
     if present_layers != set(range(1, TOTAL_LAYERS + 1)):
@@ -441,22 +473,22 @@ def main(argv=None):
             f"Expected layers 1..{TOTAL_LAYERS}; "
             f"found {sorted(present_layers)}"
         )
-    
+
     initial_assignments = {}
     if args.initial_cells:
         if len(set(args.initial_cells)) != 2:
             parser.error("--initial-cells must name two different cells")
         sources_by_stem = {source.stem: (source.stem + ".gcode" if source.suffix.lower() == ".txt"
-                                      else source.name) for source in source_files}
+                                         else source.name) for source in source_files}
         for p, stem in enumerate(args.initial_cells, start=1):
             if stem not in sources_by_stem:
-                parser.error(f"Initial cell {stem} is not in the selected input files")
+                parser.error(
+                    f"Initial cell {stem} is not in the selected input files")
             initial_assignments[p] = sources_by_stem[stem]
     # Validate every selected source and render text paths before writing output.
-    
-    
-    
-    text_sources = [source for source in source_files if source.suffix.lower() == ".txt"]
+
+    text_sources = [
+        source for source in source_files if source.suffix.lower() == ".txt"]
     converted = {}
     if text_sources:
         settings = load_cell_settings(args.cell_config)
@@ -469,49 +501,37 @@ def main(argv=None):
         settings = replace(settings, **overrides)
         print(f"Text conversion configuration: {args.cell_config.resolve()}")
         for source in text_sources:
-            converted[source] = cell_gcode(read_cell_points(source), settings, source_name=source.name)
+            converted[source] = cell_gcode(read_cell_points(
+                source), settings, source_name=source.name)
     for source in source_files:
         if source not in converted:
             read_print_points(source)
     converted_dir = output_dir / "converted"
 
-
-
-
-
-
-
-
     for source in text_sources:
         destination = converted_dir / (source.stem + ".gcode")
         if destination.resolve() in {item.resolve() for item in source_files}:
-            raise ValueError(f"Conversion would overwrite an input: {destination}")
+            raise ValueError(
+                f"Conversion would overwrite an input: {destination}")
     output_dir.mkdir(parents=True, exist_ok=True)
     if converted:
         converted_dir.mkdir(parents=True, exist_ok=True)
         for source, text in converted.items():
-            (converted_dir / (source.stem + ".gcode")).write_text(text, encoding="utf-8")
+            (converted_dir / (source.stem + ".gcode")
+             ).write_text(text, encoding="utf-8")
         source_files = [converted_dir / (source.stem + ".gcode") if source in converted else source
                         for source in source_files]
-        print(f"Converted {len(converted)} text cell paths into {converted_dir}")
-    
-    
-    
-    
-    
-    
-    
-    
+        print(
+            f"Converted {len(converted)} text cell paths into {converted_dir}")
+
     transformed_dir = output_dir / "transformed"
     prox_join2 = np.array([151.16978, -53.04552])
     length_a2 = 225.39945
     length_b2 = 227.54048
 
     prox_join11 = np.array([150.236, -50.09536])
-    length_a1 = 221.0968 #promximal arm
-    length_b1 = 220.61278 #distal arm
-
-
+    length_a1 = 221.0968  # promximal arm
+    length_b1 = 220.61278  # distal arm
 
     p1 = Printer(
         px_ref=np.array([300.0, 300.0]),
@@ -536,31 +556,21 @@ def main(argv=None):
     #     length_a=length_a2,
     #     length_b=length_b2
     # )
-    
+
     printer = {
         1: p1,
         2: p2
     }
 
-    #######################prepare the files###############
-
-
-
-
-
+    ####################### prepare the files###############
 
     # All generated data stays under the chosen output directory.
-
 
     def gcode_number(file_path):
         try:
             return int(file_path.stem)
         except ValueError:
             return float("inf")
-
-
-    
-
 
     read_gcode_points = read_print_points
 
@@ -580,7 +590,6 @@ def main(argv=None):
 
             return R.T @ (point_p1 - px.px_ref) + px.p1_ref
 
-
         x_pattern = re.compile(
             r"\bX\s*(-?(?:\d+(?:\.\d*)?|\.\d+))"
         )
@@ -589,13 +598,11 @@ def main(argv=None):
             r"\bY\s*(-?(?:\d+(?:\.\d*)?|\.\d+))"
         )
 
-
         def format_number(value):
             if float(value).is_integer():
                 return str(int(value))
 
             return str(value)
-
 
         for file_path in source_files:
 
@@ -620,10 +627,10 @@ def main(argv=None):
                     old_y = float(y_match.group(1))
 
                     point_p1 = np.array([
-                        old_x, # add -300 when  ultimaker conversion purposes for 600 by 300
+                        old_x,  # add -300 when  ultimaker conversion purposes for 600 by 300
                         old_y
                     ])
-                   
+
                     new_x, new_y = p1_to_px(point_p1)
 
                     line = x_pattern.sub(
@@ -638,7 +645,6 @@ def main(argv=None):
 
                 output_lines.append(line)
 
-
             output_path = output_fold / file_path.name
 
             output_path.write_text(
@@ -647,13 +653,13 @@ def main(argv=None):
 
     px_files(1, folder, printer)
     px_files(2, folder, printer)
-    #px_files(3, folder, printer)
+    # px_files(3, folder, printer)
 
     # 1. Define your base directory properly using raw strings
     base_dir = output_dir / "boundaries_store"
 
     # 2. Use mkdir(parents=True, exist_ok=True) to prevent crashes if folders exist
-    
+
     def processing(p, base_dir, folder):
         x_pattern = re.compile(r"\bX\s*(-?(?:\d+(?:\.\d*)?|\.\d+))")
         y_pattern = re.compile(r"\bY\s*(-?(?:\d+(?:\.\d*)?|\.\d+))")
@@ -662,18 +668,15 @@ def main(argv=None):
         for i in (source.name for source in source_files):
 
             points1 = read_gcode_points(folder / f'p{p}' / f'{i}')
-            
-            
-            
+
             l = []
 
-            #no machinetoplot and no xy reversal, that will be done in the other script
+            # no machinetoplot and no xy reversal, that will be done in the other script
             for j in points1:
                 x, y = j
                 l.append((x, y))
 
-
-            #solid = Polygon(l)
+            # solid = Polygon(l)
             cloud = MultiPoint(l)
 
             object = concave_hull(
@@ -681,50 +684,34 @@ def main(argv=None):
                 ratio=1
             ).simplify(1.0)
 
-            #boundary_points = np.array(object.exterior.coords) #returns (5,2) array so only 5 data points along the boundary
+            # boundary_points = np.array(object.exterior.coords) #returns (5,2) array so only 5 data points along the boundary
             if object.geom_type != "Polygon" or object.is_empty:
                 raise ValueError(f"{i}: XY points do not form a polygon")
             boundary = object.exterior
 
-
             N = 10
-            #so .exterior.interpolate() allows you to get points along certain lines if you have a polygon or multipoint based on absolute distance or normalized distance (fraction of the total length)
+            # so .exterior.interpolate() allows you to get points along certain lines if you have a polygon or multipoint based on absolute distance or normalized distance (fraction of the total length)
             boundary_points = np.array([
                 boundary.interpolate(z / N, normalized=True).coords[0]
                 for z in range(N+1)
             ])
 
-
             # 3. Define the filename (replacing the missing 'i')
-            filename = f"{i}" 
+            filename = f"{i}"
             file_path = path_p1 / filename
 
             # 4. Open the file and write data with proper spacing and newlines
             with open(file_path, "w") as w:
                 for x, y in zip(boundary_points[:, 0], boundary_points[:, 1]):
                     # Added \n so each coordinate pair goes on a new line
-                    w.write(f"X{x} Y{y}\n") 
-
-
-
+                    w.write(f"X{x} Y{y}\n")
 
     processing(1, base_dir, transformed_dir)
     processing(2, base_dir, transformed_dir)
-    #processing(3, base_dir, folder)
-
-
-
-
-
-
-
-
+    # processing(3, base_dir, folder)
 
     sim_fold = output_dir / "sim_fold"
     sim_fold.mkdir(parents=True, exist_ok=True)
-
-
-
 
     coord_pattern = {
         "X": re.compile(r"\bX\s*(-?(?:\d+(?:\.\d*)?|\.\d+))"),
@@ -751,8 +738,6 @@ def main(argv=None):
         log_dir=output_dir,
     )
 
-
-
     target_fold = {p: output_dir / "processed" / f"p{p}" for p in printer}
     job_tokens = {p: {} for p in printer}
     for p, target in target_fold.items():
@@ -768,17 +753,11 @@ def main(argv=None):
 
     ip = connection.ip
 
-
-
-
-
-
     def read_gcode_points(px, file_path, prox_join, length_a, length_b):
 
         points = []
         check = True
         with open(file_path, "r") as r:
-
 
             for line_number, line in enumerate(r, start=1):
 
@@ -789,7 +768,7 @@ def main(argv=None):
 
                     x = float(x_match.group(1))
                     y = float(y_match.group(1))
-                    #the files that contains the co-ordinates of the points should also include the min/max co-ordinates just in case
+                    # the files that contains the co-ordinates of the points should also include the min/max co-ordinates just in case
                     if abs(length_a - length_b) < np.linalg.norm(np.array([x - prox_join[0], y - prox_join[1]])) < length_a + length_b:
                         points.append((x, y))
                     else:
@@ -799,14 +778,8 @@ def main(argv=None):
             px.codes[file_path.stem + '.gcode'] = ['A', points]
 
         return points
-    
-
-
-
 
     folder_sim = base_dir
-
-
 
     for printer_id, px in printer.items():
 
@@ -821,17 +794,13 @@ def main(argv=None):
                 px.length_b
             )
 
-    #how printer looks like
-    #{1: Printer(px_ref=array([300., 300.]), theta=1.5707963267948966, prox_join=array([150.236  , -50.09536]), length_a=221.0968, length_b=220.61278, 
+    # how printer looks like
+    # {1: Printer(px_ref=array([300., 300.]), theta=1.5707963267948966, prox_join=array([150.236  , -50.09536]), length_a=221.0968, length_b=220.61278,
     # codes={'1.gcode': ['A', [(115.601, 151.173), ...
 
+    # now each printer will have a code dictionary containing all layers including 1_layer_1.gcode, 1_layer_2.gcode, and so on
 
-    #now each printer will have a code dictionary containing all layers including 1_layer_1.gcode, 1_layer_2.gcode, and so on
-
-
-
-    #print(printer)
-
+    # print(printer)
 
     required = {source.name for source in source_files}
     reachable = {
@@ -852,59 +821,117 @@ def main(argv=None):
         print(f"Printer {p}: {len(px.codes)} reachable regions")
     if args.mode == "prepare":
         return
+    # if args.mode == "simulate":
+    #     from util.offline_simulation import run_offline
+    #     return run_offline(printer, config, headless=args.headless, initial_assignments=initial_assignments)
+
     if args.mode == "simulate":
-        from util.offline_simulation import run_offline
-        return run_offline(printer, config, headless=args.headless, initial_assignments=initial_assignments)
+        import threading as debug_threading
+        import shapely.geometry as debug_geometry
+        import util.command_script as collision_debug
+
+        # Native machine coordinates copied from your log.
+        positions = {
+            1: (173.617, 148.352),
+            2: (275.0, 25.0),
+        }
+
+        moving_printer = 2
+        candidate = input('enter')
+        frames = queue.Queue()
+
+        # Generate frames for this candidate at the supplied positions.
+        sim_px(
+            moving_printer,
+            {candidate: printer[moving_printer].codes[candidate]},
+            positions,
+            config,
+            layer=1,
+        )
+
+        stored = {
+            p: collision_debug.polygon_at_position(p, printer, position)
+            for p, position in positions.items()
+        }
+
+        sweep, final_positions = collision_debug.simulate_candidate(
+            p=moving_printer,
+            candidate=candidate,
+            printer=printer,
+            store_coords=positions,
+            config=config,
+            simulation_queue=frames,
+        )
+
+        collisions = collision_debug.collides_with_stored(
+            sweep, moving_printer, stored
+        )
+
+        print(f"Candidate: p{moving_printer}:{candidate}")
+        print(f"Starting positions: {positions}")
+        print(f"Accepted: {not bool(collisions)}")
+        print(f"Collisions: {collisions}")
+
+        frames.put({
+            "type": "result",
+            "printer": moving_printer,
+            "gcode": candidate,
+            "positions": final_positions,
+            "accepted": not bool(collisions),
+            "collisions": collisions,
+            "overlap": sum(collisions.values()),
+            "candidate_polygon": debug_geometry.mapping(sweep),
+            "stored_polygons": {
+                p: debug_geometry.mapping(polygon)
+                for p, polygon in stored.items()
+                if p != moving_printer
+            },
+            "overlap_polygons": {
+                p: debug_geometry.mapping(sweep.intersection(stored[p]))
+                for p in collisions
+            },
+        })
+        frames.put({"type": "stop"})
+
+        animation_simulation(
+            frames,
+            debug_threading.Event(),
+            debug_threading.Event(),
+            printer,
+        )
+        return
 
     # Only explicit --mode printers reaches uploads, homing, and live workers.
     statuses, _ = check_robot_connection(connection)
     if any(status != "I" for status in statuses):
-        raise RuntimeError("Both robots must be idle before uploading or homing")
+        raise RuntimeError(
+            "Both robots must be idle before uploading or homing")
     print("Connected. Uploading prepared G-code, then homing and starting live execution.")
 
     print(printer)
 
+    # the names of the files in processed now will be '1_layer_x_b' and the names of the files in transformed, boundaries_store, and sim_fold will be '1_layer_x'
 
-    #the names of the files in processed now will be '1_layer_x_b' and the names of the files in transformed, boundaries_store, and sim_fold will be '1_layer_x'
+    ###################### since we already uploaded the gcodes once, we don't need to do it again, especially since tokens are the names of the files########################
+    # for i in target_fold.keys():
+    #     for j in (f"{source.stem}_{stage}.gcode" for source in source_files for stage in ("b", "m", "e")):
+    #         ch = j[:-8] + '.gcode'
+    #         if ch in printer[i].codes.keys():
+    #             target = target_fold[i] / j
+    #             print(target)
+    #             with open(target, "rb") as o:
+    #                 upload_data = _prepare_upload_gcode(o.read(), i)
+    #                 response = requests.post(
+    #                     f"http://{ip[i]}/rr_upload",
+    #                     params={"name": f"0:/gcodes/sub_directory/{j}"},
+    #                     data=upload_data,
+    #                     timeout=60
+    #                 )
 
-
-
-    ######################!########################
-    for i in target_fold.keys():
-        for j in (f"{source.stem}_{stage}.gcode" for source in source_files for stage in ("b", "m", "e")):
-            ch = j[:-8] + '.gcode'
-            if ch in printer[i].codes.keys():
-                target = target_fold[i] / j
-                print(target)
-                with open(target, "rb") as o:
-                    response = requests.post(
-                        f"http://{ip[i]}/rr_upload",
-                        params={"name": f"0:/gcodes/sub_directory/{j}"},
-                        data=o,
-                        timeout=60
-                    )
-
-                response.raise_for_status()
-                reply = response.json()
-                if not isinstance(reply, dict) or reply.get("err") != 0:
-                    raise RuntimeError(f"Upload failed for robot {i}: {j}")
-        
-        
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
+    #             response.raise_for_status()
+    #             reply = response.json()
+    #             if not isinstance(reply, dict) or reply.get("err") != 0:
+    #                 raise RuntimeError(f"Upload failed for robot {i}: {j}")
 
     @dataclass
     class RuntimeBundle:
@@ -916,11 +943,6 @@ def main(argv=None):
         tracker_event_queue: object
         execution_processes: dict
         tracker_process: object
-
-
-
-
-
 
     home_robots(connection, timeout=args.homing_timeout)
 
@@ -946,13 +968,13 @@ def main(argv=None):
     execution_process = context.Process(
         target=execution_worker,
         args=(ip, execution_request_queue, execution_result_queue,
-            tracker_control_queue, stop_requested, error_queue),
+              tracker_control_queue, stop_requested, error_queue),
         kwargs={"connection": connection},
     )
     track_process = context.Process(
         target=track,
         args=(ip, store_coords, tracker_event_queue, tracker_control_queue,
-            printing_queue, stop_requested, error_queue, position_queue1),
+              printing_queue, stop_requested, error_queue, position_queue1),
         kwargs={
             "printer": printer,
             "store_polygons": store_polygons,
@@ -963,9 +985,9 @@ def main(argv=None):
     command_process = context.Process(
         target=command_script,
         args=(printer, config, store_coords, tracker_event_queue,
-            execution_request_queue, execution_result_queue,
-            tracker_control_queue, printing_queue, stop_requested,
-            execution_finished, error_queue, simulation_queue, "m"),
+              execution_request_queue, execution_result_queue,
+              tracker_control_queue, printing_queue, stop_requested,
+              execution_finished, error_queue, simulation_queue, "m"),
         kwargs={'store_polygons': store_polygons, 'initial_assignments': initial_assignments,
                 'job_tokens': job_tokens}
     )
@@ -973,20 +995,9 @@ def main(argv=None):
     execution_process.start()
     command_process.start()
 
-
-
-
-
-
-
-
-
     simulation_visualization = True
 
-
     simulation_finished = context.Event()
-
-
 
     if simulation_visualization:
 
@@ -1007,13 +1018,9 @@ def main(argv=None):
     if simulation_animation_process is not None:
         simulation_animation_process.start()
 
-
-
-
-
-
     try:
-        animation_script(position_queue1, execution_finished, stop_requested,printer)
+        animation_script(position_queue1, execution_finished,
+                         stop_requested, printer)
     finally:
         stop_requested.set()
         for process in (command_process, execution_process, track_process):
@@ -1023,15 +1030,11 @@ def main(argv=None):
                 process.join()
         manager.shutdown()
 
-
-
-
         if simulation_animation_process is not None:
             simulation_animation_process.join(timeout=5)
             if simulation_animation_process.is_alive():
                 simulation_animation_process.terminate()
                 simulation_animation_process.join()
-
 
         while True:
             try:
@@ -1042,14 +1045,6 @@ def main(argv=None):
 
         position_queue1.close()
         error_queue.close()
-
-        
-        
-
-
-
-
-
 
 
 if __name__ == "__main__":

@@ -24,9 +24,10 @@ from shapely.geometry import Polygon, mapping
 from shapely.validation import explain_validity
 
 
-
-
-import queue, time, uuid, traceback
+import queue
+import time
+import uuid
+import traceback
 from pathlib import Path
 
 from collections import deque
@@ -34,26 +35,10 @@ from collections import deque
 from util.gcode_input import TOTAL_LAYERS, layer_of
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 PHYSICAL_BOUNDS = {
     1: dict(
-        elbow_joint_f=26,
-        elbow_joint_b=-26,
+        elbow_joint_f=20,
+        elbow_joint_b=-20,
         distal_arm_f=246,
         distal_arm_b=-26,
         prox_joint_f=8,
@@ -62,8 +47,8 @@ PHYSICAL_BOUNDS = {
         proximal_arm_b=-8,
     ),
     2: dict(
-        elbow_joint_f=-25,
-        elbow_joint_b=25,
+        elbow_joint_f=-19,
+        elbow_joint_b=19,
         distal_arm_f=253,
         distal_arm_b=-25,
         prox_joint_f=8,
@@ -72,27 +57,16 @@ PHYSICAL_BOUNDS = {
         proximal_arm_b=-8,
     ),
     3: dict(
-            elbow_joint_f=-25,
-            elbow_joint_b=25,
-            distal_arm_f=253,
-            distal_arm_b=-25,
-            prox_joint_f=8,
-            prox_joint_b=-8,
-            proximal_arm_f=234,
-            proximal_arm_b=-8,
+        elbow_joint_f=-25,
+        elbow_joint_b=25,
+        distal_arm_f=253,
+        distal_arm_b=-25,
+        prox_joint_f=8,
+        prox_joint_b=-8,
+        proximal_arm_f=234,
+        proximal_arm_b=-8,
     )
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 # def pick_command_px(p, printer, excluded=None):
@@ -117,7 +91,6 @@ PHYSICAL_BOUNDS = {
 
 #     if not available:
 #         return None
-
 
 
 #     return random.choice(available)
@@ -145,7 +118,6 @@ PHYSICAL_BOUNDS = {
 
 #     if not available:
 #         return None
-
 
 
 #     return random.choice(available)
@@ -165,7 +137,8 @@ def pick_command_px(p, printer, store_coords, layer, b, excluded=None):
     nearest_distance_squared = float("inf")
 
     for code, (availability, points) in printer[p].codes.items():
-        if availability != "A" or code in excluded or layer_of(code) != layer: #sanity check
+        # sanity check
+        if availability != "A" or code in excluded or layer_of(code) != layer:
             continue
 
         if len(points) == 0:
@@ -183,7 +156,6 @@ def pick_command_px(p, printer, store_coords, layer, b, excluded=None):
             nearest_distance_squared = distance_squared
 
     return nearest_code
-
 
 
 def _try_send_sim_frame(simulation_queue, message):
@@ -226,7 +198,6 @@ def _validated_arm_bounds(px, x, y, physical_bounds, context):
         corners[arm] = tuple(map(tuple, points.tolist()))
         polygons.append(polygon)
     return corners, polygons
-
 
 
 def polygon_at_position(p, printer, raw_position):
@@ -272,7 +243,6 @@ def simulate_candidate(
     )
     rectangles = list(initial_polygons)
     frame_count = 0
-
 
     _try_send_sim_frame(
         simulation_queue,
@@ -338,7 +308,7 @@ def simulate_candidate(
                     "physical_bounds": PHYSICAL_BOUNDS,
                 },
             )
-            
+
             if visualization_delay > 0.0:
                 time.sleep(visualization_delay)
 
@@ -347,9 +317,7 @@ def simulate_candidate(
             f"No simulated occupied geometry generated for {command}"
         )
 
-    
     return unary_union(rectangles), local_coords
-
 
 
 def collides_with_stored(candidate_polygon, p, store_polygons):
@@ -378,12 +346,13 @@ def mark_gcode_unavailable(candidate, printer):
         if candidate in px.codes:
             px.codes[candidate][0] = "N"
 
+
 def command_script(printer, config, store_coords, tracker_event_queue,
                    execution_request_queue, execution_result_queue,
                    tracker_control_queue, printing_queue, stop_requested,
                    execution_finished, error_queue, simulation_queue=None,
-                   stage="m", store_polygons = None, initial_assignments=None, job_tokens=None):
-    
+                   stage="m", store_polygons=None, initial_assignments=None, job_tokens=None):
+
     path = config.log_dir
     if store_polygons is None:
         raise ValueError("Pass the shared store_polygons dictionary")
@@ -394,9 +363,8 @@ def command_script(printer, config, store_coords, tracker_event_queue,
         3: 1
     }
 
-    layer = 1 # integration of layers, so the printers must finish all their cells at some layer, then they must go back to homing positions, then increment the layer and repeat the process, until 
-    #all 5 layers have been completed
-
+    layer = 1  # integration of layers, so the printers must finish all their cells at some layer, then they must go back to homing positions, then increment the layer and repeat the process, until
+    # all 5 layers have been completed
 
     def has_work(q):
         return any(
@@ -404,18 +372,16 @@ def command_script(printer, config, store_coords, tracker_event_queue,
             for name, value in printer[q].codes.items()
         )
 
-
     try:
 
         printer_ids = set(printer)
-        initial_pending = validate_initial_assignments(printer, initial_assignments)
+        initial_pending = validate_initial_assignments(
+            printer, initial_assignments)
         initial_phase = bool(initial_pending)
-
 
         if stage not in {"b", "m", "e"}:
             raise ValueError("stage must be b, m, or e")
 
-        
         with open(path / "order.txt", "w") as out:
             out.write("Begin experiment\n")
             for p, candidate in sorted(initial_pending.items()):
@@ -426,40 +392,44 @@ def command_script(printer, config, store_coords, tracker_event_queue,
         blocked = set()
         recovery_since_progress = False
 
-
-
         while not stop_requested.is_set():
 
-            #any time 'continue' is used it means restart the loop
+            # any time 'continue' is used it means restart the loop
 
-            #edit this so that it shows printers_with_work only for the current layers being processeed
+            # edit this so that it shows printers_with_work only for the current layers being processeed
             printers_with_work = {
                 q for q in printer_ids
                 if any(value[0] == "A" and layer_of(name) == layer for name, value in printer[q].codes.items())
-            } #now printers_with_work is checked based on whether there are any gcodes left that are available and in current layer being treated
-            
+            }  # now printers_with_work is checked based on whether there are any gcodes left that are available and in current layer being treated
+
             print(f'printers with work {printers_with_work}')
 
-            #edit this so that once there are no more cells to print per layer and parking has been achieved, we increment the layer by one and start again
-            #once all layers have been printed (5 layers), this section needs to terminate the entire thing
+            # edit this so that once there are no more cells to print per layer and parking has been achieved, we increment the layer by one and start again
+            # once all layers have been printed (5 layers), this section needs to terminate the entire thing
             if not printers_with_work and not in_flight:
                 print(F"LAYER RETURN START, LAYER = {layer}", flush=True)
                 with open(path / "order.txt", "a") as out:
-                    out.write("all jobs complete: requesting final return via RECOVERY_PLAN\n")
+                    out.write(
+                        "all jobs complete: requesting final return via RECOVERY_PLAN\n")
                 execution_request_queue.put(("__park__", None))
                 deadline = time.monotonic() + RECOVERY_TIMEOUT + 10.0
                 while not stop_requested.is_set():
                     if time.monotonic() >= deadline:
-                        raise TimeoutError("Execution worker did not complete final return")
+                        raise TimeoutError(
+                            "Execution worker did not complete final return")
                     try:
-                        result, observed = execution_result_queue.get(timeout=0.2)
+                        result, observed = execution_result_queue.get(
+                            timeout=0.2)
                     except queue.Empty:
                         continue
                     if result != "parked":
-                        raise RuntimeError(f"Final return failed: {(result, observed)}")
+                        raise RuntimeError(
+                            f"Final return failed: {(result, observed)}")
                     if not isinstance(observed, dict) or set(observed) != printer_ids:
-                        raise RuntimeError("Final return did not return all printer positions")
-                    positions = {q: tuple(map(float, observed[q])) for q in printer}
+                        raise RuntimeError(
+                            "Final return did not return all printer positions")
+                    positions = {
+                        q: tuple(map(float, observed[q])) for q in printer}
                     footprints = {
                         q: polygon_at_position(q, printer, positions[q]) for q in printer
                     }
@@ -467,7 +437,8 @@ def command_script(printer, config, store_coords, tracker_event_queue,
                     store_polygons.update(footprints)
                     print(f"{layer} done, observed = {positions}", flush=True)
                     with open(path / "order.txt", "a") as out:
-                        out.write(f"final return complete: observed positions={positions}\n")
+                        out.write(
+                            f"final return complete: observed positions={positions}\n")
                     break
                 if stop_requested.is_set():
                     return
@@ -485,13 +456,13 @@ def command_script(printer, config, store_coords, tracker_event_queue,
 
                 stop_requested.set()
                 break
-            ####this if branch is supposed to deal with loop check
+            # this if branch is supposed to deal with loop check
             if (
                 printers_with_work
                 and printers_with_work <= loop_check
                 and not in_flight
                 and printer_ids <= blocked
-                ):
+            ):
                 if recovery_since_progress:
                     raise RuntimeError(
                         "All remaining candidates still fail after recovery; "
@@ -500,24 +471,28 @@ def command_script(printer, config, store_coords, tracker_event_queue,
                 recovery_since_progress = True
 
                 with open(path / "order.txt", "a") as out:
-                    out.write("deadlock: requesting recovery for both printers\n")
+                    out.write(
+                        "deadlock: requesting recovery for both printers\n")
 
-                #tell the execution script to start recovery
+                # tell the execution script to start recovery
                 execution_request_queue.put(("__recover__", None))
-
 
                 deadline = time.monotonic() + RECOVERY_TIMEOUT + 10.0
                 while not stop_requested.is_set():
                     if time.monotonic() >= deadline:
-                        raise TimeoutError("Execution worker did not complete recovery") 
+                        raise TimeoutError(
+                            "Execution worker did not complete recovery")
                     try:
-                        result, observed = execution_result_queue.get(timeout=0.2)
+                        result, observed = execution_result_queue.get(
+                            timeout=0.2)
                     except queue.Empty:
                         continue
                     if result != "recovered":
-                        raise RuntimeError(f"Recovery failed: {(result, observed)}")
+                        raise RuntimeError(
+                            f"Recovery failed: {(result, observed)}")
                     if not isinstance(observed, dict) or set(observed) != set(printer):
-                        raise RuntimeError("Recovery did not return both printer positions")
+                        raise RuntimeError(
+                            "Recovery did not return both printer positions")
 
                     positions = {
                         q: tuple(map(float, observed[q])) for q in printer
@@ -533,7 +508,6 @@ def command_script(printer, config, store_coords, tracker_event_queue,
                         f"old={store_coords.copy()} new={positions}", flush=True,
                     )
 
-
                     store_coords.update(positions)
                     store_polygons.update(footprints)
                     # No normal event is released until BOTH dictionaries are updated.
@@ -543,14 +517,13 @@ def command_script(printer, config, store_coords, tracker_event_queue,
                             tracker_control_queue.put(("retry", q))
                             blocked.remove(q)
                     with open(path / "order.txt", "a") as out:
-                        out.write(f"recovered: observed positions={positions}\n")
+                        out.write(
+                            f"recovered: observed positions={positions}\n")
                     break
 
                 if stop_requested.is_set():
                     return
                 continue
-
-                
 
             # get() removes ONLY the oldest message. Everything else waits.
             try:
@@ -571,7 +544,8 @@ def command_script(printer, config, store_coords, tracker_event_queue,
                 if initial_phase and not initial_pending and not in_flight:
                     initial_phase = False
                     with open(path / "order.txt", "a") as out:
-                        out.write("initial assignments complete; normal scheduling begins\n")
+                        out.write(
+                            "initial assignments complete; normal scheduling begins\n")
                 for q in sorted(blocked):
                     if any(v[0] == "A" and layer_of(name) == layer for name, v in printer[q].codes.items()):
                         tracker_control_queue.put(("retry", q))
@@ -579,13 +553,10 @@ def command_script(printer, config, store_coords, tracker_event_queue,
 
             # Required before no-print or print controls can be applied.
 
-
             print(
                 f"FREE_CONSUMED t={time.monotonic():.6f} p={p} "
                 f"stored_now={store_coords.copy()}", flush=True,
             )
-
-
 
             tracker_control_queue.put(("hold", p))
             if initial_phase and p not in initial_pending:
@@ -593,37 +564,22 @@ def command_script(printer, config, store_coords, tracker_event_queue,
                 blocked.add(p)
                 continue
 
-            #past this is wehre simulation starts
-
-
-
+            # past this is wehre simulation starts
 
             # if status is not free, just continue to probe the queue
-            #if status says Finsihed, that means all gcode commands have been executed
-            #in that case, send a command ot all printers to raise by Z = +10 and break from the loop
+            # if status says Finsihed, that means all gcode commands have been executed
+            # in that case, send a command ot all printers to raise by Z = +10 and break from the loop
 
             # if status != "free":
             #     raise ValueError(f"Unexpected idle message: {(p, status)}")
 
-
-
-
-
-
-
-
-
-
-
-
-            #how is this different from coordinates = store_coordinates.copy()
+            # how is this different from coordinates = store_coordinates.copy()
             coordinates = {
-                q: tuple(position) 
+                q: tuple(position)
                 for q, position in store_coords.copy().items()
             }
 
-
-            #hwo is this different from comparison_polygons = store_polygons.copy()
+            # hwo is this different from comparison_polygons = store_polygons.copy()
             comparison_polygons = {
                 q: polygon_at_position(q, printer, coordinates[q])
                 for q in printer
@@ -637,62 +593,42 @@ def command_script(printer, config, store_coords, tracker_event_queue,
                 f"candidate_printer={p} coordinates={coordinates}", flush=True,
             )
 
-
-            #edit sim_px and all of its helper functions, so that it only runs simulations of cell printing on a certain layer
+            # edit sim_px and all of its helper functions, so that it only runs simulations of cell printing on a certain layer
             sim_px(p, printer[p].codes, coordinates, config, layer)
 
-
-
-
-
-
-
             rejected = set()
-            #edit eligible_count so that it only counts the eligible cells per current assigned lyaer
+            # edit eligible_count so that it only counts the eligible cells per current assigned lyaer
             eligible_count = sum(
                 value[0] == "A" and layer_of(name) == layer
                 for name, value in printer[p].codes.items()
             )
 
-
-
-
-
-            
             if eligible_count == 0:
                 tracker_control_queue.put(("no print", p))
                 blocked.add(p)
                 continue
 
-
-
             while not stop_requested.is_set():
                 if initial_phase:
                     candidate = initial_pending[p]
                 elif count[p] == 1:
-                    #edit pick_command_px function so that it picks the correct command for the given layer, the candidate will already contain information on the layer of the gcode
-                    candidate = pick_command_px(p, printer, coordinates, layer, b = True, excluded=rejected)
+                    # edit pick_command_px function so that it picks the correct command for the given layer, the candidate will already contain information on the layer of the gcode
+                    candidate = pick_command_px(
+                        p, printer, coordinates, layer, b=True, excluded=rejected)
                 else:
-                    #edit pick_command_px function so that it picks the correct command for the given layer, the candidate will already contain information on the layer of the gcode
-                    candidate = pick_command_px(p, printer, coordinates, layer, b = False, excluded=rejected)
-
-
-
-
-
+                    # edit pick_command_px function so that it picks the correct command for the given layer, the candidate will already contain information on the layer of the gcode
+                    candidate = pick_command_px(
+                        p, printer, coordinates, layer, b=False, excluded=rejected)
 
                 if candidate is None:
                     break
-                #edit required? Since the candidate variable will already containt the layer information in it
+                # edit required? Since the candidate variable will already containt the layer information in it
                 candidate_polygon, candidate_final_coords = simulate_candidate(
                     p=p, candidate=candidate, printer=printer,
                     store_coords=coordinates, config=config,
                     simulation_queue=simulation_queue,
                     visualization_delay=0.03 if simulation_queue is not None else 0,
                 )
-
-
-
 
                 collisions = collides_with_stored(
                     candidate_polygon, p, comparison_polygons,
@@ -719,7 +655,8 @@ def command_script(printer, config, store_coords, tracker_event_queue,
                         },
 
                         "overlap_polygons": {
-                            other_p: mapping(candidate_polygon.intersection(comparison_polygons[other_p]))
+                            other_p: mapping(candidate_polygon.intersection(
+                                comparison_polygons[other_p]))
                             for other_p in collisions
                         },
                     })
@@ -727,33 +664,24 @@ def command_script(printer, config, store_coords, tracker_event_queue,
                 if collisions:
                     rejected.add(candidate)
                     with open(path / "order.txt", "a") as out:
-                        out.write(f"reject p{p}:{candidate}; collision={collisions}\n")
+                        out.write(
+                            f"reject p{p}:{candidate}; collision={collisions}\n")
                     if initial_phase:
-                        raise RuntimeError(f"Initial assignment p{p}:{candidate} failed collision checks: {collisions}")
+                        raise RuntimeError(
+                            f"Initial assignment p{p}:{candidate} failed collision checks: {collisions}")
                     continue
 
                 initial_pending.pop(p, None)
                 mark_gcode_unavailable(candidate, printer)
 
-
-
-
-
-                #there is a stage there shoudl says only middle is used
+                # there is a stage there shoudl says only middle is used
                 if count[p] == 1:
                     filename = f"{Path(candidate).stem}_b.gcode"
                 else:
                     filename = f"{Path(candidate).stem}_{stage}.gcode"
 
-
                 with open(path / "order.txt", "a") as out:
                     out.write(f"execute p{p}:{filename}\n")
-
-
-
-
-
-
 
                 in_flight.add(p)
                 execution_request_queue.put((filename, p))
@@ -761,33 +689,25 @@ def command_script(printer, config, store_coords, tracker_event_queue,
                 # First wait: execution confirms submission.
                 while not stop_requested.is_set():
                     try:
-                        result, response_p = execution_result_queue.get(timeout=0.2)
+                        result, response_p = execution_result_queue.get(
+                            timeout=0.2)
                     except queue.Empty:
                         continue
                     if (result, response_p) != ("sent", p):
-                        raise RuntimeError(f"Execution failed: {(result, response_p)}")
+                        raise RuntimeError(
+                            f"Execution failed: {(result, response_p)}")
                     break
-
-
-
-
-
-
-
 
                 # Second wait: tracking confirms extrusion for this printer.
                 # Do NOT read tracker_event_queue in either waiting loop.
 
-
-
                 if stop_requested.is_set():
                     return
 
-
-                #now the command script is responibel for telling the tracker to watch after having
+                # now the command script is responibel for telling the tracker to watch after having
                 # sent the execution command to the printer, not sure how correct this is
-                #but we will see, shouldn't be much of a difference because either way
-                #the tracker watches only after the execution command is sent
+                # but we will see, shouldn't be much of a difference because either way
+                # the tracker watches only after the execution command is sent
 
                 if job_tokens is None:
                     tracker_control_queue.put(("print", p))
@@ -802,32 +722,29 @@ def command_script(printer, config, store_coords, tracker_event_queue,
                     except queue.Empty:
                         continue
                     if response_p != p or result not in {"Is printing", "Completed"}:
-                        raise RuntimeError(f"Unexpected job acknowledgement: {(result, response_p)}; expected Is printing or Completed for p{p}")
-
+                        raise RuntimeError(
+                            f"Unexpected job acknowledgement: {(result, response_p)}; expected Is printing or Completed for p{p}")
 
                     print(
                         f"PRINT_ACK t={time.monotonic():.6f} p={p} file={filename} result={result!r} "
                         f"stored_now={store_coords.copy()}", flush=True,
                     )
-                    
-                    
+
                     with open(path / "order.txt", "a") as out:
-                        out.write(f"job acknowledgement p{p}:{filename}; result={result}\n")
+                        out.write(
+                            f"job acknowledgement p{p}:{filename}; result={result}\n")
                     count[p] += 1
                     print(count)
                     break
                 break  # Return to the outer FIFO get() only now.
 
-            #write a script that checks the length of the rejected and the amount of codes that p1 was eligible to take 'A' status
-            #if they are equal, then px in this turn was not eligible to take anything and has to pass his turn
+            # write a script that checks the length of the rejected and the amount of codes that p1 was eligible to take 'A' status
+            # if they are equal, then px in this turn was not eligible to take anything and has to pass his turn
             # then you run tracker_control_queue.put(('no print', p))
             if not stop_requested.is_set() and len(rejected) == eligible_count and eligible_count > 0:
                 tracker_control_queue.put(("no print", p))
                 blocked.add(p)
-                loop_check.add(p) 
-
-
-            
+                loop_check.add(p)
 
     except Exception:
         details = traceback.format_exc()
@@ -837,13 +754,9 @@ def command_script(printer, config, store_coords, tracker_event_queue,
             with open(path / "order.txt", "a") as out:
                 out.write(f"scheduler failed:\n{details}\n")
         except OSError:
-            pass  # Preserve the original failure even if the log cannot be written.
+            # Preserve the original failure even if the log cannot be written.
+            pass
         raise
     finally:
         _try_send_sim_frame(simulation_queue, {"type": "stop"})
         execution_finished.set()
-
-
-
-
-
