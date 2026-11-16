@@ -1,0 +1,4378 @@
+{
+  "cura_version": "5.13.0",
+  "copyright": "Copyright UltiMaker; Cura definitions licensed LGPL-3.0-or-later",
+  "sources": [
+    "https://github.com/Ultimaker/Cura/blob/5.13.0/resources/definitions/fdmprinter.def.json",
+    "https://github.com/Ultimaker/Cura/blob/5.13.0/resources/definitions/fdmextruder.def.json"
+  ],
+  "global": {
+    "build_volume_fan_nr": {
+      "type": "int",
+      "default_value": 0,
+      "settable_per_extruder": false
+    },
+    "machine_name": {
+      "type": "str",
+      "default_value": "Unknown",
+      "settable_per_extruder": false
+    },
+    "machine_show_variants": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "machine_start_gcode": {
+      "type": "str",
+      "default_value": "G1 Z15.0 F6000 ;Move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0",
+      "settable_per_extruder": false
+    },
+    "machine_end_gcode": {
+      "type": "str",
+      "default_value": "M104 S0\nM140 S0\n;Retract the filament\nG92 E1\nG1 E-1 F300\nM84",
+      "settable_per_extruder": false
+    },
+    "material_guid": {
+      "type": "str",
+      "default_value": ""
+    },
+    "material_type": {
+      "type": "str",
+      "default_value": ""
+    },
+    "material_brand": {
+      "type": "str",
+      "default_value": ""
+    },
+    "material_diameter": {
+      "type": "float",
+      "default_value": 2.85,
+      "settable_per_extruder": true
+    },
+    "material_bed_temp_wait": {
+      "type": "bool",
+      "default_value": true,
+      "settable_per_extruder": false
+    },
+    "material_print_temp_wait": {
+      "type": "bool",
+      "default_value": true,
+      "settable_per_extruder": false
+    },
+    "material_print_temp_prepend": {
+      "type": "bool",
+      "default_value": true,
+      "settable_per_extruder": false
+    },
+    "material_bed_temp_prepend": {
+      "type": "bool",
+      "default_value": true,
+      "settable_per_extruder": false
+    },
+    "machine_width": {
+      "type": "float",
+      "default_value": 100,
+      "settable_per_extruder": false
+    },
+    "machine_depth": {
+      "type": "float",
+      "default_value": 100,
+      "settable_per_extruder": false
+    },
+    "machine_height": {
+      "type": "float",
+      "default_value": 100,
+      "settable_per_extruder": false
+    },
+    "machine_shape": {
+      "type": "enum",
+      "default_value": "rectangular",
+      "settable_per_extruder": false,
+      "options": {
+        "rectangular": "Rectangular",
+        "elliptic": "Elliptic"
+      }
+    },
+    "machine_buildplate_type": {
+      "type": "enum",
+      "default_value": "glass",
+      "settable_per_extruder": false,
+      "options": {
+        "glass": "Glass",
+        "aluminum": "Aluminum"
+      }
+    },
+    "machine_heated_bed": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "machine_heated_build_volume": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "machine_always_write_active_tool": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "machine_center_is_zero": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "machine_extruder_count": {
+      "type": "int",
+      "default_value": 1,
+      "settable_per_extruder": false
+    },
+    "extruders_enabled_count": {
+      "type": "int",
+      "default_value": 1,
+      "value": "=machine_extruder_count",
+      "settable_per_extruder": false
+    },
+    "machine_nozzle_tip_outer_diameter": {
+      "type": "float",
+      "default_value": 1,
+      "settable_per_extruder": true
+    },
+    "machine_nozzle_expansion_angle": {
+      "type": "int",
+      "default_value": 45,
+      "settable_per_extruder": false
+    },
+    "machine_heat_zone_length": {
+      "type": "float",
+      "default_value": 16,
+      "settable_per_extruder": true
+    },
+    "machine_nozzle_temp_enabled": {
+      "type": "bool",
+      "default_value": true,
+      "value": "=machine_gcode_flavor != \"UltiGCode\"",
+      "settable_per_extruder": true
+    },
+    "machine_nozzle_heat_up_speed": {
+      "type": "float",
+      "default_value": 2.0,
+      "settable_per_extruder": true
+    },
+    "machine_nozzle_cool_down_speed": {
+      "type": "float",
+      "default_value": 2.0,
+      "settable_per_extruder": true
+    },
+    "machine_min_cool_heat_time_window": {
+      "type": "float",
+      "default_value": 50.0,
+      "settable_per_extruder": true
+    },
+    "machine_gcode_flavor": {
+      "type": "enum",
+      "default_value": "RepRap (Marlin/Sprinter)",
+      "settable_per_extruder": false,
+      "options": {
+        "RepRap (Marlin/Sprinter)": "Marlin",
+        "RepRap (Volumetric)": "Marlin (Volumetric)",
+        "RepRap (RepRap)": "RepRap",
+        "UltiGCode": "Ultimaker 2",
+        "Griffin": "Griffin",
+        "Cheetah": "Griffin+Cheetah",
+        "Makerbot": "Makerbot",
+        "BFB": "Bits from Bytes",
+        "MACH3": "Mach3",
+        "Repetier": "Repetier",
+        "BambuLab": "BambuLab"
+      }
+    },
+    "machine_firmware_retract": {
+      "type": "bool",
+      "default_value": false,
+      "value": "=machine_gcode_flavor == 'RepRap (Volumetric)' or machine_gcode_flavor == 'UltiGCode' or machine_gcode_flavor == 'BFB'",
+      "settable_per_extruder": false
+    },
+    "machine_extruders_share_heater": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "machine_extruders_share_nozzle": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "machine_extruders_shared_nozzle_initial_retraction": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "machine_disallowed_areas": {
+      "type": "polygons",
+      "default_value": [],
+      "settable_per_extruder": false
+    },
+    "nozzle_disallowed_areas": {
+      "type": "polygons",
+      "default_value": [],
+      "settable_per_extruder": false
+    },
+    "machine_head_with_fans_polygon": {
+      "type": "polygon",
+      "default_value": [
+        [
+          -20,
+          10
+        ],
+        [
+          10,
+          10
+        ],
+        [
+          10,
+          -10
+        ],
+        [
+          -20,
+          -10
+        ]
+      ],
+      "settable_per_extruder": false
+    },
+    "gantry_height": {
+      "type": "float",
+      "default_value": 99999999999,
+      "value": "=machine_height",
+      "settable_per_extruder": false
+    },
+    "machine_time_estimation_factor": {
+      "type": "float",
+      "default_value": 100,
+      "settable_per_extruder": false
+    },
+    "machine_nozzle_id": {
+      "type": "str",
+      "default_value": "unknown",
+      "settable_per_extruder": true
+    },
+    "machine_nozzle_size": {
+      "type": "float",
+      "default_value": 0.4,
+      "settable_per_extruder": true
+    },
+    "machine_use_extruder_offset_to_offset_coords": {
+      "type": "bool",
+      "default_value": true,
+      "settable_per_extruder": false
+    },
+    "machine_start_gcode_first": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "extruder_prime_pos_z": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "extruder_prime_pos_abs": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "machine_max_feedrate_x": {
+      "type": "float",
+      "default_value": 299792458000,
+      "settable_per_extruder": false
+    },
+    "machine_max_feedrate_y": {
+      "type": "float",
+      "default_value": 299792458000,
+      "settable_per_extruder": false
+    },
+    "machine_max_feedrate_z": {
+      "type": "float",
+      "default_value": 299792458000,
+      "settable_per_extruder": false
+    },
+    "machine_max_feedrate_e": {
+      "type": "float",
+      "default_value": 299792458000,
+      "settable_per_extruder": false
+    },
+    "machine_max_acceleration_x": {
+      "type": "float",
+      "default_value": 9000,
+      "settable_per_extruder": false
+    },
+    "machine_max_acceleration_y": {
+      "type": "float",
+      "default_value": 9000,
+      "settable_per_extruder": false
+    },
+    "machine_max_acceleration_z": {
+      "type": "float",
+      "default_value": 100,
+      "settable_per_extruder": false
+    },
+    "machine_max_acceleration_e": {
+      "type": "float",
+      "default_value": 10000,
+      "settable_per_extruder": false
+    },
+    "machine_acceleration": {
+      "type": "float",
+      "default_value": 4000,
+      "settable_per_extruder": false
+    },
+    "machine_max_jerk_xy": {
+      "type": "float",
+      "default_value": 20.0,
+      "settable_per_extruder": false
+    },
+    "machine_max_jerk_z": {
+      "type": "float",
+      "default_value": 0.4,
+      "settable_per_extruder": false
+    },
+    "machine_max_jerk_e": {
+      "type": "float",
+      "default_value": 5.0,
+      "settable_per_extruder": false
+    },
+    "machine_steps_per_mm_x": {
+      "type": "float",
+      "default_value": 50,
+      "settable_per_extruder": true
+    },
+    "machine_steps_per_mm_y": {
+      "type": "float",
+      "default_value": 50,
+      "settable_per_extruder": true
+    },
+    "machine_steps_per_mm_z": {
+      "type": "float",
+      "default_value": 50,
+      "settable_per_extruder": true
+    },
+    "machine_steps_per_mm_e": {
+      "type": "float",
+      "default_value": 1600,
+      "settable_per_extruder": true
+    },
+    "machine_endstop_positive_direction_x": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "machine_endstop_positive_direction_y": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "machine_endstop_positive_direction_z": {
+      "type": "bool",
+      "default_value": true,
+      "settable_per_extruder": true
+    },
+    "machine_minimum_feedrate": {
+      "type": "float",
+      "default_value": 0.0,
+      "settable_per_extruder": false
+    },
+    "machine_feeder_wheel_diameter": {
+      "type": "float",
+      "default_value": 10.0,
+      "settable_per_extruder": true
+    },
+    "machine_scale_fan_speed_zero_to_one": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "reset_flow_duration": {
+      "type": "float",
+      "value": 2.0
+    },
+    "layer_height": {
+      "type": "float",
+      "default_value": 0.1,
+      "settable_per_extruder": false
+    },
+    "layer_height_0": {
+      "type": "float",
+      "default_value": 0.3,
+      "resolve": "=min(extruderValues('layer_height_0'))",
+      "settable_per_extruder": false
+    },
+    "line_width": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=machine_nozzle_size"
+    },
+    "wall_line_width": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=line_width",
+      "limit_to_extruder": "=wall_0_extruder_nr if wall_x_extruder_nr == wall_0_extruder_nr else -1"
+    },
+    "wall_line_width_0": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=wall_line_width",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "wall_line_width_x": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=wall_line_width",
+      "limit_to_extruder": "=wall_x_extruder_nr"
+    },
+    "skin_line_width": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=line_width",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "infill_line_width": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=line_width",
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "skirt_brim_line_width": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=line_width",
+      "settable_per_extruder": true
+    },
+    "support_line_width": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=line_width",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_interface_line_width": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=line_width",
+      "limit_to_extruder": "=support_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_roof_line_width": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=extruderValue(support_roof_extruder_nr, 'support_interface_line_width')",
+      "limit_to_extruder": "=support_roof_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_bottom_line_width": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=extruderValue(support_bottom_extruder_nr, 'support_interface_line_width')",
+      "limit_to_extruder": "=support_bottom_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "prime_tower_line_width": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=line_width",
+      "settable_per_extruder": true
+    },
+    "initial_layer_line_width_factor": {
+      "type": "float",
+      "default_value": 100.0,
+      "settable_per_extruder": true
+    },
+    "wall_extruder_nr": {
+      "type": "optional_extruder",
+      "default_value": "-1",
+      "settable_per_extruder": false
+    },
+    "wall_0_extruder_nr": {
+      "type": "optional_extruder",
+      "default_value": "-1",
+      "value": "=wall_extruder_nr",
+      "settable_per_extruder": false
+    },
+    "wall_x_extruder_nr": {
+      "type": "optional_extruder",
+      "default_value": "-1",
+      "value": "=wall_extruder_nr",
+      "settable_per_extruder": false
+    },
+    "wall_thickness": {
+      "type": "float",
+      "default_value": 0.8,
+      "value": "=wall_line_width_0 if magic_spiralize else 0.8",
+      "limit_to_extruder": "=wall_x_extruder_nr"
+    },
+    "wall_line_count": {
+      "type": "int",
+      "default_value": 2,
+      "value": "=1 if magic_spiralize else max(1, round((wall_thickness - wall_line_width_0) / wall_line_width_x) + 1) if wall_thickness != 0 else 0",
+      "limit_to_extruder": "=wall_x_extruder_nr"
+    },
+    "wall_transition_length": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=line_width"
+    },
+    "wall_distribution_count": {
+      "type": "int",
+      "default_value": 1
+    },
+    "wall_transition_angle": {
+      "type": "float",
+      "default_value": 10
+    },
+    "wall_transition_filter_distance": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=100"
+    },
+    "wall_transition_filter_deviation": {
+      "type": "float",
+      "default_value": 0.1,
+      "value": "=.25 * machine_nozzle_size"
+    },
+    "wall_0_wipe_dist": {
+      "type": "float",
+      "default_value": 0.2,
+      "value": "=machine_nozzle_size / 2",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "wall_0_inset": {
+      "type": "float",
+      "default_value": 0.0,
+      "value": "=(machine_nozzle_size - wall_line_width_0) / 2 if (wall_line_width_0 < machine_nozzle_size and inset_direction != \"outside_in\") else 0",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "optimize_wall_printing_order": {
+      "type": "bool",
+      "default_value": true
+    },
+    "inset_direction": {
+      "type": "enum",
+      "default_value": "inside_out",
+      "options": {
+        "inside_out": "Inside To Outside",
+        "outside_in": "Outside To Inside"
+      }
+    },
+    "initial_layer_inset_direction": {
+      "type": "enum",
+      "default_value": "inside_out",
+      "value": "=inset_direction",
+      "options": {
+        "inside_out": "Inside To Outside",
+        "outside_in": "Outside To Inside"
+      }
+    },
+    "alternate_extra_perimeter": {
+      "type": "bool",
+      "default_value": false,
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "min_wall_line_width": {
+      "type": "float",
+      "default_value": 0.3,
+      "value": "=machine_nozzle_size * .85"
+    },
+    "min_even_wall_line_width": {
+      "type": "float",
+      "default_value": 0.3,
+      "value": "=min_wall_line_width"
+    },
+    "min_odd_wall_line_width": {
+      "type": "float",
+      "default_value": 0.3,
+      "value": "=min_wall_line_width"
+    },
+    "fill_outline_gaps": {
+      "type": "bool",
+      "default_value": true,
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "min_feature_size": {
+      "type": "float",
+      "default_value": 0.1,
+      "value": "=wall_line_width_0 / 4",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "min_bead_width": {
+      "type": "float",
+      "default_value": 0.2,
+      "value": "=min_wall_line_width",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "xy_offset": {
+      "type": "float",
+      "default_value": 0,
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "xy_offset_layer_0": {
+      "type": "float",
+      "default_value": 0,
+      "value": "=xy_offset",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "hole_xy_offset": {
+      "type": "float",
+      "default_value": 0,
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "hole_xy_offset_max_diameter": {
+      "type": "float",
+      "default_value": 0,
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "z_seam_type": {
+      "type": "enum",
+      "default_value": "sharpest_corner",
+      "limit_to_extruder": "=wall_0_extruder_nr",
+      "options": {
+        "back": "User Specified",
+        "shortest": "Shortest",
+        "random": "Random",
+        "sharpest_corner": "Sharpest Corner"
+      }
+    },
+    "z_seam_on_vertex": {
+      "type": "bool",
+      "default_value": false
+    },
+    "z_seam_position": {
+      "type": "enum",
+      "default_value": "back",
+      "limit_to_extruder": "=wall_0_extruder_nr",
+      "options": {
+        "backleft": "Back Left",
+        "back": "Back",
+        "backright": "Back Right",
+        "right": "Right",
+        "frontright": "Front Right",
+        "front": "Front",
+        "frontleft": "Front Left",
+        "left": "Left",
+        "middle": "Middle"
+      }
+    },
+    "z_seam_x": {
+      "type": "float",
+      "default_value": 100.0,
+      "value": "=(0 if (z_seam_position == 'frontleft' or z_seam_position == 'left' or z_seam_position == 'backleft') else machine_width / 2 if (z_seam_position == 'front' or z_seam_position == 'back' or z_seam_position == 'middle') else machine_width) - (machine_width / 2 if z_seam_relative or machine_center_is_zero else 0)",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "z_seam_y": {
+      "type": "float",
+      "default_value": 100.0,
+      "value": "=(0 if (z_seam_position == 'frontleft' or z_seam_position == 'front' or z_seam_position == 'frontright') else machine_depth / 2 if (z_seam_position == 'left' or z_seam_position == 'right' or z_seam_position == 'middle') else machine_depth) - (machine_depth / 2 if z_seam_relative or machine_center_is_zero else 0)",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "z_seam_corner": {
+      "type": "enum",
+      "default_value": "z_seam_corner_inner",
+      "limit_to_extruder": "=wall_0_extruder_nr",
+      "options": {
+        "z_seam_corner_inner": "Hide Seam",
+        "z_seam_corner_outer": "Expose Seam",
+        "z_seam_corner_any": "Hide or Expose Seam",
+        "z_seam_corner_weighted": "Smart Hiding"
+      }
+    },
+    "z_seam_relative": {
+      "type": "bool",
+      "default_value": false,
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "roofing_extruder_nr": {
+      "type": "optional_extruder",
+      "default_value": "-1",
+      "value": "=top_bottom_extruder_nr",
+      "settable_per_extruder": false
+    },
+    "roofing_layer_count": {
+      "type": "int",
+      "default_value": 0,
+      "value": "=0",
+      "limit_to_extruder": "=roofing_extruder_nr"
+    },
+    "roofing_line_width": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=skin_line_width",
+      "limit_to_extruder": "=roofing_extruder_nr"
+    },
+    "roofing_pattern": {
+      "type": "enum",
+      "default_value": "lines",
+      "value": "=top_bottom_pattern",
+      "limit_to_extruder": "=roofing_extruder_nr",
+      "options": {
+        "lines": "Lines",
+        "concentric": "Concentric",
+        "zigzag": "Zig Zag"
+      }
+    },
+    "roofing_monotonic": {
+      "type": "bool",
+      "default_value": true,
+      "value": true,
+      "limit_to_extruder": "=roofing_extruder_nr"
+    },
+    "roofing_angles": {
+      "type": "[int]",
+      "default_value": "[ ]",
+      "value": "=skin_angles",
+      "limit_to_extruder": "=roofing_extruder_nr"
+    },
+    "roofing_expansion": {
+      "type": "float",
+      "default_value": "0",
+      "value": "=0",
+      "limit_to_extruder": "=roofing_extruder_nr"
+    },
+    "flooring_extruder_nr": {
+      "type": "optional_extruder",
+      "default_value": "-1",
+      "value": "=top_bottom_extruder_nr",
+      "settable_per_extruder": false
+    },
+    "flooring_layer_count": {
+      "type": "int",
+      "default_value": 0,
+      "value": "=0",
+      "limit_to_extruder": "=flooring_extruder_nr"
+    },
+    "flooring_line_width": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=skin_line_width",
+      "limit_to_extruder": "=flooring_extruder_nr"
+    },
+    "flooring_pattern": {
+      "type": "enum",
+      "default_value": "lines",
+      "value": "=top_bottom_pattern",
+      "limit_to_extruder": "=flooring_extruder_nr",
+      "options": {
+        "lines": "Lines",
+        "concentric": "Concentric",
+        "zigzag": "Zig Zag"
+      }
+    },
+    "flooring_monotonic": {
+      "type": "bool",
+      "default_value": true,
+      "value": true,
+      "limit_to_extruder": "=flooring_extruder_nr"
+    },
+    "flooring_angles": {
+      "type": "[int]",
+      "default_value": "[ ]",
+      "value": "=skin_angles",
+      "limit_to_extruder": "=flooring_extruder_nr"
+    },
+    "top_bottom_extruder_nr": {
+      "type": "optional_extruder",
+      "default_value": "-1",
+      "settable_per_extruder": false
+    },
+    "top_bottom_thickness": {
+      "type": "float",
+      "default_value": 0.8,
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "top_thickness": {
+      "type": "float",
+      "default_value": 0.8,
+      "value": "=top_bottom_thickness",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "top_layers": {
+      "type": "int",
+      "default_value": 8,
+      "value": "=math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "bottom_thickness": {
+      "type": "float",
+      "default_value": 0.6,
+      "value": "=top_bottom_thickness",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "bottom_layers": {
+      "type": "int",
+      "default_value": 6,
+      "value": "=math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "initial_bottom_layers": {
+      "type": "int",
+      "default_value": 6,
+      "value": "=bottom_layers",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "top_bottom_pattern": {
+      "type": "enum",
+      "default_value": "lines",
+      "limit_to_extruder": "=top_bottom_extruder_nr",
+      "options": {
+        "lines": "Lines",
+        "concentric": "Concentric",
+        "zigzag": "Zig Zag"
+      }
+    },
+    "top_bottom_pattern_0": {
+      "type": "enum",
+      "default_value": "lines",
+      "value": "=top_bottom_pattern",
+      "limit_to_extruder": "=top_bottom_extruder_nr",
+      "options": {
+        "lines": "Lines",
+        "concentric": "Concentric",
+        "zigzag": "Zig Zag"
+      }
+    },
+    "connect_skin_polygons": {
+      "type": "bool",
+      "default_value": false,
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "skin_monotonic": {
+      "type": "bool",
+      "default_value": false,
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "skin_angles": {
+      "type": "[int]",
+      "default_value": "[ ]",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "small_skin_width": {
+      "type": "float",
+      "default_value": 1,
+      "value": "=skin_line_width * 2",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "small_skin_on_surface": {
+      "type": "bool",
+      "default_value": false,
+      "value": "=False",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "skin_no_small_gaps_heuristic": {
+      "type": "bool",
+      "default_value": false,
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "skin_outline_count": {
+      "type": "int",
+      "default_value": 1,
+      "value": "=0 if top_bottom_pattern == 'concentric' and top_bottom_pattern_0 == 'concentric' and roofing_layer_count <= 0 else 1",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "ironing_enabled": {
+      "type": "bool",
+      "default_value": false,
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "ironing_only_highest_layer": {
+      "type": "bool",
+      "default_value": false,
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "ironing_pattern": {
+      "type": "enum",
+      "default_value": "zigzag",
+      "limit_to_extruder": "=top_bottom_extruder_nr",
+      "options": {
+        "concentric": "Concentric",
+        "zigzag": "Zig Zag"
+      }
+    },
+    "ironing_monotonic": {
+      "type": "bool",
+      "default_value": false,
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "ironing_line_spacing": {
+      "type": "float",
+      "default_value": 0.1,
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "ironing_flow": {
+      "type": "float",
+      "default_value": 10.0,
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "ironing_inset": {
+      "type": "float",
+      "default_value": 0.35,
+      "value": "=wall_line_width_0 / 2 + (ironing_line_spacing - skin_line_width * (1.0 + ironing_flow / 100) / 2 if ironing_pattern == 'concentric' else skin_line_width * (1.0 - ironing_flow / 100) / 2)",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "speed_ironing": {
+      "type": "float",
+      "default_value": 20.0,
+      "value": "=speed_topbottom * 20 / 30",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "acceleration_ironing": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_topbottom",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "jerk_ironing": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_topbottom",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "skin_overlap": {
+      "type": "float",
+      "default_value": 5,
+      "value": "=5 if top_bottom_pattern != 'concentric' else 0",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "skin_overlap_mm": {
+      "type": "float",
+      "default_value": 0.02,
+      "value": "=0.5 * (skin_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0)) * skin_overlap / 100 if top_bottom_pattern != 'concentric' else 0"
+    },
+    "skin_preshrink": {
+      "type": "float",
+      "default_value": 1,
+      "value": "=wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "top_skin_preshrink": {
+      "type": "float",
+      "default_value": 1,
+      "value": "=skin_preshrink",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "bottom_skin_preshrink": {
+      "type": "float",
+      "default_value": 1,
+      "value": "=skin_preshrink",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "expand_skins_expand_distance": {
+      "type": "float",
+      "default_value": 1,
+      "value": "=max(-skin_preshrink, wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x)",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "top_skin_expand_distance": {
+      "type": "float",
+      "default_value": 1,
+      "value": "=expand_skins_expand_distance",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "bottom_skin_expand_distance": {
+      "type": "float",
+      "default_value": 1,
+      "value": "=expand_skins_expand_distance",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "max_skin_angle_for_expansion": {
+      "type": "float",
+      "default_value": 90,
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "min_skin_width_for_expansion": {
+      "type": "float",
+      "default_value": 0,
+      "value": "=top_layers * layer_height / math.tan(math.radians(max_skin_angle_for_expansion))",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "infill_extruder_nr": {
+      "type": "optional_extruder",
+      "default_value": "-1",
+      "settable_per_extruder": false
+    },
+    "infill_sparse_density": {
+      "type": "float",
+      "default_value": 20,
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "infill_line_distance": {
+      "type": "float",
+      "default_value": 2,
+      "value": "=0 if infill_sparse_density == 0 else (((infill_line_width * 100) / infill_sparse_density) * (((4/3) - (1/3) * (infill_sparse_density / 100.0)) if infill_pattern in ['honeycomb', 'octagon'] else (2 if infill_pattern == 'grid' else (3 if infill_pattern in ['triangles', 'trihexagon', 'cubic', 'cubicsubdiv'] else (2 if infill_pattern in ['tetrahedral', 'quarter_cubic'] else (1 if infill_pattern in ['cross', 'cross_3d'] else (1.6 if infill_pattern == 'lightning' else 1)))))))",
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "infill_pattern": {
+      "type": "enum",
+      "default_value": "grid",
+      "value": "='lines' if infill_sparse_density > 25 else 'grid'",
+      "limit_to_extruder": "=infill_extruder_nr",
+      "options": {
+        "lines": "Lines",
+        "trihexagon": "Tri-Hexagon",
+        "cubicsubdiv": "Cubic Subdivision",
+        "tetrahedral": "Octet",
+        "quarter_cubic": "Quarter Cubic",
+        "concentric": "Concentric",
+        "zigzag": "Zig Zag",
+        "cross": "Cross",
+        "cross_3d": "Cross 3D",
+        "gyroid": "Gyroid",
+        "lightning": "Lightning",
+        "honeycomb": "Honeycomb",
+        "octagon": "Octagon",
+        "grid": "Grid",
+        "cubic": "Cubic",
+        "triangles": "Triangles"
+      }
+    },
+    "zig_zaggify_infill": {
+      "type": "bool",
+      "default_value": false,
+      "value": "=infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "connect_infill_polygons": {
+      "type": "bool",
+      "default_value": true,
+      "value": "=(infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_multiplier % 2 == 0) and infill_wall_line_count > 0",
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "infill_angles": {
+      "type": "[int]",
+      "default_value": "[ ]",
+      "value": "=[0, 90] if infill_pattern == 'octagon' else [0, 60, 120] if infill_pattern == 'honeycomb' else [0] if infill_pattern == 'gyroid' else [ ]",
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "infill_offset_x": {
+      "type": "float",
+      "default_value": 0,
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "infill_offset_y": {
+      "type": "float",
+      "default_value": 0,
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "infill_multiplier": {
+      "type": "int",
+      "default_value": 1,
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "infill_wall_line_count": {
+      "type": "int",
+      "default_value": 0,
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "sub_div_rad_add": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=wall_line_width_x",
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "infill_overlap": {
+      "type": "float",
+      "default_value": 10,
+      "value": "=10 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0",
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "infill_overlap_mm": {
+      "type": "float",
+      "default_value": 0.04,
+      "value": "=0.5 * (infill_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0)) * infill_overlap / 100 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0"
+    },
+    "infill_wipe_dist": {
+      "type": "float",
+      "default_value": 0.04,
+      "value": "=wall_line_width_0 / 4 if wall_line_count == 1 else wall_line_width_x / 4",
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "infill_sparse_thickness": {
+      "type": "float",
+      "default_value": 0.1,
+      "value": "=resolveOrValue('layer_height')",
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "gradual_infill_steps": {
+      "type": "int",
+      "default_value": 0,
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "gradual_infill_step_height": {
+      "type": "float",
+      "default_value": 1.5,
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "infill_before_walls": {
+      "type": "bool",
+      "default_value": true
+    },
+    "min_infill_area": {
+      "type": "float",
+      "default_value": 0,
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "infill_support_enabled": {
+      "type": "bool",
+      "default_value": false,
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "infill_support_angle": {
+      "type": "float",
+      "default_value": 40,
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "skin_support": {
+      "type": "bool",
+      "default_value": true,
+      "value": "=infill_sparse_density < 40 and gradual_infill_steps == 0 and infill_sparse_thickness == layer_height",
+      "settable_per_extruder": true
+    },
+    "skin_support_speed": {
+      "type": "float",
+      "default_value": 15,
+      "value": "=bridge_skin_speed",
+      "settable_per_extruder": true
+    },
+    "skin_support_material_flow": {
+      "type": "float",
+      "default_value": 60,
+      "value": "=bridge_skin_material_flow",
+      "settable_per_extruder": true
+    },
+    "skin_support_density": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=bridge_skin_density",
+      "settable_per_extruder": true
+    },
+    "skin_support_fan_speed": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=bridge_fan_speed",
+      "settable_per_extruder": true
+    },
+    "skin_support_interlace_lines": {
+      "type": "bool",
+      "default_value": false,
+      "value": "=bridge_interlace_lines",
+      "settable_per_extruder": true
+    },
+    "lightning_infill_support_angle": {
+      "type": "float",
+      "default_value": 40,
+      "limit_to_extruder": "=infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "lightning_infill_overhang_angle": {
+      "type": "float",
+      "default_value": 40,
+      "value": "=lightning_infill_support_angle",
+      "limit_to_extruder": "=infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "lightning_infill_prune_angle": {
+      "type": "float",
+      "default_value": 40,
+      "value": "=lightning_infill_support_angle",
+      "limit_to_extruder": "=infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "lightning_infill_straightening_angle": {
+      "type": "float",
+      "default_value": 40,
+      "value": "=lightning_infill_support_angle",
+      "limit_to_extruder": "=infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "infill_move_inwards_length": {
+      "type": "float",
+      "default_value": 0,
+      "limit_to_extruder": "=infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "infill_start_move_inwards_length": {
+      "type": "float",
+      "default_value": 0,
+      "value": "=infill_move_inwards_length",
+      "limit_to_extruder": "=infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "infill_end_move_inwards_length": {
+      "type": "float",
+      "default_value": 0,
+      "value": "=infill_move_inwards_length",
+      "limit_to_extruder": "=infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "infill_start_end_preference": {
+      "type": "enum",
+      "default_value": "start_closest",
+      "limit_to_extruder": "=infill_extruder_nr",
+      "options": {
+        "start_closest": "Start at closest",
+        "start_random": "Start at random",
+        "end_close_to_seam": "End close to seam"
+      }
+    },
+    "default_material_print_temperature": {
+      "type": "float",
+      "default_value": 210,
+      "settable_per_extruder": true
+    },
+    "build_volume_temperature": {
+      "type": "float",
+      "default_value": 0,
+      "resolve": "=min(extruderValues('build_volume_temperature'))",
+      "settable_per_extruder": false
+    },
+    "material_print_temperature": {
+      "type": "float",
+      "default_value": 210,
+      "value": "=default_material_print_temperature",
+      "settable_per_extruder": true
+    },
+    "material_print_temperature_layer_0": {
+      "type": "float",
+      "default_value": 215,
+      "value": "=material_print_temperature",
+      "settable_per_extruder": true
+    },
+    "material_initial_print_temperature": {
+      "type": "float",
+      "default_value": 200,
+      "value": "=max(-273.15, material_print_temperature - 10)",
+      "settable_per_extruder": true
+    },
+    "material_final_print_temperature": {
+      "type": "float",
+      "default_value": 195,
+      "value": "=max(-273.15, material_print_temperature - 15)",
+      "settable_per_extruder": true
+    },
+    "material_extrusion_cool_down_speed": {
+      "type": "float",
+      "default_value": 0.7,
+      "settable_per_extruder": true
+    },
+    "default_material_bed_temperature": {
+      "type": "float",
+      "default_value": 60,
+      "resolve": "=max(extruderValues('default_material_bed_temperature'))",
+      "settable_per_extruder": false
+    },
+    "material_bed_temperature": {
+      "type": "float",
+      "default_value": 60,
+      "value": "=default_material_bed_temperature",
+      "resolve": "=max(extruderValues('material_bed_temperature'))",
+      "settable_per_extruder": false
+    },
+    "material_bed_temperature_layer_0": {
+      "type": "float",
+      "default_value": 60,
+      "value": "=resolveOrValue('material_bed_temperature')",
+      "resolve": "=max(extruderValues('material_bed_temperature_layer_0'))",
+      "settable_per_extruder": false
+    },
+    "material_adhesion_tendency": {
+      "type": "int",
+      "default_value": 10,
+      "settable_per_extruder": true
+    },
+    "material_surface_energy": {
+      "type": "int",
+      "default_value": 100,
+      "settable_per_extruder": true
+    },
+    "material_shrinkage_percentage": {
+      "type": "float",
+      "default_value": 100.0,
+      "resolve": "=max(extruderValues(\"material_shrinkage_percentage\")) if any(extruderValues('material_is_support_material')) else sum(extruderValues(\"material_shrinkage_percentage\")) / len(extruderValues(\"material_shrinkage_percentage\"))",
+      "settable_per_extruder": false
+    },
+    "material_shrinkage_percentage_xy": {
+      "type": "float",
+      "default_value": 100.0,
+      "value": "=material_shrinkage_percentage",
+      "resolve": "=max(extruderValues(\"material_shrinkage_percentage\")) if any(extruderValues('material_is_support_material')) else sum(extruderValues(\"material_shrinkage_percentage_xy\")) / len(extruderValues(\"material_shrinkage_percentage_xy\"))",
+      "settable_per_extruder": false
+    },
+    "material_shrinkage_percentage_z": {
+      "type": "float",
+      "default_value": 100.0,
+      "value": "=material_shrinkage_percentage",
+      "resolve": "=max(extruderValues(\"material_shrinkage_percentage_z\")) if any(extruderValues('material_is_support_material')) else sum(extruderValues(\"material_shrinkage_percentage_z\")) / len(extruderValues(\"material_shrinkage_percentage_z\"))",
+      "settable_per_extruder": false
+    },
+    "material_crystallinity": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "material_anti_ooze_retracted_position": {
+      "type": "float",
+      "default_value": -4,
+      "settable_per_extruder": true
+    },
+    "material_anti_ooze_retraction_speed": {
+      "type": "float",
+      "default_value": 5,
+      "settable_per_extruder": true
+    },
+    "material_break_preparation_retracted_position": {
+      "type": "float",
+      "default_value": -16,
+      "settable_per_extruder": true
+    },
+    "material_break_preparation_speed": {
+      "type": "float",
+      "default_value": 2,
+      "settable_per_extruder": true
+    },
+    "material_break_preparation_temperature": {
+      "type": "float",
+      "default_value": 50,
+      "value": "=material_print_temperature",
+      "settable_per_extruder": true
+    },
+    "material_break_retracted_position": {
+      "type": "float",
+      "default_value": -50,
+      "settable_per_extruder": true
+    },
+    "material_break_speed": {
+      "type": "float",
+      "default_value": 25,
+      "settable_per_extruder": true
+    },
+    "material_break_temperature": {
+      "type": "float",
+      "default_value": 50,
+      "settable_per_extruder": true
+    },
+    "material_flush_purge_speed": {
+      "type": "float",
+      "default_value": 0.5
+    },
+    "material_flush_purge_length": {
+      "type": "float",
+      "default_value": 60
+    },
+    "material_end_of_filament_purge_speed": {
+      "type": "float",
+      "default_value": 0.5
+    },
+    "material_end_of_filament_purge_length": {
+      "type": "float",
+      "default_value": 20
+    },
+    "material_maximum_park_duration": {
+      "type": "float",
+      "default_value": 300
+    },
+    "material_no_load_move_factor": {
+      "type": "float",
+      "default_value": 0.940860215
+    },
+    "material_flow": {
+      "type": "float",
+      "default_value": 100
+    },
+    "wall_material_flow": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=material_flow",
+      "limit_to_extruder": "=wall_0_extruder_nr if wall_x_extruder_nr == wall_0_extruder_nr else -1"
+    },
+    "wall_0_material_flow": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=wall_material_flow",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "wall_x_material_flow": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=wall_material_flow",
+      "limit_to_extruder": "=wall_x_extruder_nr"
+    },
+    "wall_0_material_flow_roofing": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=wall_0_material_flow",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "wall_x_material_flow_roofing": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=wall_x_material_flow",
+      "limit_to_extruder": "=wall_x_extruder_nr"
+    },
+    "wall_0_material_flow_flooring": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=wall_0_material_flow",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "wall_x_material_flow_flooring": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=wall_x_material_flow",
+      "limit_to_extruder": "=wall_x_extruder_nr"
+    },
+    "skin_material_flow": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=material_flow",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "roofing_material_flow": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=skin_material_flow",
+      "limit_to_extruder": "=roofing_extruder_nr"
+    },
+    "flooring_material_flow": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=skin_material_flow",
+      "limit_to_extruder": "=flooring_extruder_nr"
+    },
+    "infill_material_flow": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=material_flow",
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "skirt_brim_material_flow": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=material_flow",
+      "settable_per_extruder": true
+    },
+    "support_material_flow": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=material_flow",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_interface_material_flow": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=material_flow",
+      "limit_to_extruder": "=support_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_roof_material_flow": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=extruderValue(support_roof_extruder_nr, 'support_interface_material_flow')",
+      "limit_to_extruder": "=support_roof_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_bottom_material_flow": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=extruderValue(support_bottom_extruder_nr, 'support_interface_material_flow')",
+      "limit_to_extruder": "=support_bottom_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "prime_tower_flow": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=material_flow",
+      "settable_per_extruder": true
+    },
+    "material_flow_layer_0": {
+      "type": "float",
+      "default_value": 100
+    },
+    "wall_x_material_flow_layer_0": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=material_flow_layer_0",
+      "limit_to_extruder": "=wall_x_extruder_nr"
+    },
+    "wall_0_material_flow_layer_0": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=material_flow_layer_0",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "skin_material_flow_layer_0": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=material_flow_layer_0",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "material_standby_temperature": {
+      "type": "float",
+      "default_value": 150,
+      "settable_per_extruder": true
+    },
+    "material_is_support_material": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "gradual_flow_enabled": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "max_flow_acceleration": {
+      "type": "float",
+      "default_value": 1,
+      "settable_per_extruder": true
+    },
+    "layer_0_max_flow_acceleration": {
+      "type": "float",
+      "default_value": 1,
+      "value": "=max_flow_acceleration",
+      "settable_per_extruder": true
+    },
+    "gradual_flow_discretisation_step_size": {
+      "type": "float",
+      "default_value": 0.2,
+      "settable_per_extruder": true
+    },
+    "material_pressure_advance_factor": {
+      "type": "float",
+      "default_value": 0.05,
+      "settable_per_extruder": true
+    },
+    "material_max_flowrate": {
+      "type": "float",
+      "default_value": 16,
+      "value": "=16",
+      "settable_per_extruder": true
+    },
+    "speed_print": {
+      "type": "float",
+      "default_value": 60
+    },
+    "speed_infill": {
+      "type": "float",
+      "default_value": 60,
+      "value": "=speed_print",
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "speed_wall": {
+      "type": "float",
+      "default_value": 30,
+      "value": "=speed_print / 2"
+    },
+    "speed_wall_0": {
+      "type": "float",
+      "default_value": 30,
+      "value": "=speed_wall",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "speed_wall_x": {
+      "type": "float",
+      "default_value": 60,
+      "value": "=speed_wall * 2",
+      "limit_to_extruder": "=wall_x_extruder_nr"
+    },
+    "speed_wall_0_roofing": {
+      "type": "float",
+      "default_value": 30,
+      "value": "=speed_wall_0",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "speed_wall_x_roofing": {
+      "type": "float",
+      "default_value": 60,
+      "value": "=speed_wall_x",
+      "limit_to_extruder": "=wall_x_extruder_nr"
+    },
+    "speed_wall_0_flooring": {
+      "type": "float",
+      "default_value": 30,
+      "value": "=speed_wall_0",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "speed_wall_x_flooring": {
+      "type": "float",
+      "default_value": 60,
+      "value": "=speed_wall_x",
+      "limit_to_extruder": "=wall_x_extruder_nr"
+    },
+    "speed_roofing": {
+      "type": "float",
+      "default_value": 25,
+      "value": "=speed_topbottom",
+      "limit_to_extruder": "=roofing_extruder_nr"
+    },
+    "speed_flooring": {
+      "type": "float",
+      "default_value": 25,
+      "value": "=speed_topbottom",
+      "limit_to_extruder": "=flooring_extruder_nr"
+    },
+    "speed_topbottom": {
+      "type": "float",
+      "default_value": 30,
+      "value": "=speed_print / 2",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "speed_support": {
+      "type": "float",
+      "default_value": 60,
+      "value": "=speed_print",
+      "limit_to_extruder": "=support_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "speed_support_infill": {
+      "type": "float",
+      "default_value": 60,
+      "value": "=speed_support",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "speed_support_interface": {
+      "type": "float",
+      "default_value": 40,
+      "value": "=speed_support / 1.5",
+      "limit_to_extruder": "=support_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "speed_support_roof": {
+      "type": "float",
+      "default_value": 40,
+      "value": "=extruderValue(support_roof_extruder_nr, 'speed_support_interface')",
+      "limit_to_extruder": "=support_roof_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "speed_support_bottom": {
+      "type": "float",
+      "default_value": 40,
+      "value": "=extruderValue(support_bottom_extruder_nr, 'speed_support_interface')",
+      "limit_to_extruder": "=support_bottom_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "speed_prime_tower": {
+      "type": "float",
+      "default_value": 60,
+      "value": "=speed_print",
+      "settable_per_extruder": true
+    },
+    "speed_travel": {
+      "type": "float",
+      "default_value": 120,
+      "value": "=speed_print if magic_spiralize else 120",
+      "settable_per_extruder": true
+    },
+    "speed_layer_0": {
+      "type": "float",
+      "default_value": 30,
+      "value": "=speed_print * 30 / 60"
+    },
+    "speed_print_layer_0": {
+      "type": "float",
+      "default_value": 30,
+      "value": "=speed_layer_0"
+    },
+    "speed_travel_layer_0": {
+      "type": "float",
+      "default_value": 60,
+      "value": "=speed_layer_0 * speed_travel / speed_print",
+      "settable_per_extruder": true
+    },
+    "skirt_brim_speed": {
+      "type": "float",
+      "default_value": 30,
+      "value": "=speed_layer_0",
+      "limit_to_extruder": "=skirt_brim_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "speed_z_hop": {
+      "type": "float",
+      "default_value": 10,
+      "settable_per_extruder": true
+    },
+    "speed_slowdown_layers": {
+      "type": "int",
+      "default_value": 2,
+      "resolve": "=round(sum(extruderValues('speed_slowdown_layers')) / len(extruderValues('speed_slowdown_layers')))",
+      "settable_per_extruder": false
+    },
+    "speed_equalize_flow_width_factor": {
+      "type": "float",
+      "default_value": 100.0,
+      "settable_per_extruder": true
+    },
+    "acceleration_enabled": {
+      "type": "bool",
+      "default_value": false,
+      "resolve": "=any(extruderValues('acceleration_enabled'))",
+      "settable_per_extruder": false
+    },
+    "acceleration_travel_enabled": {
+      "type": "bool",
+      "default_value": true,
+      "resolve": "=any(extruderValues('acceleration_travel_enabled'))",
+      "settable_per_extruder": false
+    },
+    "acceleration_print": {
+      "type": "float",
+      "default_value": 3000
+    },
+    "acceleration_infill": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_print",
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "acceleration_wall": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_print"
+    },
+    "acceleration_wall_0": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_wall",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "acceleration_wall_x": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_wall",
+      "limit_to_extruder": "=wall_x_extruder_nr"
+    },
+    "acceleration_wall_0_roofing": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_wall_0",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "acceleration_wall_x_roofing": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_wall_x",
+      "limit_to_extruder": "=wall_x_extruder_nr"
+    },
+    "acceleration_wall_0_flooring": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_wall_0",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "acceleration_wall_x_flooring": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_wall_x",
+      "limit_to_extruder": "=wall_x_extruder_nr"
+    },
+    "acceleration_roofing": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_topbottom",
+      "limit_to_extruder": "=roofing_extruder_nr"
+    },
+    "acceleration_flooring": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_topbottom",
+      "limit_to_extruder": "=flooring_extruder_nr"
+    },
+    "acceleration_topbottom": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_print",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "acceleration_support": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_print",
+      "limit_to_extruder": "=support_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "acceleration_support_infill": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_support",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "acceleration_support_interface": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_support",
+      "limit_to_extruder": "=support_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "acceleration_support_roof": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=extruderValue(support_roof_extruder_nr, 'acceleration_support_interface')",
+      "limit_to_extruder": "=support_roof_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "acceleration_support_bottom": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=extruderValue(support_bottom_extruder_nr, 'acceleration_support_interface')",
+      "limit_to_extruder": "=support_bottom_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "acceleration_prime_tower": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_print"
+    },
+    "acceleration_travel": {
+      "type": "float",
+      "default_value": 5000,
+      "value": "=acceleration_print if magic_spiralize else 5000"
+    },
+    "acceleration_layer_0": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_print"
+    },
+    "acceleration_print_layer_0": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_layer_0"
+    },
+    "acceleration_travel_layer_0": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_layer_0 * acceleration_travel / acceleration_print",
+      "settable_per_extruder": true
+    },
+    "acceleration_skirt_brim": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_layer_0",
+      "limit_to_extruder": "=skirt_brim_extruder_nr"
+    },
+    "jerk_enabled": {
+      "type": "bool",
+      "default_value": false,
+      "resolve": "=any(extruderValues('jerk_enabled'))",
+      "settable_per_extruder": false
+    },
+    "jerk_travel_enabled": {
+      "type": "bool",
+      "default_value": true,
+      "resolve": "=any(extruderValues('jerk_travel_enabled'))",
+      "settable_per_extruder": false
+    },
+    "jerk_print": {
+      "type": "float",
+      "default_value": 20
+    },
+    "jerk_infill": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_print",
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "jerk_wall": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_print"
+    },
+    "jerk_wall_0": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_wall",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "jerk_wall_x": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_wall",
+      "limit_to_extruder": "=wall_x_extruder_nr"
+    },
+    "jerk_wall_0_roofing": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_wall_0",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "jerk_wall_x_roofing": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_wall_x",
+      "limit_to_extruder": "=wall_x_extruder_nr"
+    },
+    "jerk_wall_0_flooring": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_wall_0",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "jerk_wall_x_flooring": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_wall_x",
+      "limit_to_extruder": "=wall_x_extruder_nr"
+    },
+    "jerk_roofing": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_topbottom",
+      "limit_to_extruder": "=roofing_extruder_nr"
+    },
+    "jerk_flooring": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_topbottom",
+      "limit_to_extruder": "=flooring_extruder_nr"
+    },
+    "jerk_topbottom": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_print",
+      "limit_to_extruder": "=top_bottom_extruder_nr"
+    },
+    "jerk_support": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_print",
+      "limit_to_extruder": "=support_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "jerk_support_infill": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_support",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "jerk_support_interface": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_support",
+      "limit_to_extruder": "=support_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "jerk_support_roof": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=extruderValue(support_roof_extruder_nr, 'jerk_support_interface')",
+      "limit_to_extruder": "=support_roof_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "jerk_support_bottom": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=extruderValue(support_roof_extruder_nr, 'jerk_support_interface')",
+      "limit_to_extruder": "=support_bottom_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "jerk_prime_tower": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_print"
+    },
+    "jerk_travel": {
+      "type": "float",
+      "default_value": 30,
+      "value": "=jerk_print if magic_spiralize else 30"
+    },
+    "jerk_layer_0": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_print"
+    },
+    "jerk_print_layer_0": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_layer_0"
+    },
+    "jerk_travel_layer_0": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_layer_0 * jerk_travel / jerk_print",
+      "settable_per_extruder": true
+    },
+    "jerk_skirt_brim": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_layer_0",
+      "limit_to_extruder": "=skirt_brim_extruder_nr"
+    },
+    "retraction_enable": {
+      "type": "bool",
+      "default_value": true,
+      "settable_per_extruder": true
+    },
+    "retract_at_layer_change": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "retraction_amount": {
+      "type": "float",
+      "default_value": 6.5,
+      "settable_per_extruder": true
+    },
+    "retraction_speed": {
+      "type": "float",
+      "default_value": 25,
+      "settable_per_extruder": true
+    },
+    "retraction_retract_speed": {
+      "type": "float",
+      "default_value": 25,
+      "value": "=retraction_speed",
+      "settable_per_extruder": true
+    },
+    "retraction_prime_speed": {
+      "type": "float",
+      "default_value": 25,
+      "value": "=retraction_speed",
+      "settable_per_extruder": true
+    },
+    "retraction_extra_prime_amount": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "retraction_min_travel": {
+      "type": "float",
+      "default_value": 1.5,
+      "value": "=line_width * 2",
+      "settable_per_extruder": true
+    },
+    "retraction_count_max": {
+      "type": "int",
+      "default_value": 90,
+      "settable_per_extruder": true
+    },
+    "retraction_extrusion_window": {
+      "type": "float",
+      "default_value": 4.5,
+      "value": "=retraction_amount",
+      "settable_per_extruder": true
+    },
+    "retraction_combing": {
+      "type": "enum",
+      "default_value": "all",
+      "value": "='no_outer_surfaces' if (any(extruderValues('skin_monotonic')) or any(extruderValues('ironing_enabled')) or (any(extruderValues('roofing_monotonic')) and any(extruderValues('roofing_layer_count')))) else 'all'",
+      "resolve": "='noskin' if 'noskin' in extruderValues('retraction_combing') else ('infill' if 'infill' in extruderValues('retraction_combing') else ('all' if 'all' in extruderValues('retraction_combing') else ('no_outer_surfaces' if 'no_outer_surfaces' in extruderValues('retraction_combing') else 'off')))",
+      "settable_per_extruder": false,
+      "options": {
+        "off": "Off",
+        "all": "All",
+        "no_outer_surfaces": "Not on Outer Surface",
+        "noskin": "Not in Skin",
+        "infill": "Within Infill"
+      }
+    },
+    "retraction_combing_max_distance": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "retraction_combing_avoid_distance": {
+      "type": "float",
+      "default_value": 0.6,
+      "value": "=machine_nozzle_size * 1.5",
+      "settable_per_extruder": true
+    },
+    "travel_retract_before_outer_wall": {
+      "type": "enum",
+      "default_value": "automatic",
+      "settable_per_extruder": false,
+      "options": {
+        "automatic": "Automatic",
+        "force_retracted": "Always",
+        "force_not_retracted": "Never",
+        "force_not_retracted_from_infill": "From infill unretracted"
+      }
+    },
+    "travel_avoid_other_parts": {
+      "type": "bool",
+      "default_value": true,
+      "settable_per_extruder": true
+    },
+    "travel_avoid_supports": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "travel_avoid_distance": {
+      "type": "float",
+      "default_value": 0.625,
+      "value": "=machine_nozzle_tip_outer_diameter / 2 * 1.25",
+      "settable_per_extruder": true
+    },
+    "layer_start_at_z_seam": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "layer_start_x": {
+      "type": "float",
+      "default_value": 0.0,
+      "value": "=(z_seam_x + machine_width / 2 if (not machine_center_is_zero and z_seam_relative) else z_seam_x) if (layer_start_at_z_seam and z_seam_type == 'back') else (sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x')))",
+      "settable_per_extruder": true
+    },
+    "layer_start_y": {
+      "type": "float",
+      "default_value": 0.0,
+      "value": "=(z_seam_y + machine_depth / 2 if (not machine_center_is_zero and z_seam_relative) else z_seam_y) if (layer_start_at_z_seam and z_seam_type == 'back') else (sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y')))",
+      "settable_per_extruder": true
+    },
+    "retraction_hop_enabled": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "retraction_hop_only_when_collides": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "retraction_hop": {
+      "type": "float",
+      "default_value": 1,
+      "settable_per_extruder": true
+    },
+    "retraction_hop_after_extruder_switch": {
+      "type": "bool",
+      "default_value": true,
+      "settable_per_extruder": true
+    },
+    "retraction_hop_after_extruder_switch_height": {
+      "type": "float",
+      "default_value": 1,
+      "value": "=retraction_hop",
+      "settable_per_extruder": true
+    },
+    "cool_fan_enabled": {
+      "type": "bool",
+      "default_value": true,
+      "settable_per_extruder": true
+    },
+    "build_fan_full_at_height": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": false
+    },
+    "build_fan_full_layer": {
+      "type": "int",
+      "default_value": 0,
+      "value": "=max(1, int(math.floor((build_fan_full_at_height - resolveOrValue('layer_height_0')) / resolveOrValue('layer_height')) + 2))",
+      "settable_per_extruder": false
+    },
+    "build_volume_fan_speed_0": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": false
+    },
+    "build_volume_fan_speed": {
+      "type": "float",
+      "default_value": 100,
+      "settable_per_extruder": false
+    },
+    "cool_fan_speed": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=100.0 if cool_fan_enabled else 0.0",
+      "settable_per_extruder": true
+    },
+    "cool_fan_speed_min": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=cool_fan_speed",
+      "settable_per_extruder": true
+    },
+    "cool_fan_speed_max": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=cool_fan_speed",
+      "settable_per_extruder": true
+    },
+    "cool_min_layer_time_fan_speed_max": {
+      "type": "float",
+      "default_value": 10,
+      "settable_per_extruder": true
+    },
+    "cool_fan_speed_0": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "cool_fan_full_at_height": {
+      "type": "float",
+      "default_value": 0.5,
+      "value": "=0 if resolveOrValue('adhesion_type') == 'raft' else resolveOrValue('layer_height_0')",
+      "settable_per_extruder": true
+    },
+    "cool_fan_full_layer": {
+      "type": "int",
+      "default_value": 2,
+      "value": "=max(1, int(math.floor((cool_fan_full_at_height - resolveOrValue('layer_height_0')) / resolveOrValue('layer_height')) + 2))",
+      "settable_per_extruder": true
+    },
+    "cool_min_layer_time": {
+      "type": "float",
+      "default_value": 5,
+      "settable_per_extruder": true
+    },
+    "cool_min_speed": {
+      "type": "float",
+      "default_value": 10,
+      "settable_per_extruder": true
+    },
+    "cool_lift_head": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "cool_min_temperature": {
+      "type": "float",
+      "default_value": 0,
+      "value": "=material_print_temperature",
+      "settable_per_extruder": true
+    },
+    "cool_during_extruder_switch": {
+      "type": "enum",
+      "default_value": "unchanged",
+      "settable_per_extruder": false,
+      "options": {
+        "unchanged": "Unchanged",
+        "only_last_extruder": "Only last extruder",
+        "all_fans": "All fans"
+      }
+    },
+    "support_enable": {
+      "type": "bool",
+      "default_value": false,
+      "resolve": "=any(extruderValues('support_enable'))",
+      "settable_per_extruder": false
+    },
+    "support_extruder_nr": {
+      "type": "extruder",
+      "default_value": "0",
+      "value": "=int(anyExtruderWithMaterial('material_is_support_material'))",
+      "settable_per_extruder": false
+    },
+    "support_infill_extruder_nr": {
+      "type": "extruder",
+      "default_value": "0",
+      "value": "=support_extruder_nr",
+      "settable_per_extruder": false
+    },
+    "support_extruder_nr_layer_0": {
+      "type": "extruder",
+      "default_value": "0",
+      "value": "=support_extruder_nr",
+      "settable_per_extruder": false
+    },
+    "support_interface_extruder_nr": {
+      "type": "extruder",
+      "default_value": "0",
+      "value": "=support_extruder_nr",
+      "resolve": "=max(extruderValues('support_interface_extruder_nr'))",
+      "settable_per_extruder": false
+    },
+    "support_roof_extruder_nr": {
+      "type": "extruder",
+      "default_value": "0",
+      "value": "=support_interface_extruder_nr",
+      "resolve": "=max(extruderValues('support_roof_extruder_nr'))",
+      "settable_per_extruder": false
+    },
+    "support_bottom_extruder_nr": {
+      "type": "extruder",
+      "default_value": "0",
+      "value": "=support_interface_extruder_nr",
+      "resolve": "=max(extruderValues('support_bottom_extruder_nr'))",
+      "settable_per_extruder": false
+    },
+    "support_structure": {
+      "type": "enum",
+      "default_value": "normal",
+      "resolve": "=extruderValue(support_extruder_nr, 'support_structure')",
+      "settable_per_extruder": false,
+      "options": {
+        "normal": "Normal",
+        "tree": "Tree"
+      }
+    },
+    "support_tree_angle": {
+      "type": "float",
+      "default_value": 60,
+      "value": "=max(min(support_angle, 85), 20)",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_tree_branch_diameter": {
+      "type": "float",
+      "default_value": 5,
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_tree_max_diameter": {
+      "type": "float",
+      "default_value": 25,
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_tree_branch_diameter_angle": {
+      "type": "float",
+      "default_value": 7,
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_z_seam_away_from_model": {
+      "type": "bool",
+      "default_value": true,
+      "settable_per_extruder": true
+    },
+    "support_z_seam_min_distance": {
+      "type": "float",
+      "default_value": 0.8,
+      "value": "=line_width * 2",
+      "settable_per_extruder": true
+    },
+    "support_type": {
+      "type": "enum",
+      "default_value": "everywhere",
+      "resolve": "='everywhere' if 'everywhere' in extruderValues('support_type') else 'buildplate'",
+      "settable_per_extruder": false,
+      "options": {
+        "buildplate": "Touching Buildplate",
+        "everywhere": "Everywhere"
+      }
+    },
+    "support_tree_angle_slow": {
+      "type": "float",
+      "default_value": 50,
+      "value": "=support_tree_angle * 2 / 3",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_tree_max_diameter_increase_by_merges_when_support_to_model": {
+      "type": "float",
+      "default_value": 1,
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_tree_min_height_to_model": {
+      "type": "float",
+      "default_value": 3,
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_tree_bp_diameter": {
+      "type": "float",
+      "default_value": 7.5,
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_tree_top_rate": {
+      "type": "float",
+      "default_value": 15,
+      "value": "=30 if support_roof_enable else 10",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_tree_tip_diameter": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=support_line_width * 2",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_tree_limit_branch_reach": {
+      "type": "bool",
+      "default_value": true
+    },
+    "support_tree_branch_reach_limit": {
+      "type": "float",
+      "default_value": 30
+    },
+    "support_tree_rest_preference": {
+      "type": "enum",
+      "default_value": "buildplate",
+      "value": "='buildplate' if support_type == 'buildplate' else 'graceful'",
+      "resolve": "='buildplate' if 'buildplate' in extruderValues('support_tree_rest_preference') else 'graceful'",
+      "options": {
+        "buildplate": "On buildplate when possible",
+        "graceful": "On model if required"
+      }
+    },
+    "support_angle": {
+      "type": "float",
+      "default_value": 50,
+      "limit_to_extruder": "=support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr"
+    },
+    "support_pattern": {
+      "type": "enum",
+      "default_value": "zigzag",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true,
+      "options": {
+        "lines": "Lines",
+        "grid": "Grid",
+        "triangles": "Triangles",
+        "concentric": "Concentric",
+        "zigzag": "Zig Zag",
+        "cross": "Cross",
+        "gyroid": "Gyroid",
+        "lightning": "Lightning",
+        "honeycomb": "Honeycomb",
+        "octagon": "Octagon"
+      }
+    },
+    "support_wall_count": {
+      "type": "int",
+      "default_value": 1,
+      "value": "=1 if support_enable and support_structure == 'tree' else (1 if (support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'concentric') else 0)",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_infill_multiplier": {
+      "type": "int",
+      "default_value": 1,
+      "limit_to_extruder": "=support_infill_extruder_nr"
+    },
+    "support_interface_wall_count": {
+      "type": "int",
+      "default_value": 0,
+      "value": "=1 if (support_interface_pattern == 'zigzag') else 0",
+      "limit_to_extruder": "=support_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_roof_wall_count": {
+      "type": "int",
+      "default_value": 0,
+      "value": "=support_interface_wall_count",
+      "limit_to_extruder": "=support_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_bottom_wall_count": {
+      "type": "int",
+      "default_value": 0,
+      "value": "=support_interface_wall_count",
+      "limit_to_extruder": "=support_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_lightning_angle": {
+      "type": "float",
+      "default_value": 40,
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_lightning_overhang_angle": {
+      "type": "float",
+      "default_value": 40,
+      "value": "=support_lightning_angle",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_lightning_prune_angle": {
+      "type": "float",
+      "default_value": 40,
+      "value": "=support_lightning_angle",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_lightning_straightening_angle": {
+      "type": "float",
+      "default_value": 40,
+      "value": "=support_lightning_angle",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "zig_zaggify_support": {
+      "type": "bool",
+      "default_value": false,
+      "value": "=support_pattern == 'cross' or support_pattern == 'gyroid' or support_pattern == 'honeycomb' or support_pattern == 'octagon'",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_connect_zigzags": {
+      "type": "bool",
+      "default_value": true,
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_infill_rate": {
+      "type": "float",
+      "default_value": 15,
+      "value": "=15 if support_enable and support_structure == 'normal' else 0 if support_enable and support_structure == 'tree' else 15",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_line_distance": {
+      "type": "float",
+      "default_value": 2.66,
+      "value": "=0 if support_infill_rate == 0 else (support_line_width * 100) / support_infill_rate * (2 if support_pattern == 'grid' else (3 if support_pattern == 'triangles' else 1))",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_initial_layer_line_distance": {
+      "type": "float",
+      "default_value": 2.66,
+      "value": "=support_line_distance",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_infill_density_multiplier_initial_layer": {
+      "type": "int",
+      "default_value": 1,
+      "limit_to_extruder": "=support_extruder_nr_layer_0",
+      "settable_per_extruder": true
+    },
+    "support_infill_angles": {
+      "type": "[int]",
+      "default_value": "[ ]",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_brim_enable": {
+      "type": "bool",
+      "default_value": true,
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_brim_width": {
+      "type": "float",
+      "default_value": 1.2,
+      "value": "=(skirt_brim_line_width * initial_layer_line_width_factor / 100.0) * 3",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_brim_line_count": {
+      "type": "int",
+      "default_value": 3,
+      "value": "=round(support_brim_width / (skirt_brim_line_width * initial_layer_line_width_factor / 100.0))",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_brim_minimum_hole_area": {
+      "type": "float",
+      "default_value": 16,
+      "value": "=skirt_brim_line_width * skirt_brim_line_width * 100",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_z_distance": {
+      "type": "float",
+      "default_value": 0.1,
+      "limit_to_extruder": "=support_interface_extruder_nr if support_interface_enable else support_infill_extruder_nr"
+    },
+    "support_top_distance": {
+      "type": "float",
+      "default_value": 0.1,
+      "value": "=extruderValue(support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr, 'support_z_distance')",
+      "limit_to_extruder": "=support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr"
+    },
+    "support_bottom_distance": {
+      "type": "float",
+      "default_value": 0.1,
+      "value": "=extruderValue(support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr, 'support_z_distance') if support_type == 'everywhere' else 0",
+      "limit_to_extruder": "=support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr"
+    },
+    "support_xy_distance": {
+      "type": "float",
+      "default_value": 0.7,
+      "limit_to_extruder": "=support_infill_extruder_nr"
+    },
+    "support_xy_overrides_z": {
+      "type": "enum",
+      "default_value": "z_overrides_xy",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "options": {
+        "xy_overrides_z": "X/Y overrides Z",
+        "z_overrides_xy": "Z overrides X/Y"
+      }
+    },
+    "support_xy_distance_overhang": {
+      "type": "float",
+      "default_value": 0.2,
+      "value": "=machine_nozzle_size / 2",
+      "limit_to_extruder": "=support_infill_extruder_nr"
+    },
+    "support_bottom_stair_step_height": {
+      "type": "float",
+      "default_value": 0.3,
+      "value": "=0 if support_bottom_enable else 0.3",
+      "limit_to_extruder": "=support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr"
+    },
+    "support_bottom_stair_step_width": {
+      "type": "float",
+      "default_value": 5.0,
+      "limit_to_extruder": "=support_interface_extruder_nr if support_bottom_enable else support_infill_extruder_nr"
+    },
+    "support_bottom_stair_step_min_slope": {
+      "type": "float",
+      "default_value": 10.0,
+      "limit_to_extruder": "=support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr"
+    },
+    "support_join_distance": {
+      "type": "float",
+      "default_value": 2.0,
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_offset": {
+      "type": "float",
+      "default_value": 0.8,
+      "value": "=support_line_width + 0.4 if support_structure == 'normal' else 0.0",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_infill_sparse_thickness": {
+      "type": "float",
+      "default_value": 0.1,
+      "value": "=resolveOrValue('layer_height')",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "gradual_support_infill_steps": {
+      "type": "int",
+      "default_value": 0,
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "gradual_support_infill_step_height": {
+      "type": "float",
+      "default_value": 1,
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "minimum_support_area": {
+      "type": "float",
+      "default_value": 0.0,
+      "limit_to_extruder": "=support_infill_extruder_nr"
+    },
+    "support_interface_enable": {
+      "type": "bool",
+      "default_value": false,
+      "limit_to_extruder": "=support_interface_extruder_nr"
+    },
+    "support_roof_enable": {
+      "type": "bool",
+      "default_value": false,
+      "value": "=extruderValue(support_roof_extruder_nr, 'support_interface_enable')",
+      "limit_to_extruder": "=support_roof_extruder_nr"
+    },
+    "support_bottom_enable": {
+      "type": "bool",
+      "default_value": false,
+      "value": "=extruderValue(support_bottom_extruder_nr, 'support_interface_enable')",
+      "limit_to_extruder": "=support_bottom_extruder_nr"
+    },
+    "support_interface_height": {
+      "type": "float",
+      "default_value": 1,
+      "limit_to_extruder": "=support_interface_extruder_nr"
+    },
+    "support_roof_height": {
+      "type": "float",
+      "default_value": 1,
+      "value": "=extruderValue(support_roof_extruder_nr, 'support_interface_height')",
+      "limit_to_extruder": "=support_roof_extruder_nr"
+    },
+    "support_bottom_height": {
+      "type": "float",
+      "default_value": 1,
+      "value": "=extruderValue(support_bottom_extruder_nr, 'support_interface_height')",
+      "limit_to_extruder": "=support_bottom_extruder_nr"
+    },
+    "support_interface_density": {
+      "type": "float",
+      "default_value": 100,
+      "limit_to_extruder": "=support_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_roof_density": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=extruderValue(support_roof_extruder_nr, 'support_interface_density')",
+      "limit_to_extruder": "=support_roof_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_roof_line_distance": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=0 if support_roof_density == 0 else (support_roof_line_width * 100) / support_roof_density * (2 if support_roof_pattern == 'grid' else (3 if support_roof_pattern == 'triangles' else 1))",
+      "limit_to_extruder": "=support_roof_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_bottom_density": {
+      "type": "float",
+      "default_value": 100,
+      "value": "=extruderValue(support_bottom_extruder_nr, 'support_interface_density')",
+      "limit_to_extruder": "=support_bottom_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_bottom_line_distance": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=0 if support_bottom_density == 0 else (support_bottom_line_width * 100) / support_bottom_density * (2 if support_bottom_pattern == 'grid' else (3 if support_bottom_pattern == 'triangles' else 1))",
+      "limit_to_extruder": "=support_bottom_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_interface_pattern": {
+      "type": "enum",
+      "default_value": "concentric",
+      "limit_to_extruder": "=support_interface_extruder_nr",
+      "settable_per_extruder": true,
+      "options": {
+        "lines": "Lines",
+        "grid": "Grid",
+        "triangles": "Triangles",
+        "concentric": "Concentric",
+        "zigzag": "Zig Zag"
+      }
+    },
+    "support_roof_pattern": {
+      "type": "enum",
+      "default_value": "concentric",
+      "value": "=extruderValue(support_roof_extruder_nr, 'support_interface_pattern')",
+      "limit_to_extruder": "=support_roof_extruder_nr",
+      "settable_per_extruder": true,
+      "options": {
+        "lines": "Lines",
+        "grid": "Grid",
+        "triangles": "Triangles",
+        "concentric": "Concentric",
+        "zigzag": "Zig Zag"
+      }
+    },
+    "support_bottom_pattern": {
+      "type": "enum",
+      "default_value": "concentric",
+      "value": "=extruderValue(support_bottom_extruder_nr, 'support_interface_pattern')",
+      "limit_to_extruder": "=support_bottom_extruder_nr",
+      "settable_per_extruder": true,
+      "options": {
+        "lines": "Lines",
+        "grid": "Grid",
+        "triangles": "Triangles",
+        "concentric": "Concentric",
+        "zigzag": "Zig Zag"
+      }
+    },
+    "minimum_interface_area": {
+      "type": "float",
+      "default_value": 1.0,
+      "limit_to_extruder": "=support_interface_extruder_nr"
+    },
+    "minimum_roof_area": {
+      "type": "float",
+      "default_value": 1.0,
+      "value": "=extruderValue(support_roof_extruder_nr, 'minimum_interface_area')",
+      "limit_to_extruder": "=support_roof_extruder_nr"
+    },
+    "minimum_bottom_area": {
+      "type": "float",
+      "default_value": 1.0,
+      "value": "=extruderValue(support_bottom_extruder_nr, 'minimum_interface_area')",
+      "limit_to_extruder": "=support_bottom_extruder_nr"
+    },
+    "support_interface_offset": {
+      "type": "float",
+      "default_value": 0.0,
+      "limit_to_extruder": "=support_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_roof_offset": {
+      "type": "float",
+      "default_value": 0.0,
+      "value": "=extruderValue(support_roof_extruder_nr, 'support_interface_offset')",
+      "limit_to_extruder": "=support_roof_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_bottom_offset": {
+      "type": "float",
+      "default_value": 0.0,
+      "value": "=extruderValue(support_bottom_extruder_nr, 'support_interface_offset')",
+      "limit_to_extruder": "=support_bottom_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_interface_priority": {
+      "type": "enum",
+      "default_value": "interface_area_overwrite_support_area",
+      "settable_per_extruder": false,
+      "options": {
+        "support_area_overwrite_interface_area": "Support preferred",
+        "interface_area_overwrite_support_area": "Interface preferred",
+        "support_lines_overwrite_interface_area": "Support lines preferred",
+        "interface_lines_overwrite_support_area": "Interface lines preferred",
+        "nothing": "Both overlap"
+      }
+    },
+    "support_interface_angles": {
+      "type": "[int]",
+      "default_value": "[ ]",
+      "limit_to_extruder": "=support_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_roof_angles": {
+      "type": "[int]",
+      "default_value": "[ ]",
+      "value": "=support_interface_angles",
+      "limit_to_extruder": "=support_roof_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_bottom_angles": {
+      "type": "[int]",
+      "default_value": "[ ]",
+      "value": "=support_interface_angles",
+      "limit_to_extruder": "=support_bottom_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_fan_enable": {
+      "type": "bool",
+      "default_value": false
+    },
+    "support_supported_skin_fan_speed": {
+      "type": "float",
+      "default_value": 100
+    },
+    "support_use_towers": {
+      "type": "bool",
+      "default_value": true,
+      "limit_to_extruder": "=support_infill_extruder_nr"
+    },
+    "support_tower_diameter": {
+      "type": "float",
+      "default_value": 3.0,
+      "limit_to_extruder": "=support_infill_extruder_nr"
+    },
+    "support_tower_maximum_supported_diameter": {
+      "type": "float",
+      "default_value": 3.0,
+      "limit_to_extruder": "=support_infill_extruder_nr"
+    },
+    "support_tower_roof_angle": {
+      "type": "int",
+      "default_value": 65,
+      "limit_to_extruder": "=support_infill_extruder_nr"
+    },
+    "support_mesh_drop_down": {
+      "type": "bool",
+      "default_value": true,
+      "settable_per_extruder": false
+    },
+    "support_meshes_present": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "prime_blob_enable": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "extruder_prime_pos_x": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "extruder_prime_pos_y": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "adhesion_type": {
+      "type": "enum",
+      "default_value": "brim",
+      "resolve": "=min(extruderValues('adhesion_type'), key=('raft', 'brim', 'skirt', 'none').index)",
+      "settable_per_extruder": false,
+      "options": {
+        "skirt": "Skirt",
+        "brim": "Brim",
+        "raft": "Raft",
+        "none": "None"
+      }
+    },
+    "adhesion_extruder_nr": {
+      "type": "optional_extruder",
+      "default_value": "-1",
+      "value": "=int(defaultExtruderPosition()) if resolveOrValue('adhesion_type') == 'raft' else -1",
+      "resolve": "=max(extruderValues('adhesion_extruder_nr'))",
+      "settable_per_extruder": false
+    },
+    "skirt_brim_extruder_nr": {
+      "type": "optional_extruder",
+      "default_value": "-1",
+      "value": "=adhesion_extruder_nr",
+      "resolve": "=max(extruderValues('skirt_brim_extruder_nr'))",
+      "settable_per_extruder": false
+    },
+    "raft_base_extruder_nr": {
+      "type": "extruder",
+      "default_value": "0",
+      "value": "=0 if adhesion_extruder_nr == -1 else adhesion_extruder_nr",
+      "resolve": "=max(extruderValues('raft_base_extruder_nr'))",
+      "settable_per_extruder": false
+    },
+    "raft_interface_extruder_nr": {
+      "type": "extruder",
+      "default_value": "0",
+      "value": "=0 if adhesion_extruder_nr == -1 else adhesion_extruder_nr",
+      "resolve": "=max(extruderValues('raft_interface_extruder_nr'))",
+      "settable_per_extruder": false
+    },
+    "raft_surface_extruder_nr": {
+      "type": "extruder",
+      "default_value": "0",
+      "value": "=0 if adhesion_extruder_nr == -1 else adhesion_extruder_nr",
+      "resolve": "=max(extruderValues('raft_surface_extruder_nr'))",
+      "settable_per_extruder": false
+    },
+    "skirt_line_count": {
+      "type": "int",
+      "default_value": 1,
+      "limit_to_extruder": "=skirt_brim_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "skirt_height": {
+      "type": "int",
+      "default_value": 3,
+      "value": "=3 if resolveOrValue('skirt_gap') > 0.0 else 1",
+      "limit_to_extruder": "=skirt_brim_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "skirt_gap": {
+      "type": "float",
+      "default_value": 3,
+      "limit_to_extruder": "=skirt_brim_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "skirt_brim_minimal_length": {
+      "type": "float",
+      "default_value": 250,
+      "limit_to_extruder": "=skirt_brim_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "brim_width": {
+      "type": "float",
+      "default_value": 8.0,
+      "limit_to_extruder": "=skirt_brim_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "brim_line_count": {
+      "type": "int",
+      "default_value": 20,
+      "value": "=math.ceil(brim_width / (skirt_brim_line_width * initial_layer_line_width_factor / 100.0))",
+      "limit_to_extruder": "=skirt_brim_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "brim_gap": {
+      "type": "float",
+      "default_value": 0,
+      "limit_to_extruder": "=skirt_brim_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "brim_replaces_support": {
+      "type": "bool",
+      "default_value": true,
+      "limit_to_extruder": "=skirt_brim_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "brim_location": {
+      "type": "enum",
+      "default_value": "outside",
+      "limit_to_extruder": "=skirt_brim_extruder_nr",
+      "settable_per_extruder": true,
+      "options": {
+        "outside": "Outside Only",
+        "inside": "Inside Only",
+        "everywhere": "Everywhere"
+      }
+    },
+    "brim_inside_margin": {
+      "type": "float",
+      "default_value": "1.6",
+      "value": "=line_width * 4",
+      "limit_to_extruder": "=skirt_brim_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "brim_smart_ordering": {
+      "type": "bool",
+      "default_value": true,
+      "limit_to_extruder": "=skirt_brim_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_margin": {
+      "type": "float",
+      "default_value": 15,
+      "limit_to_extruder": "=adhesion_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_base_margin": {
+      "type": "float",
+      "default_value": 15,
+      "value": "=raft_margin",
+      "limit_to_extruder": "=raft_base_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_interface_margin": {
+      "type": "float",
+      "default_value": 15,
+      "value": "=raft_margin",
+      "limit_to_extruder": "=raft_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_surface_margin": {
+      "type": "float",
+      "default_value": 15,
+      "value": "=raft_margin",
+      "limit_to_extruder": "=raft_surface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_remove_inside_corners": {
+      "type": "bool",
+      "default_value": false,
+      "resolve": "=any(extruderValues('raft_remove_inside_corners'))",
+      "settable_per_extruder": false
+    },
+    "raft_base_remove_inside_corners": {
+      "type": "bool",
+      "default_value": false,
+      "value": "=raft_remove_inside_corners",
+      "resolve": "=any(extruderValues('raft_base_remove_inside_corners'))",
+      "settable_per_extruder": false
+    },
+    "raft_interface_remove_inside_corners": {
+      "type": "bool",
+      "default_value": false,
+      "value": "=raft_remove_inside_corners",
+      "resolve": "=any(extruderValues('raft_interface_remove_inside_corners'))",
+      "settable_per_extruder": false
+    },
+    "raft_surface_remove_inside_corners": {
+      "type": "bool",
+      "default_value": false,
+      "value": "=raft_remove_inside_corners",
+      "resolve": "=any(extruderValues('raft_surface_remove_inside_corners'))",
+      "settable_per_extruder": false
+    },
+    "raft_smoothing": {
+      "type": "float",
+      "default_value": 5,
+      "settable_per_extruder": false
+    },
+    "raft_base_smoothing": {
+      "type": "float",
+      "default_value": 5,
+      "value": "=raft_smoothing",
+      "settable_per_extruder": false
+    },
+    "raft_interface_smoothing": {
+      "type": "float",
+      "default_value": 5,
+      "value": "=raft_smoothing",
+      "settable_per_extruder": false
+    },
+    "raft_surface_smoothing": {
+      "type": "float",
+      "default_value": 5,
+      "value": "=raft_smoothing",
+      "settable_per_extruder": false
+    },
+    "raft_airgap": {
+      "type": "float",
+      "default_value": 0.3,
+      "limit_to_extruder": "=raft_surface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "layer_0_z_overlap": {
+      "type": "float",
+      "default_value": 0.22,
+      "value": "=raft_airgap / 2",
+      "limit_to_extruder": "=raft_surface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_base_thickness": {
+      "type": "float",
+      "default_value": 0.3,
+      "value": "=resolveOrValue('layer_height_0') * 1.2",
+      "limit_to_extruder": "=raft_base_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_base_line_width": {
+      "type": "float",
+      "default_value": 0.8,
+      "value": "=machine_nozzle_size * 2",
+      "limit_to_extruder": "=raft_base_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_base_line_spacing": {
+      "type": "float",
+      "default_value": 1.6,
+      "value": "=raft_base_line_width * 2",
+      "limit_to_extruder": "=raft_base_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_base_infill_overlap": {
+      "type": "float",
+      "default_value": 0,
+      "limit_to_extruder": "=raft_base_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_base_infill_overlap_mm": {
+      "type": "float",
+      "default_value": 0.0,
+      "value": "=raft_base_line_width * raft_base_infill_overlap / 100",
+      "limit_to_extruder": "=raft_base_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_interface_layers": {
+      "type": "int",
+      "default_value": 1,
+      "limit_to_extruder": "=raft_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_interface_thickness": {
+      "type": "float",
+      "default_value": 0.15,
+      "value": "=resolveOrValue('layer_height') * 1.5",
+      "limit_to_extruder": "=raft_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_interface_line_width": {
+      "type": "float",
+      "default_value": 0.7,
+      "value": "=line_width * 2",
+      "limit_to_extruder": "=raft_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_interface_line_spacing": {
+      "type": "float",
+      "default_value": 0.9,
+      "value": "=raft_interface_line_width + 0.2",
+      "limit_to_extruder": "=raft_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_interface_z_offset": {
+      "type": "float",
+      "default_value": 0.0,
+      "limit_to_extruder": "=raft_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_interface_infill_overlap": {
+      "type": "float",
+      "default_value": 0,
+      "limit_to_extruder": "=raft_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_interface_infill_overlap_mm": {
+      "type": "float",
+      "default_value": 0.0,
+      "value": "=raft_interface_line_width * raft_interface_infill_overlap / 100",
+      "limit_to_extruder": "=raft_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_surface_layers": {
+      "type": "int",
+      "default_value": 2,
+      "limit_to_extruder": "=raft_surface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_surface_thickness": {
+      "type": "float",
+      "default_value": 0.1,
+      "value": "=resolveOrValue('layer_height')",
+      "limit_to_extruder": "=raft_surface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_surface_line_width": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=line_width",
+      "limit_to_extruder": "=raft_surface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_surface_line_spacing": {
+      "type": "float",
+      "default_value": 0.4,
+      "value": "=raft_surface_line_width",
+      "limit_to_extruder": "=raft_surface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_surface_z_offset": {
+      "type": "float",
+      "default_value": 0.0,
+      "limit_to_extruder": "=raft_surface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_surface_monotonic": {
+      "type": "bool",
+      "default_value": false,
+      "value": "=skin_monotonic",
+      "limit_to_extruder": "=raft_surface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_surface_infill_overlap": {
+      "type": "float",
+      "default_value": 0,
+      "limit_to_extruder": "=raft_surface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_surface_infill_overlap_mm": {
+      "type": "float",
+      "default_value": 0.0,
+      "value": "=raft_surface_line_width * raft_surface_infill_overlap / 100",
+      "limit_to_extruder": "=raft_surface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_wall_count": {
+      "type": "int",
+      "default_value": 1,
+      "settable_per_extruder": true
+    },
+    "raft_base_wall_count": {
+      "type": "int",
+      "default_value": 1,
+      "value": "=raft_wall_count",
+      "limit_to_extruder": "=raft_base_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_interface_wall_count": {
+      "type": "int",
+      "default_value": 0,
+      "limit_to_extruder": "=raft_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_surface_wall_count": {
+      "type": "int",
+      "default_value": 0,
+      "limit_to_extruder": "=raft_surface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_speed": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=speed_print / 60 * 30",
+      "limit_to_extruder": "=adhesion_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_base_speed": {
+      "type": "float",
+      "default_value": 15,
+      "value": "=0.75 * raft_speed",
+      "limit_to_extruder": "=raft_base_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_interface_speed": {
+      "type": "float",
+      "default_value": 15,
+      "value": "=raft_speed * 0.75",
+      "limit_to_extruder": "=raft_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_surface_speed": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=raft_speed",
+      "limit_to_extruder": "=raft_surface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_acceleration": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=acceleration_print",
+      "limit_to_extruder": "=adhesion_extruder_nr"
+    },
+    "raft_base_acceleration": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=raft_acceleration",
+      "limit_to_extruder": "=raft_base_extruder_nr"
+    },
+    "raft_interface_acceleration": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=raft_acceleration",
+      "limit_to_extruder": "=raft_interface_extruder_nr"
+    },
+    "raft_surface_acceleration": {
+      "type": "float",
+      "default_value": 3000,
+      "value": "=raft_acceleration",
+      "limit_to_extruder": "=raft_surface_extruder_nr"
+    },
+    "raft_jerk": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=jerk_print",
+      "limit_to_extruder": "=adhesion_extruder_nr"
+    },
+    "raft_base_jerk": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=raft_jerk",
+      "limit_to_extruder": "=raft_base_extruder_nr"
+    },
+    "raft_interface_jerk": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=raft_jerk",
+      "limit_to_extruder": "=raft_interface_extruder_nr"
+    },
+    "raft_surface_jerk": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=raft_jerk",
+      "limit_to_extruder": "=raft_surface_extruder_nr"
+    },
+    "raft_fan_speed": {
+      "type": "float",
+      "default_value": 0,
+      "limit_to_extruder": "=adhesion_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_base_fan_speed": {
+      "type": "float",
+      "default_value": 0,
+      "value": "=raft_fan_speed",
+      "limit_to_extruder": "=raft_base_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_interface_fan_speed": {
+      "type": "float",
+      "default_value": 0,
+      "value": "=raft_fan_speed",
+      "limit_to_extruder": "=raft_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_surface_fan_speed": {
+      "type": "float",
+      "default_value": 0,
+      "value": "=raft_fan_speed",
+      "limit_to_extruder": "=raft_surface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_flow": {
+      "type": "float",
+      "default_value": 100.0,
+      "settable_per_extruder": true
+    },
+    "raft_base_flow": {
+      "type": "float",
+      "default_value": 100.0,
+      "value": "=raft_flow",
+      "limit_to_extruder": "=raft_base_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_interface_flow": {
+      "type": "float",
+      "default_value": 100.0,
+      "value": "=raft_flow",
+      "limit_to_extruder": "=raft_interface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "raft_surface_flow": {
+      "type": "float",
+      "default_value": 100.0,
+      "value": "=raft_flow",
+      "limit_to_extruder": "=raft_surface_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "machine_scan_first_layer": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "prime_tower_enable": {
+      "type": "bool",
+      "default_value": false,
+      "resolve": "=(extruders_enabled_count > 1) and any(extruderValues('prime_tower_enable'))",
+      "settable_per_extruder": false
+    },
+    "prime_tower_mode": {
+      "type": "enum",
+      "default_value": "normal",
+      "resolve": "='interleaved' if all(mode == 'interleaved' for mode in extruderValues('prime_tower_mode')) else 'interleaved' if (all(material_type_var == extruderValues('material_type')[0] for material_type_var in extruderValues('material_type')) and all(material_brand_var == extruderValues('material_brand')[0] for material_brand_var in extruderValues('material_brand'))) else 'normal'",
+      "settable_per_extruder": false,
+      "options": {
+        "normal": "Normal",
+        "interleaved": "Interleaved"
+      }
+    },
+    "prime_tower_size": {
+      "type": "float",
+      "default_value": 20,
+      "resolve": "=max(extruderValues('prime_tower_size'))",
+      "settable_per_extruder": false
+    },
+    "prime_tower_min_volume": {
+      "type": "float",
+      "default_value": 6,
+      "settable_per_extruder": true
+    },
+    "prime_tower_max_bridging_distance": {
+      "type": "float",
+      "default_value": 5,
+      "settable_per_extruder": true
+    },
+    "prime_tower_min_shell_thickness": {
+      "type": "float",
+      "default_value": 0.4,
+      "resolve": "=max(extruderValues('prime_tower_line_width'))",
+      "settable_per_extruder": false
+    },
+    "prime_tower_position_x": {
+      "type": "float",
+      "default_value": 200,
+      "value": "=((resolveOrValue('machine_width') / 2 + resolveOrValue('prime_tower_size') / 2) if resolveOrValue('machine_shape') == 'elliptic' else (resolveOrValue('machine_width') - (resolveOrValue('prime_tower_base_size') if (resolveOrValue('adhesion_type') == 'raft' or resolveOrValue('prime_tower_brim_enable')) else 0) - max(max(extruderValues('travel_avoid_distance')) + max(extruderValues('machine_nozzle_offset_x')) + max(extruderValues('support_offset')) + (extruderValue(skirt_brim_extruder_nr, 'skirt_brim_line_width') * extruderValue(skirt_brim_extruder_nr, 'skirt_line_count') * extruderValue(skirt_brim_extruder_nr, 'initial_layer_line_width_factor') / 100 + extruderValue(skirt_brim_extruder_nr, 'skirt_gap') if resolveOrValue('adhesion_type') == 'skirt' else 0) + (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0), max(map(abs, extruderValues('machine_nozzle_offset_x'))), 1))) - (resolveOrValue('machine_width') / 2 if resolveOrValue('machine_center_is_zero') else 0)",
+      "settable_per_extruder": false
+    },
+    "prime_tower_position_y": {
+      "type": "float",
+      "default_value": 200,
+      "value": "=machine_depth - prime_tower_size - (resolveOrValue('prime_tower_base_size') if (resolveOrValue('adhesion_type') == 'raft' or resolveOrValue('prime_tower_brim_enable')) else 0) - max(max(extruderValues('travel_avoid_distance')) + max(extruderValues('machine_nozzle_offset_y')) + max(extruderValues('support_offset')) + (extruderValue(skirt_brim_extruder_nr, 'skirt_brim_line_width') * extruderValue(skirt_brim_extruder_nr, 'skirt_line_count') * extruderValue(skirt_brim_extruder_nr, 'initial_layer_line_width_factor') / 100 + extruderValue(skirt_brim_extruder_nr, 'skirt_gap') if resolveOrValue('adhesion_type') == 'skirt' else 0) + (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0), max(map(abs, extruderValues('machine_nozzle_offset_y'))), 1) - (resolveOrValue('machine_depth') / 2 if resolveOrValue('machine_center_is_zero') else 0)",
+      "settable_per_extruder": false
+    },
+    "prime_tower_wipe_enabled": {
+      "type": "bool",
+      "default_value": true,
+      "settable_per_extruder": true
+    },
+    "prime_tower_brim_enable": {
+      "type": "bool",
+      "default_value": false,
+      "value": "=resolveOrValue('adhesion_type') in ['raft', 'brim']",
+      "settable_per_extruder": false
+    },
+    "prime_tower_base_size": {
+      "type": "float",
+      "default_value": 1.2,
+      "value": "=resolveOrValue('raft_margin') if resolveOrValue('adhesion_type') == 'raft' else resolveOrValue('brim_width')",
+      "settable_per_extruder": false
+    },
+    "prime_tower_base_height": {
+      "type": "float",
+      "default_value": 0,
+      "value": "=resolveOrValue('layer_height')",
+      "settable_per_extruder": false
+    },
+    "prime_tower_base_curve_magnitude": {
+      "type": "float",
+      "default_value": 4,
+      "settable_per_extruder": false
+    },
+    "prime_tower_raft_base_line_spacing": {
+      "type": "float",
+      "default_value": 1.6,
+      "value": "=raft_base_line_spacing",
+      "limit_to_extruder": "=raft_base_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "ooze_shield_enabled": {
+      "type": "bool",
+      "default_value": false,
+      "resolve": "=any(extruderValues('ooze_shield_enabled'))",
+      "settable_per_extruder": false
+    },
+    "ooze_shield_angle": {
+      "type": "float",
+      "default_value": 60,
+      "resolve": "=min(extruderValues('ooze_shield_angle'))",
+      "settable_per_extruder": false
+    },
+    "ooze_shield_dist": {
+      "type": "float",
+      "default_value": 2,
+      "resolve": "=max(extruderValues('ooze_shield_dist'))",
+      "settable_per_extruder": false
+    },
+    "switch_extruder_retraction_amount": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=machine_heat_zone_length",
+      "settable_per_extruder": true
+    },
+    "switch_extruder_retraction_speeds": {
+      "type": "float",
+      "default_value": 20,
+      "settable_per_extruder": true
+    },
+    "switch_extruder_retraction_speed": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=switch_extruder_retraction_speeds",
+      "settable_per_extruder": true
+    },
+    "switch_extruder_prime_speed": {
+      "type": "float",
+      "default_value": 20,
+      "value": "=switch_extruder_retraction_speeds",
+      "settable_per_extruder": true
+    },
+    "switch_extruder_extra_prime_amount": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "interlocking_enable": {
+      "type": "bool",
+      "default_value": false,
+      "resolve": "=(extruders_enabled_count > 1) and any(extruderValues('interlocking_enable'))",
+      "settable_per_extruder": false
+    },
+    "interlocking_beam_width": {
+      "type": "float",
+      "default_value": 0.8,
+      "value": "=2 * wall_line_width_0",
+      "settable_per_extruder": true
+    },
+    "interlocking_orientation": {
+      "type": "float",
+      "default_value": 22.5,
+      "resolve": "=min(extruderValues('interlocking_orientation'))",
+      "settable_per_extruder": false
+    },
+    "interlocking_beam_layer_count": {
+      "type": "int",
+      "default_value": 2,
+      "resolve": "=max(extruderValues('interlocking_beam_layer_count'))",
+      "settable_per_extruder": false
+    },
+    "interlocking_depth": {
+      "type": "int",
+      "default_value": 2,
+      "resolve": "=max(extruderValues('interlocking_depth'))",
+      "settable_per_extruder": false
+    },
+    "interlocking_boundary_avoidance": {
+      "type": "int",
+      "default_value": 2,
+      "resolve": "=max(extruderValues('interlocking_boundary_avoidance'))",
+      "settable_per_extruder": false
+    },
+    "multi_material_paint_resolution": {
+      "type": "float",
+      "default_value": 0.2,
+      "value": "=min(line_width / 2, layer_height)",
+      "settable_per_extruder": true
+    },
+    "multi_material_paint_depth": {
+      "type": "float",
+      "default_value": 4,
+      "value": "=line_width * 10",
+      "settable_per_extruder": true
+    },
+    "meshfix_union_all": {
+      "type": "bool",
+      "default_value": true,
+      "value": "=magic_mesh_surface_mode != 'surface'"
+    },
+    "meshfix_union_all_remove_holes": {
+      "type": "bool",
+      "default_value": false,
+      "value": "=magic_spiralize"
+    },
+    "meshfix_extensive_stitching": {
+      "type": "bool",
+      "default_value": false
+    },
+    "meshfix_keep_open_polygons": {
+      "type": "bool",
+      "default_value": false
+    },
+    "multiple_mesh_overlap": {
+      "type": "float",
+      "default_value": 0.15,
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "carve_multiple_volumes": {
+      "type": "bool",
+      "default_value": true,
+      "value": "=extruders_enabled_count > 1",
+      "settable_per_extruder": false
+    },
+    "alternate_carve_order": {
+      "type": "bool",
+      "default_value": true,
+      "settable_per_extruder": false
+    },
+    "remove_empty_first_layers": {
+      "type": "bool",
+      "default_value": true,
+      "settable_per_extruder": false
+    },
+    "meshfix_maximum_resolution": {
+      "type": "float",
+      "default_value": 0.5
+    },
+    "meshfix_maximum_travel_resolution": {
+      "type": "float",
+      "default_value": 1.0,
+      "value": "=min(meshfix_maximum_resolution * speed_travel / speed_print, 2 * line_width)",
+      "settable_per_extruder": true
+    },
+    "meshfix_maximum_deviation": {
+      "type": "float",
+      "default_value": 0.025
+    },
+    "meshfix_maximum_extrusion_area_deviation": {
+      "type": "float",
+      "default_value": 50000
+    },
+    "meshfix_fluid_motion_enabled": {
+      "type": "bool",
+      "default_value": true
+    },
+    "meshfix_fluid_motion_shift_distance": {
+      "type": "float",
+      "default_value": 0.1
+    },
+    "meshfix_fluid_motion_small_distance": {
+      "type": "float",
+      "default_value": 0.01
+    },
+    "meshfix_fluid_motion_angle": {
+      "type": "float",
+      "default_value": 15
+    },
+    "print_sequence": {
+      "type": "enum",
+      "default_value": "all_at_once",
+      "settable_per_extruder": false,
+      "options": {
+        "all_at_once": "All at Once",
+        "one_at_a_time": "One at a Time"
+      }
+    },
+    "user_defined_print_order_enabled": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "infill_mesh": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "infill_mesh_order": {
+      "type": "int",
+      "default_value": 0,
+      "value": "=1 if infill_mesh else 0",
+      "settable_per_extruder": false
+    },
+    "cutting_mesh": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "mold_enabled": {
+      "type": "bool",
+      "default_value": false
+    },
+    "mold_width": {
+      "type": "float",
+      "default_value": 5
+    },
+    "mold_roof_height": {
+      "type": "float",
+      "default_value": 0.5
+    },
+    "mold_angle": {
+      "type": "float",
+      "default_value": 40
+    },
+    "support_mesh": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "anti_overhang_mesh": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "magic_mesh_surface_mode": {
+      "type": "enum",
+      "default_value": "normal",
+      "options": {
+        "normal": "Normal",
+        "surface": "Surface",
+        "both": "Both"
+      }
+    },
+    "magic_spiralize": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "smooth_spiralized_contours": {
+      "type": "bool",
+      "default_value": true,
+      "settable_per_extruder": false
+    },
+    "relative_extrusion": {
+      "type": "bool",
+      "default_value": false,
+      "value": "=machine_gcode_flavor==\"RepRap (RepRap)\"",
+      "settable_per_extruder": false
+    },
+    "slicing_tolerance": {
+      "type": "enum",
+      "default_value": "middle",
+      "options": {
+        "middle": "Middle",
+        "exclusive": "Exclusive",
+        "inclusive": "Inclusive"
+      }
+    },
+    "infill_enable_travel_optimization": {
+      "type": "bool",
+      "default_value": false
+    },
+    "material_flow_temp_graph": {
+      "type": "str",
+      "default_value": "[[3.5, 200],[7.0, 240]]",
+      "settable_per_extruder": true
+    },
+    "minimum_polygon_circumference": {
+      "type": "float",
+      "default_value": 1.0,
+      "settable_per_extruder": false
+    },
+    "support_skip_some_zags": {
+      "type": "bool",
+      "default_value": false,
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_skip_zag_per_mm": {
+      "type": "float",
+      "default_value": 20,
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_zag_skip_count": {
+      "type": "int",
+      "default_value": 5,
+      "value": "=0 if support_line_distance == 0 else round(support_skip_zag_per_mm / support_line_distance)",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "draft_shield_enabled": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "draft_shield_dist": {
+      "type": "float",
+      "default_value": 10,
+      "resolve": "=max(extruderValues('draft_shield_dist'))",
+      "settable_per_extruder": false
+    },
+    "draft_shield_height_limitation": {
+      "type": "enum",
+      "default_value": "full",
+      "resolve": "='full' if 'full' in extruderValues('draft_shield_height_limitation') else 'limited'",
+      "settable_per_extruder": false,
+      "options": {
+        "full": "Full",
+        "limited": "Limited"
+      }
+    },
+    "draft_shield_height": {
+      "type": "float",
+      "default_value": 10,
+      "value": "=10",
+      "settable_per_extruder": false
+    },
+    "conical_overhang_enabled": {
+      "type": "bool",
+      "default_value": false
+    },
+    "conical_overhang_angle": {
+      "type": "float",
+      "default_value": 50
+    },
+    "conical_overhang_hole_size": {
+      "type": "float",
+      "default_value": 0
+    },
+    "coasting_enable": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "coasting_volume": {
+      "type": "float",
+      "default_value": 0.064,
+      "settable_per_extruder": true
+    },
+    "coasting_min_volume": {
+      "type": "float",
+      "default_value": 0.8,
+      "settable_per_extruder": true
+    },
+    "coasting_speed": {
+      "type": "float",
+      "default_value": 90,
+      "settable_per_extruder": true
+    },
+    "cross_infill_pocket_size": {
+      "type": "float",
+      "default_value": 2.0,
+      "value": "=infill_line_distance",
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "cross_infill_density_image": {
+      "type": "str",
+      "default_value": "",
+      "limit_to_extruder": "=infill_extruder_nr"
+    },
+    "cross_support_density_image": {
+      "type": "str",
+      "default_value": "",
+      "limit_to_extruder": "=support_infill_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "support_conical_enabled": {
+      "type": "bool",
+      "default_value": false,
+      "limit_to_extruder": "=support_infill_extruder_nr"
+    },
+    "support_conical_angle": {
+      "type": "float",
+      "default_value": 30,
+      "limit_to_extruder": "=support_infill_extruder_nr"
+    },
+    "support_conical_min_width": {
+      "type": "float",
+      "default_value": 5.0,
+      "limit_to_extruder": "=support_infill_extruder_nr"
+    },
+    "magic_fuzzy_skin_enabled": {
+      "type": "bool",
+      "default_value": false,
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "magic_fuzzy_skin_outside_only": {
+      "type": "bool",
+      "default_value": false,
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "magic_fuzzy_skin_thickness": {
+      "type": "float",
+      "default_value": 0.3,
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "magic_fuzzy_skin_point_density": {
+      "type": "float",
+      "default_value": 1.25,
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "magic_fuzzy_skin_point_dist": {
+      "type": "float",
+      "default_value": 0.8,
+      "value": "=10000 if magic_fuzzy_skin_point_density == 0 else 1 / magic_fuzzy_skin_point_density",
+      "limit_to_extruder": "=wall_0_extruder_nr"
+    },
+    "flow_rate_max_extrusion_offset": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": false
+    },
+    "flow_rate_extrusion_offset_factor": {
+      "type": "float",
+      "default_value": 100,
+      "settable_per_extruder": false
+    },
+    "adaptive_layer_height_enabled": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": false
+    },
+    "adaptive_layer_height_variation": {
+      "type": "float",
+      "default_value": 0.1,
+      "settable_per_extruder": false
+    },
+    "adaptive_layer_height_variation_step": {
+      "type": "float",
+      "default_value": 0.01,
+      "settable_per_extruder": false
+    },
+    "adaptive_layer_height_threshold": {
+      "type": "float",
+      "default_value": 0.2,
+      "settable_per_extruder": false
+    },
+    "wall_overhang_angle": {
+      "type": "float",
+      "default_value": 90
+    },
+    "cool_min_layer_time_overhang": {
+      "type": "float",
+      "default_value": 5,
+      "value": "=cool_min_layer_time",
+      "settable_per_extruder": true
+    },
+    "cool_min_layer_time_overhang_min_segment_length": {
+      "type": "float",
+      "default_value": 5,
+      "settable_per_extruder": true
+    },
+    "seam_overhang_angle": {
+      "type": "float",
+      "default_value": 90,
+      "value": "=support_angle"
+    },
+    "wall_overhang_speed_factors": {
+      "type": "[int]",
+      "default_value": "[100]"
+    },
+    "bridge_settings_enabled": {
+      "type": "bool",
+      "default_value": false,
+      "resolve": "=any(extruderValues('bridge_settings_enabled'))",
+      "settable_per_extruder": false
+    },
+    "bridge_wall_min_length": {
+      "type": "float",
+      "default_value": 5,
+      "value": "=line_width + support_xy_distance + 1.0",
+      "settable_per_extruder": true
+    },
+    "bridge_skin_support_threshold": {
+      "type": "float",
+      "default_value": 50
+    },
+    "bridge_wall_coast": {
+      "type": "float",
+      "default_value": 100
+    },
+    "bridge_wall_speed": {
+      "type": "float",
+      "default_value": 15,
+      "value": "=max(cool_min_speed, speed_wall_0 / 2)"
+    },
+    "bridge_wall_material_flow": {
+      "type": "float",
+      "default_value": 50
+    },
+    "bridge_skin_speed": {
+      "type": "float",
+      "default_value": 15,
+      "value": "=max(cool_min_speed, speed_topbottom / 2)"
+    },
+    "bridge_skin_material_flow": {
+      "type": "float",
+      "default_value": 60
+    },
+    "bridge_skin_density": {
+      "type": "float",
+      "default_value": 100
+    },
+    "bridge_fan_speed": {
+      "type": "float",
+      "default_value": 100
+    },
+    "bridge_interlace_lines": {
+      "type": "bool",
+      "default_value": false
+    },
+    "bridge_enable_more_layers": {
+      "type": "bool",
+      "default_value": true
+    },
+    "bridge_skin_speed_2": {
+      "type": "float",
+      "default_value": 25,
+      "value": "=bridge_skin_speed"
+    },
+    "bridge_skin_material_flow_2": {
+      "type": "float",
+      "default_value": 100
+    },
+    "bridge_skin_density_2": {
+      "type": "float",
+      "default_value": 75
+    },
+    "bridge_fan_speed_2": {
+      "type": "float",
+      "default_value": 0
+    },
+    "bridge_skin_speed_3": {
+      "type": "float",
+      "default_value": 15,
+      "value": "=bridge_skin_speed"
+    },
+    "bridge_skin_material_flow_3": {
+      "type": "float",
+      "default_value": 110
+    },
+    "bridge_skin_density_3": {
+      "type": "float",
+      "default_value": 80
+    },
+    "bridge_fan_speed_3": {
+      "type": "float",
+      "default_value": 0
+    },
+    "clean_between_layers": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "max_extrusion_before_wipe": {
+      "type": "float",
+      "default_value": 10,
+      "settable_per_extruder": true
+    },
+    "wipe_retraction_enable": {
+      "type": "bool",
+      "default_value": true,
+      "value": "=retraction_enable",
+      "settable_per_extruder": true
+    },
+    "wipe_retraction_amount": {
+      "type": "float",
+      "default_value": 1,
+      "value": "=retraction_amount",
+      "settable_per_extruder": true
+    },
+    "wipe_retraction_extra_prime_amount": {
+      "type": "float",
+      "default_value": 0,
+      "value": "=retraction_extra_prime_amount",
+      "settable_per_extruder": true
+    },
+    "wipe_retraction_speed": {
+      "type": "float",
+      "default_value": 5,
+      "value": "=retraction_speed",
+      "settable_per_extruder": true
+    },
+    "wipe_retraction_retract_speed": {
+      "type": "float",
+      "default_value": 3,
+      "value": "=wipe_retraction_speed",
+      "settable_per_extruder": true
+    },
+    "wipe_retraction_prime_speed": {
+      "type": "float",
+      "default_value": 2,
+      "value": "=wipe_retraction_speed",
+      "settable_per_extruder": true
+    },
+    "wipe_pause": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "wipe_hop_enable": {
+      "type": "bool",
+      "default_value": true,
+      "value": "=retraction_hop_enabled",
+      "settable_per_extruder": true
+    },
+    "wipe_hop_amount": {
+      "type": "float",
+      "default_value": 1,
+      "value": "=retraction_hop",
+      "settable_per_extruder": true
+    },
+    "wipe_hop_speed": {
+      "type": "float",
+      "default_value": 10,
+      "value": "=speed_z_hop",
+      "settable_per_extruder": true
+    },
+    "wipe_brush_pos_x": {
+      "type": "float",
+      "default_value": 100,
+      "settable_per_extruder": true
+    },
+    "wipe_repeat_count": {
+      "type": "int",
+      "default_value": 5,
+      "settable_per_extruder": true
+    },
+    "wipe_move_distance": {
+      "type": "float",
+      "default_value": 20,
+      "settable_per_extruder": true
+    },
+    "small_hole_max_size": {
+      "type": "float",
+      "default_value": 0
+    },
+    "small_feature_max_length": {
+      "type": "float",
+      "default_value": 0,
+      "value": "=small_hole_max_size * math.pi"
+    },
+    "small_feature_speed_factor": {
+      "type": "float",
+      "default_value": 50
+    },
+    "small_feature_speed_factor_0": {
+      "type": "float",
+      "default_value": 50,
+      "value": "=small_feature_speed_factor"
+    },
+    "material_alternate_walls": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "group_outer_walls": {
+      "type": "bool",
+      "default_value": true
+    },
+    "retraction_during_travel_ratio": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "keep_retracting_during_travel": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "prime_during_travel_ratio": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "scarf_joint_seam_length": {
+      "type": "float",
+      "default_value": 0,
+      "limit_to_extruder": "=wall_0_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "scarf_joint_seam_start_height_ratio": {
+      "type": "float",
+      "default_value": 0,
+      "limit_to_extruder": "=wall_0_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "scarf_split_distance": {
+      "type": "float",
+      "default_value": 1.0,
+      "limit_to_extruder": "=wall_0_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "wall_0_start_speed_ratio": {
+      "type": "float",
+      "default_value": 100.0,
+      "limit_to_extruder": "=wall_0_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "wall_0_acceleration": {
+      "type": "float",
+      "default_value": 20.0,
+      "limit_to_extruder": "=wall_0_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "wall_0_end_speed_ratio": {
+      "type": "float",
+      "default_value": 100.0,
+      "limit_to_extruder": "=wall_0_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "wall_0_deceleration": {
+      "type": "float",
+      "default_value": 20.0,
+      "limit_to_extruder": "=wall_0_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "wall_0_speed_split_distance": {
+      "type": "float",
+      "default_value": 1.0,
+      "limit_to_extruder": "=wall_0_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "material_delta_temperature_roofing": {
+      "type": "float",
+      "default_value": 0,
+      "limit_to_extruder": "=roofing_extruder_nr",
+      "settable_per_extruder": true
+    },
+    "ppr_enable": {
+      "type": "bool",
+      "default_value": false,
+      "value": false,
+      "settable_per_extruder": false
+    },
+    "flow_warn_limit": {
+      "type": "float",
+      "default_value": 15.0,
+      "settable_per_extruder": true
+    },
+    "flow_anomaly_limit": {
+      "type": "float",
+      "default_value": 25.0,
+      "settable_per_extruder": true
+    },
+    "print_temp_warn_limit": {
+      "type": "float",
+      "default_value": 3.0,
+      "settable_per_extruder": true
+    },
+    "print_temp_anomaly_limit": {
+      "type": "float",
+      "default_value": 7.0,
+      "settable_per_extruder": true
+    },
+    "bv_temp_warn_limit": {
+      "type": "float",
+      "default_value": 7.5,
+      "settable_per_extruder": false
+    },
+    "bv_temp_anomaly_limit": {
+      "type": "float",
+      "default_value": 10.0,
+      "settable_per_extruder": false
+    },
+    "center_object": {
+      "type": "bool",
+      "default_value": false
+    },
+    "mesh_position_x": {
+      "type": "float",
+      "default_value": 0
+    },
+    "mesh_position_y": {
+      "type": "float",
+      "default_value": 0
+    },
+    "mesh_position_z": {
+      "type": "float",
+      "default_value": 0
+    },
+    "mesh_rotation_matrix": {
+      "type": "str",
+      "default_value": "[[1,0,0], [0,1,0], [0,0,1]]"
+    }
+  },
+  "extruder": {
+    "extruder_nr": {
+      "type": "extruder",
+      "default_value": "0",
+      "settable_per_extruder": true
+    },
+    "extruder_prime_pos_z": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "machine_extruder_change_duration": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "machine_extruder_cooling_fan_number": {
+      "type": "int",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "machine_extruder_end_code": {
+      "type": "str",
+      "default_value": "",
+      "settable_per_extruder": true
+    },
+    "machine_extruder_end_code_duration": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "machine_extruder_end_pos_abs": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "machine_extruder_end_pos_x": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "machine_extruder_end_pos_y": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "machine_extruder_prestart_code": {
+      "type": "str",
+      "default_value": "",
+      "settable_per_extruder": true
+    },
+    "machine_extruder_start_code": {
+      "type": "str",
+      "default_value": "",
+      "settable_per_extruder": true
+    },
+    "machine_extruder_start_code_duration": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "machine_extruder_start_pos_abs": {
+      "type": "bool",
+      "default_value": false,
+      "settable_per_extruder": true
+    },
+    "machine_extruder_start_pos_x": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "machine_extruder_start_pos_y": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "machine_nozzle_head_distance": {
+      "type": "float",
+      "default_value": 3,
+      "settable_per_extruder": true
+    },
+    "machine_nozzle_id": {
+      "type": "str",
+      "default_value": "unknown",
+      "settable_per_extruder": true
+    },
+    "machine_nozzle_offset_x": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "machine_nozzle_offset_y": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "machine_nozzle_size": {
+      "type": "float",
+      "default_value": 0.4,
+      "settable_per_extruder": true
+    },
+    "material_diameter": {
+      "type": "float",
+      "default_value": 2.85,
+      "settable_per_extruder": true
+    },
+    "extruder_prime_pos_x": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    },
+    "extruder_prime_pos_y": {
+      "type": "float",
+      "default_value": 0,
+      "settable_per_extruder": true
+    }
+  }
+}
