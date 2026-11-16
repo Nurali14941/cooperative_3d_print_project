@@ -7,7 +7,8 @@ import traceback
 import requests
 
 from util.job_tracking import START_VARIABLE, DONE_VARIABLE
-from util.network_utils import RobotConnection, read_status
+
+from util.network_utils import RobotConnection, read_status, reconnect_to_ambots
 
 TRACK_POSITION_FIELD = "machinePosition"
 WATCH_XY_EPSILON = 0.01
@@ -53,10 +54,50 @@ def track(ip, store_coords, tracker_event_queue, tracker_control_queue,
         print(f"POSE_WRITE t={time.monotonic():.6f} p={p} reason={reason} "
               f"old={previous} new={position}", flush=True)
 
-    def model(p, **params):
-        response = requests.get(f"http://{ip[p]}/rr_model", params=params, timeout=5)
-        response.raise_for_status()
-        return response.json()["result"]
+    def model(p, *, retries = 5, **params):
+        if retries < 1:
+            raise ValueError("retries must be at least 1")
+
+        last_error = None
+
+        for attempt in range(1, retries + 1):
+            try:
+                response = requests.get(
+                    f"http://{ip[p]}/rr_model",
+                    params=params,
+                    timeout=5,
+                )
+                response.raise_for_status()
+                return response.json()["result"]
+
+            except requests.RequestException as exc:
+                last_error = exc
+
+                if attempt == retries:
+                    break
+
+                print(
+                    f"p{p}: model request failed "
+                    f"({attempt}/{retries}): {exc}. Reconnecting...",
+                    flush=True,
+                )
+
+                try:
+                    reconnect_to_ambots(connection=connection)
+                except ConnectionError as reconnect_error:
+                    last_error = reconnect_error
+
+                    print(
+                        f"Reconnection failed: {reconnect_error}. "
+                        "Will retry.",
+                        flush=True,
+                    )
+                    time.sleep(1)
+
+        raise ConnectionError(
+            f"Could not read robot {p}'s model "
+            f"after {retries} attempts"
+        ) from last_error
 
     try:
         while not stop_requested.is_set():
@@ -95,6 +136,7 @@ def track(ip, store_coords, tracker_event_queue, tracker_control_queue,
 
 
                     sample = model(p, flags="d99fn")
+
                     now = time.monotonic()
                     status = sample["state"]["status"]
                     axes = sample["move"]["axes"]

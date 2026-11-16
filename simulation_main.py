@@ -426,7 +426,7 @@ def main(argv=None):
     parser.add_argument("--printer-2", default="192.168.0.16",
                         help="Second robot address")
     parser.add_argument(
-        "--wifi-profile", help="Saved Windows Wi-Fi profile to use if robots are unreachable")
+        "--wifi-profile", default='AMBOTS', help="Saved Windows Wi-Fi profile to use if robots are unreachable")
     parser.add_argument("--wifi-interface", default="Wi-Fi")
     parser.add_argument("--homing-timeout", type=float, default=180.0,
                         help="Maximum homing wait per robot in seconds (default: 180)")
@@ -466,7 +466,23 @@ def main(argv=None):
         source_files = [
             source for source in source_files if source.stem in selected]
 
-    present_layers = {layer_of(source.name) for source in source_files}
+
+
+
+    source_files = [
+        source
+        for source in source_files
+        if source.stem.endswith(("_1", "_2", "_3", "_4"))
+    ]
+
+
+
+
+    present_layers = {
+    layer_of(source.name)
+    for source in source_files
+    if source.stem.endswith(("_1", "_2", "_3", "_4"))
+}
 
     if present_layers != set(range(1, TOTAL_LAYERS + 1)):
         raise ValueError(
@@ -812,6 +828,7 @@ def main(argv=None):
     if required - reachable:
         raise ValueError(f"Unreachable jobs: {sorted(required - reachable)}")
 
+    print('check2')
     if any(layer_of(name) != 1 for name in initial_assignments.values()):
         raise ValueError("--initial-cells must refer to layer 1")
 
